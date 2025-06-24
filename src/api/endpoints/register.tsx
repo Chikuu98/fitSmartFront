@@ -23,6 +23,8 @@ export const registerMentor = async (data: {
   gender: string;
   expertise: string;
   bio: string;
+  country: string;
+  language: string;
   certifications: string;
   social_links: string;
   contact_number: string;
