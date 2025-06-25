@@ -41,8 +41,7 @@ export const Button: React.FC<ButtonProps> = ({
       "bg-transparent border border-orange-500 dark:border-orange-400 text-orange-600 dark:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900",
     ghost:
       "bg-transparent text-orange-600 dark:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900",
-    link:
-      "bg-transparent text-orange-600 dark:text-orange-300 underline px-0 py-0 hover:text-orange-700 dark:hover:text-orange-200",
+    link: "bg-transparent text-orange-600 dark:text-orange-300 underline px-0 py-0 hover:text-orange-700 dark:hover:text-orange-200",
   };
 
   return (

@@ -5,25 +5,18 @@ import logodark from "../../assets/logodark.png";
 import { Gender } from "../../enums/userDetailEnums";
 import countryList from "react-select-country-list";
 import CustomSelect from "../../components/ui/customSelect";
-import LanguageList from "language-list";
+import ISO6391 from "iso-639-1";
 
 const Register: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"member" | "mentor">("member");
   const [showMoreMember, setShowMoreMember] = useState(false);
   const [showMoreMentor, setShowMoreMentor] = useState(false);
   const countries = useMemo(() => countryList().getData(), []);
-  interface LanguageOption {
-    value: string;
-    label: string;
-  }
+  const languages = ISO6391.getAllNames().map((name) => ({
+    value: name,
+    label: name,
+  }));
 
-  const languages: LanguageOption[] = useMemo(
-    () =>
-      new LanguageList()
-        .getData()
-        .map((lang: { name: string }) => ({ value: lang.name, label: lang.name })),
-    [],
-  );
   const [memberData, setMemberData] = useState({
     name: "",
     email: "",
@@ -67,7 +60,7 @@ const Register: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     setMemberData({ ...memberData, [e.target.name]: e.target.value });
-    setMemberErrors({ ...memberErrors, [e.target.name]: "" }); // Clear error on change
+    setMemberErrors({ ...memberErrors, [e.target.name]: "" });
   };
 
   const handleMentorChange = (
@@ -76,7 +69,7 @@ const Register: React.FC = () => {
     >,
   ) => {
     setMentorData({ ...mentorData, [e.target.name]: e.target.value });
-    setMentorErrors({ ...mentorErrors, [e.target.name]: "" }); // Clear error on change
+    setMentorErrors({ ...mentorErrors, [e.target.name]: "" });
   };
 
   const handleMemberSubmit = async (e: React.FormEvent) => {
@@ -85,12 +78,17 @@ const Register: React.FC = () => {
     setMemberErrors({});
     setGeneralError(null);
     try {
-      const payload = {
+      const rawPayload = {
         ...memberData,
-        age: Number(memberData.age),
-        height: Number(memberData.height),
-        weight: Number(memberData.weight),
+        age: memberData.age ? Number(memberData.age) : undefined,
+        height: memberData.height ? Number(memberData.height) : undefined,
+        weight: memberData.weight ? Number(memberData.weight) : undefined,
       };
+      const payload = Object.fromEntries(
+        Object.entries(rawPayload).filter(
+          ([_, v]) => v !== undefined && v !== "",
+        ),
+      );
       await registerMember(payload);
       setMemberData({
         name: "",
@@ -107,8 +105,8 @@ const Register: React.FC = () => {
         language: "",
       });
     } catch (err: any) {
-      if (err?.response?.data?.validation_erros) {
-        const errorArr = err.response.data.validation_erros;
+      if (err?.response?.data?.validation_errors) {
+        const errorArr = err.response.data.validation_errors;
         const errorObj = errorArr.reduce(
           (acc: any, curr: any) => ({ ...acc, ...curr }),
           {},
@@ -129,7 +127,13 @@ const Register: React.FC = () => {
     setMentorErrors({});
     setGeneralError(null);
     try {
-      await registerMentor(mentorData);
+      const rawPayload = { ...mentorData };
+      const payload = Object.fromEntries(
+        Object.entries(rawPayload).filter(
+          ([_, v]) => v !== undefined && v !== "",
+        ),
+      );
+      await registerMentor(payload);
       setMentorData({
         name: "",
         email: "",
@@ -144,8 +148,8 @@ const Register: React.FC = () => {
         contact_number: "",
       });
     } catch (err: any) {
-      if (err?.response?.data?.validation_erros) {
-        const errorArr = err.response.data.validation_erros;
+      if (err?.response?.data?.validation_errors) {
+        const errorArr = err.response.data.validation_errors;
         const errorObj = errorArr.reduce(
           (acc: any, curr: any) => ({ ...acc, ...curr }),
           {},
@@ -167,7 +171,8 @@ const Register: React.FC = () => {
           <img src={logodark} alt="FitSmart Logo" className="h-20 mb-4" />
           <h2 className="text-2xl font-bold mb-1 text-center">Join with us!</h2>
           <p className="text-base md:text-md text-center max-w-xs">
-            Empower your fitness journey with smart guidance and a supportive community.
+            Empower your fitness journey with smart guidance and a supportive
+            community.
           </p>
         </div>
       </div>
@@ -204,7 +209,6 @@ const Register: React.FC = () => {
           )}
           {activeTab === "member" ? (
             <form onSubmit={handleMemberSubmit} className="space-y-2">
-              {/* Main (required) fields */}
               {!showMoreMember && (
                 <>
                   <div className="mb-2">
@@ -221,7 +225,9 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.name && (
-                      <div className="text-xs text-red-600">{memberErrors.name}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.name}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -238,7 +244,9 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.email && (
-                      <div className="text-xs text-red-600">{memberErrors.email}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.email}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -255,7 +263,9 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.password && (
-                      <div className="text-xs text-red-600">{memberErrors.password}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.password}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -277,11 +287,13 @@ const Register: React.FC = () => {
                       }))}
                       placeholder="Select Gender"
                       required
-                                            height="1.5rem"
+                      height="1.5rem"
                       fontSize="0.75rem"
                     />
                     {memberErrors.gender && (
-                      <div className="text-xs text-red-600">{memberErrors.gender}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.gender}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -304,7 +316,9 @@ const Register: React.FC = () => {
                       fontSize="0.75rem"
                     />
                     {memberErrors.country && (
-                      <div className="text-xs text-red-600">{memberErrors.country}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.country}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -327,7 +341,9 @@ const Register: React.FC = () => {
                       fontSize="0.75rem"
                     />
                     {memberErrors.language && (
-                      <div className="text-xs text-red-600">{memberErrors.language}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.language}
+                      </div>
                     )}
                   </div>
                   <button
@@ -339,7 +355,6 @@ const Register: React.FC = () => {
                   </button>
                 </>
               )}
-              {/* Optional fields in showMoreMember */}
               {showMoreMember && (
                 <>
                   <div className="mb-2">
@@ -355,12 +370,15 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.age && (
-                      <div className="text-xs text-red-600">{memberErrors.age}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.age}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1">
-                      Height (cm) <span className="text-gray-400">(optional)</span>
+                      Height (cm){" "}
+                      <span className="text-gray-400">(optional)</span>
                     </label>
                     <input
                       type="number"
@@ -371,12 +389,15 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.height && (
-                      <div className="text-xs text-red-600">{memberErrors.height}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.height}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1">
-                      Weight (kg) <span className="text-gray-400">(optional)</span>
+                      Weight (kg){" "}
+                      <span className="text-gray-400">(optional)</span>
                     </label>
                     <input
                       type="number"
@@ -387,7 +408,9 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.weight && (
-                      <div className="text-xs text-red-600">{memberErrors.weight}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.weight}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -403,12 +426,15 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.goal && (
-                      <div className="text-xs text-red-600">{memberErrors.goal}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.goal}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1">
-                      Dietary Preference <span className="text-gray-400">(optional)</span>
+                      Dietary Preference{" "}
+                      <span className="text-gray-400">(optional)</span>
                     </label>
                     <input
                       type="text"
@@ -419,12 +445,15 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.dietary_preference && (
-                      <div className="text-xs text-red-600">{memberErrors.dietary_preference}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.dietary_preference}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1">
-                      Fitness Level <span className="text-gray-400">(optional)</span>
+                      Fitness Level{" "}
+                      <span className="text-gray-400">(optional)</span>
                     </label>
                     <CustomSelect
                       name="fitness_level"
@@ -445,7 +474,9 @@ const Register: React.FC = () => {
                       fontSize="0.75rem"
                     />
                     {memberErrors.fitness_level && (
-                      <div className="text-xs text-red-600">{memberErrors.fitness_level}</div>
+                      <div className="text-xs text-red-600">
+                        {memberErrors.fitness_level}
+                      </div>
                     )}
                   </div>
                   <button
@@ -476,7 +507,6 @@ const Register: React.FC = () => {
             </form>
           ) : (
             <form onSubmit={handleMentorSubmit} className="space-y-2">
-              {/* Main (required) fields */}
               {!showMoreMentor && (
                 <>
                   <div className="mb-2">
@@ -493,7 +523,9 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.name && (
-                      <div className="text-xs text-red-600">{mentorErrors.name}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.name}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -510,7 +542,9 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.email && (
-                      <div className="text-xs text-red-600">{mentorErrors.email}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.email}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -527,7 +561,9 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.password && (
-                      <div className="text-xs text-red-600">{mentorErrors.password}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.password}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -549,11 +585,13 @@ const Register: React.FC = () => {
                       }))}
                       placeholder="Select Gender"
                       required
-                                            height="1.5rem"
+                      height="1.5rem"
                       fontSize="0.75rem"
                     />
                     {mentorErrors.gender && (
-                      <div className="text-xs text-red-600">{mentorErrors.gender}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.gender}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -570,7 +608,9 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.expertise && (
-                      <div className="text-xs text-red-600">{mentorErrors.expertise}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.expertise}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -589,11 +629,13 @@ const Register: React.FC = () => {
                       options={countries}
                       placeholder="Select Country"
                       required
-                                            height="1.5rem"
+                      height="1.5rem"
                       fontSize="0.75rem"
                     />
                     {mentorErrors.country && (
-                      <div className="text-xs text-red-600">{mentorErrors.country}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.country}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
@@ -612,11 +654,13 @@ const Register: React.FC = () => {
                       options={languages}
                       placeholder="Select Language"
                       required
-                                            height="1.5rem"
+                      height="1.5rem"
                       fontSize="0.75rem"
                     />
                     {mentorErrors.language && (
-                      <div className="text-xs text-red-600">{mentorErrors.language}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.language}
+                      </div>
                     )}
                   </div>
                   <button
@@ -628,7 +672,6 @@ const Register: React.FC = () => {
                   </button>
                 </>
               )}
-              {/* Optional fields in showMoreMentor */}
               {showMoreMentor && (
                 <>
                   <div className="mb-2">
@@ -643,12 +686,15 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.bio && (
-                      <div className="text-xs text-red-600">{mentorErrors.bio}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.bio}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1">
-                      Certifications <span className="text-gray-400">(optional)</span>
+                      Certifications{" "}
+                      <span className="text-gray-400">(optional)</span>
                     </label>
                     <input
                       type="text"
@@ -659,12 +705,15 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.certifications && (
-                      <div className="text-xs text-red-600">{mentorErrors.certifications}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.certifications}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1">
-                      Social Links <span className="text-gray-400">(optional)</span>
+                      Social Links{" "}
+                      <span className="text-gray-400">(optional)</span>
                     </label>
                     <input
                       type="text"
@@ -675,12 +724,15 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.social_links && (
-                      <div className="text-xs text-red-600">{mentorErrors.social_links}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.social_links}
+                      </div>
                     )}
                   </div>
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1">
-                      Contact Number <span className="text-gray-400">(optional)</span>
+                      Contact Number{" "}
+                      <span className="text-gray-400">(optional)</span>
                     </label>
                     <input
                       type="text"
@@ -691,7 +743,9 @@ const Register: React.FC = () => {
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.contact_number && (
-                      <div className="text-xs text-red-600">{mentorErrors.contact_number}</div>
+                      <div className="text-xs text-red-600">
+                        {mentorErrors.contact_number}
+                      </div>
                     )}
                   </div>
                   <button

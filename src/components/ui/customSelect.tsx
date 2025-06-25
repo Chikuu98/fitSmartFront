@@ -21,7 +21,10 @@ interface CustomSelectProps {
   fontSize?: string; // e.g. '0.75rem', '12px'
 }
 
-const customStyles = (height?: string, fontSize?: string): StylesConfig<Option, false> => {
+const customStyles = (
+  height?: string,
+  fontSize?: string,
+): StylesConfig<Option, false> => {
   return {
     control: (provided, state) => ({
       ...provided,
@@ -58,13 +61,13 @@ const customStyles = (height?: string, fontSize?: string): StylesConfig<Option, 
       backgroundColor: state.isSelected
         ? "#fb923c"
         : state.isFocused
-        ? "rgba(251,146,60,0.15)"
-        : "transparent",
+          ? "rgba(251,146,60,0.15)"
+          : "transparent",
       color: state.isSelected
         ? "#fff"
         : document.documentElement.classList.contains("dark")
-        ? "#E0E0E0"
-        : "#1C1C1C",
+          ? "#E0E0E0"
+          : "#1C1C1C",
       cursor: "pointer",
       fontWeight: state.isSelected ? 600 : 400,
       transition: "background 0.2s",

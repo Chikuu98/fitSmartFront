@@ -44,7 +44,7 @@ const Header = () => {
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
     document.documentElement.setAttribute(
       "data-color-mode",
-      isDarkMode ? "dark" : "light"
+      isDarkMode ? "dark" : "light",
     );
   }, [isDarkMode]);
 
@@ -64,7 +64,10 @@ const Header = () => {
   return (
     <header className="bg-white dark:bg-black text-black dark:text-white px-4 md:px-20 py-3 flex items-center shadow-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
       {/* Left - Logo */}
-      <Link to={navItems.length > 0 ? navItems[0].link : "/"} className="flex items-center focus:outline-none">
+      <Link
+        to={navItems.length > 0 ? navItems[0].link : "/"}
+        className="flex items-center focus:outline-none"
+      >
         <img
           src={isDarkMode ? logoDark : logoLight}
           alt="FitSmart Logo"

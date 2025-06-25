@@ -50,8 +50,9 @@ const BookingListMentor: React.FC = () => {
                       {booking.member?.email}
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {booking.mentorSlot?.date} - {booking.mentorSlot?.start_time}{" "}
-                      to {booking.mentorSlot?.end_time}
+                      {booking.mentorSlot?.date} -{" "}
+                      {booking.mentorSlot?.start_time} to{" "}
+                      {booking.mentorSlot?.end_time}
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-1">

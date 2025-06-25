@@ -1,5 +1,5 @@
 // filepath: src/types/language-list.d.ts
-declare module 'language-list' {
+declare module "language-list" {
   interface Language {
     name: string;
     [key: string]: any;
