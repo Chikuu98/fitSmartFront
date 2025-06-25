@@ -2,15 +2,28 @@ import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerMember, registerMentor } from "../../api/endpoints/register";
 import logodark from "../../assets/logodark.png";
-import { FitnessLevelEnum, Gender } from "../../enums/userDetailEnums";
+import { Gender } from "../../enums/userDetailEnums";
 import countryList from "react-select-country-list";
-import CustomSelect from "../../components/Select/customSelect";
+import CustomSelect from "../../components/ui/customSelect";
+import LanguageList from "language-list";
 
 const Register: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"member" | "mentor">("member");
   const [showMoreMember, setShowMoreMember] = useState(false);
   const [showMoreMentor, setShowMoreMentor] = useState(false);
   const countries = useMemo(() => countryList().getData(), []);
+  interface LanguageOption {
+    value: string;
+    label: string;
+  }
+
+  const languages: LanguageOption[] = useMemo(
+    () =>
+      new LanguageList()
+        .getData()
+        .map((lang: { name: string }) => ({ value: lang.name, label: lang.name })),
+    [],
+  );
   const [memberData, setMemberData] = useState({
     name: "",
     email: "",
@@ -22,6 +35,8 @@ const Register: React.FC = () => {
     fitness_level: "",
     goal: "",
     dietary_preference: "",
+    country: "",
+    language: "",
   });
 
   const [mentorData, setMentorData] = useState({
@@ -88,6 +103,8 @@ const Register: React.FC = () => {
         fitness_level: "",
         goal: "",
         dietary_preference: "",
+        country: "",
+        language: "",
       });
     } catch (err: any) {
       if (err?.response?.data?.validation_erros) {
@@ -145,17 +162,18 @@ const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center md:flex-row md:justify-start bg-white">
-      <div className="hidden md:flex md:h-screen md:w-1/2 flex-col justify-center items-center bg-gradient-to-br from-blue-800 to-orange-600 text-white p-8 md:p-12">
-        <img src={logodark} alt="FitSmart Logo" className="h-25 mb-6" />
-        <h2 className="text-3xl font-bold mb-2 text-center">Join with us!</h2>
-        <p className="text-base md:text-lg text-center max-w-xs">
-          Empower your fitness journey with smart guidance and a supportive
-          community.
-        </p>
+      <div className="hidden md:flex md:h-screen md:w-1/2 flex flex-col flex-1 items-center justify-center bg-gradient-to-br from-blue-800 to-orange-600 text-white p-0">
+        <div className="flex flex-col flex-1 justify-center items-center w-full">
+          <img src={logodark} alt="FitSmart Logo" className="h-20 mb-4" />
+          <h2 className="text-2xl font-bold mb-1 text-center">Join with us!</h2>
+          <p className="text-base md:text-md text-center max-w-xs">
+            Empower your fitness journey with smart guidance and a supportive community.
+          </p>
+        </div>
       </div>
 
-      <div className="w-full min-h-screen md:min-h-0 md:w-1/2 flex flex-col justify-center items-center p-6 md:p-12">
-        <div className="flex mb-8 w-full max-w-md">
+      <div className="w-full min-h-screen md:min-h-0 md:w-1/2 flex flex-col justify-center items-center px-2 py-4 md:px-6 md:py-8">
+        <div className="flex mb-4 w-full max-w-md">
           <button
             className={`flex-1 py-2 font-semibold rounded-tl-lg border-b-2 ${
               activeTab === "member"
@@ -178,90 +196,140 @@ const Register: React.FC = () => {
           </button>
         </div>
 
-        <div className="w-full max-w-md bg-white rounded-lg shadow p-8">
+        <div className="w-full max-w-md bg-white rounded-lg shadow p-3 md:p-4 overflow-y-auto max-h-[90vh] text-xs md:text-sm">
           {generalError && (
             <div className="mb-4 text-center text-red-600 text-sm">
               {generalError}
             </div>
           )}
           {activeTab === "member" ? (
-            <form onSubmit={handleMemberSubmit} className="space-y-3">
-              {!showMoreMember ? (
+            <form onSubmit={handleMemberSubmit} className="space-y-2">
+              {/* Main (required) fields */}
+              {!showMoreMember && (
                 <>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Full Name"
-                    value={memberData.name}
-                    onChange={handleMemberChange}
-                    required
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {memberErrors.name && (
-                    <div className="text-xs text-red-600">
-                      {memberErrors.name}
-                    </div>
-                  )}
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={memberData.email}
-                    onChange={handleMemberChange}
-                    required
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {memberErrors.email && (
-                    <div className="text-xs text-red-600">
-                      {memberErrors.email}
-                    </div>
-                  )}
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={memberData.password}
-                    onChange={handleMemberChange}
-                    required
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {memberErrors.password && (
-                    <div className="text-xs text-red-600">
-                      {memberErrors.password}
-                    </div>
-                  )}
-                  <CustomSelect
-                    name="gender"
-                    value={memberData.gender}
-                    onChange={handleMemberChange}
-                    options={Object.values(Gender).map((g) => ({
-                      value: g,
-                      label: g.charAt(0).toUpperCase() + g.slice(1),
-                    }))}
-                    placeholder="Select Gender"
-                    required
-                  />
-                  {memberErrors.gender && (
-                    <div className="text-xs text-red-600">
-                      {memberErrors.gender}
-                    </div>
-                  )}
-                  <CustomSelect
-                    name="fitness_level"
-                    value={memberData.fitness_level}
-                    onChange={handleMemberChange}
-                    options={Object.values(FitnessLevelEnum).map((level) => ({
-                      value: level,
-                      label: level.charAt(0).toUpperCase() + level.slice(1),
-                    }))}
-                    placeholder="Select Fitness Level"
-                    required
-                  />
-                  {memberErrors.fitness_level && (
-                    <div className="text-xs text-red-600">
-                      {memberErrors.fitness_level}
-                    </div>
-                  )}
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Full Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Full Name"
+                      value={memberData.name}
+                      onChange={handleMemberChange}
+                      required
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {memberErrors.name && (
+                      <div className="text-xs text-red-600">{memberErrors.name}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      value={memberData.email}
+                      onChange={handleMemberChange}
+                      required
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {memberErrors.email && (
+                      <div className="text-xs text-red-600">{memberErrors.email}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Password <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      value={memberData.password}
+                      onChange={handleMemberChange}
+                      required
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {memberErrors.password && (
+                      <div className="text-xs text-red-600">{memberErrors.password}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Gender <span className="text-red-500">*</span>
+                    </label>
+                    <CustomSelect
+                      name="gender"
+                      value={memberData.gender}
+                      onChange={(option) =>
+                        setMemberData({
+                          ...memberData,
+                          gender: option ? option.value : "",
+                        })
+                      }
+                      options={Object.values(Gender).map((g) => ({
+                        value: g,
+                        label: g.charAt(0).toUpperCase() + g.slice(1),
+                      }))}
+                      placeholder="Select Gender"
+                      required
+                                            height="1.5rem"
+                      fontSize="0.75rem"
+                    />
+                    {memberErrors.gender && (
+                      <div className="text-xs text-red-600">{memberErrors.gender}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Country <span className="text-red-500">*</span>
+                    </label>
+                    <CustomSelect
+                      name="country"
+                      value={memberData.country}
+                      onChange={(option) =>
+                        setMemberData({
+                          ...memberData,
+                          country: option ? option.value : "",
+                        })
+                      }
+                      options={countries}
+                      placeholder="Select Country"
+                      required
+                      height="1.5rem"
+                      fontSize="0.75rem"
+                    />
+                    {memberErrors.country && (
+                      <div className="text-xs text-red-600">{memberErrors.country}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Language <span className="text-red-500">*</span>
+                    </label>
+                    <CustomSelect
+                      name="language"
+                      value={memberData.language}
+                      onChange={(option) =>
+                        setMemberData({
+                          ...memberData,
+                          language: option ? option.value : "",
+                        })
+                      }
+                      options={languages}
+                      placeholder="Select Language"
+                      required
+                      height="1.5rem"
+                      fontSize="0.75rem"
+                    />
+                    {memberErrors.language && (
+                      <div className="text-xs text-red-600">{memberErrors.language}</div>
+                    )}
+                  </div>
                   <button
                     type="button"
                     onClick={() => setShowMoreMember(true)}
@@ -270,73 +338,116 @@ const Register: React.FC = () => {
                     Fill Optional Fields
                   </button>
                 </>
-              ) : (
+              )}
+              {/* Optional fields in showMoreMember */}
+              {showMoreMember && (
                 <>
-                  <input
-                    type="number"
-                    name="age"
-                    placeholder="Age"
-                    value={memberData.age}
-                    onChange={handleMemberChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {memberErrors.age && (
-                    <div className="text-xs text-red-600">
-                      {memberErrors.age}
-                    </div>
-                  )}
-                  <input
-                    type="number"
-                    name="height"
-                    placeholder="Height (cm)"
-                    value={memberData.height}
-                    onChange={handleMemberChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {memberErrors.height && (
-                    <div className="text-xs text-red-600">
-                      {memberErrors.height}
-                    </div>
-                  )}
-                  <input
-                    type="number"
-                    name="weight"
-                    placeholder="Weight (kg)"
-                    value={memberData.weight}
-                    onChange={handleMemberChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {memberErrors.weight && (
-                    <div className="text-xs text-red-600">
-                      {memberErrors.weight}
-                    </div>
-                  )}
-                  <input
-                    type="text"
-                    name="goal"
-                    placeholder="Goal"
-                    value={memberData.goal}
-                    onChange={handleMemberChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {memberErrors.goal && (
-                    <div className="text-xs text-red-600">
-                      {memberErrors.goal}
-                    </div>
-                  )}
-                  <input
-                    type="text"
-                    name="dietary_preference"
-                    placeholder="Dietary Preference"
-                    value={memberData.dietary_preference}
-                    onChange={handleMemberChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {memberErrors.dietary_preference && (
-                    <div className="text-xs text-red-600">
-                      {memberErrors.dietary_preference}
-                    </div>
-                  )}
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Age <span className="text-gray-400">(optional)</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="age"
+                      placeholder="Age"
+                      value={memberData.age}
+                      onChange={handleMemberChange}
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {memberErrors.age && (
+                      <div className="text-xs text-red-600">{memberErrors.age}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Height (cm) <span className="text-gray-400">(optional)</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="height"
+                      placeholder="Height (cm)"
+                      value={memberData.height}
+                      onChange={handleMemberChange}
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {memberErrors.height && (
+                      <div className="text-xs text-red-600">{memberErrors.height}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Weight (kg) <span className="text-gray-400">(optional)</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="weight"
+                      placeholder="Weight (kg)"
+                      value={memberData.weight}
+                      onChange={handleMemberChange}
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {memberErrors.weight && (
+                      <div className="text-xs text-red-600">{memberErrors.weight}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Goal <span className="text-gray-400">(optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="goal"
+                      placeholder="Goal"
+                      value={memberData.goal}
+                      onChange={handleMemberChange}
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {memberErrors.goal && (
+                      <div className="text-xs text-red-600">{memberErrors.goal}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Dietary Preference <span className="text-gray-400">(optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="dietary_preference"
+                      placeholder="Dietary Preference"
+                      value={memberData.dietary_preference}
+                      onChange={handleMemberChange}
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {memberErrors.dietary_preference && (
+                      <div className="text-xs text-red-600">{memberErrors.dietary_preference}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Fitness Level <span className="text-gray-400">(optional)</span>
+                    </label>
+                    <CustomSelect
+                      name="fitness_level"
+                      value={memberData.fitness_level}
+                      onChange={(option) =>
+                        setMemberData({
+                          ...memberData,
+                          fitness_level: option ? option.value : "",
+                        })
+                      }
+                      options={[
+                        { value: "beginner", label: "Beginner" },
+                        { value: "intermediate", label: "Intermediate" },
+                        { value: "advanced", label: "Advanced" },
+                      ]}
+                      placeholder="Select Fitness Level"
+                      height="1.5rem"
+                      fontSize="0.75rem"
+                    />
+                    {memberErrors.fitness_level && (
+                      <div className="text-xs text-red-600">{memberErrors.fitness_level}</div>
+                    )}
+                  </div>
                   <button
                     type="button"
                     onClick={() => setShowMoreMember(false)}
@@ -346,7 +457,6 @@ const Register: React.FC = () => {
                   </button>
                 </>
               )}
-
               <button
                 type="submit"
                 disabled={loading}
@@ -365,93 +475,150 @@ const Register: React.FC = () => {
               </div>
             </form>
           ) : (
-            <form onSubmit={handleMentorSubmit} className="space-y-3">
-              {!showMoreMentor ? (
+            <form onSubmit={handleMentorSubmit} className="space-y-2">
+              {/* Main (required) fields */}
+              {!showMoreMentor && (
                 <>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Full Name"
-                    value={mentorData.name}
-                    onChange={handleMentorChange}
-                    required
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {mentorErrors.name && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.name}
-                    </div>
-                  )}
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={mentorData.email}
-                    onChange={handleMentorChange}
-                    required
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {mentorErrors.email && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.email}
-                    </div>
-                  )}
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={mentorData.password}
-                    onChange={handleMentorChange}
-                    required
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {mentorErrors.password && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.password}
-                    </div>
-                  )}
-                  <CustomSelect
-                    name="gender"
-                    value={mentorData.gender}
-                    onChange={handleMentorChange}
-                    options={Object.values(Gender).map((g) => ({
-                      value: g,
-                      label: g.charAt(0).toUpperCase() + g.slice(1),
-                    }))}
-                    placeholder="Select Gender"
-                    required
-                  />
-                  {mentorErrors.gender && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.gender}
-                    </div>
-                  )}
-                  <CustomSelect
-                    name="country"
-                    value={mentorData.country}
-                    onChange={handleMentorChange}
-                    options={countries}
-                    placeholder="Select Country"
-                    required
-                  />
-                  {mentorErrors.country && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.country}
-                    </div>
-                  )}
-                  <input
-                    type="text"
-                    name="language"
-                    placeholder="Language"
-                    value={mentorData.language}
-                    onChange={handleMentorChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {mentorErrors.language && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.language}
-                    </div>
-                  )}
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Full Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Full Name"
+                      value={mentorData.name}
+                      onChange={handleMentorChange}
+                      required
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {mentorErrors.name && (
+                      <div className="text-xs text-red-600">{mentorErrors.name}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      value={mentorData.email}
+                      onChange={handleMentorChange}
+                      required
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {mentorErrors.email && (
+                      <div className="text-xs text-red-600">{mentorErrors.email}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Password <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      value={mentorData.password}
+                      onChange={handleMentorChange}
+                      required
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {mentorErrors.password && (
+                      <div className="text-xs text-red-600">{mentorErrors.password}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Gender <span className="text-red-500">*</span>
+                    </label>
+                    <CustomSelect
+                      name="gender"
+                      value={mentorData.gender}
+                      onChange={(option) =>
+                        setMentorData({
+                          ...mentorData,
+                          gender: option ? option.value : "",
+                        })
+                      }
+                      options={Object.values(Gender).map((g) => ({
+                        value: g,
+                        label: g.charAt(0).toUpperCase() + g.slice(1),
+                      }))}
+                      placeholder="Select Gender"
+                      required
+                                            height="1.5rem"
+                      fontSize="0.75rem"
+                    />
+                    {mentorErrors.gender && (
+                      <div className="text-xs text-red-600">{mentorErrors.gender}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Expertise <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="expertise"
+                      placeholder="Expertise"
+                      value={mentorData.expertise}
+                      onChange={handleMentorChange}
+                      required
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {mentorErrors.expertise && (
+                      <div className="text-xs text-red-600">{mentorErrors.expertise}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Country <span className="text-red-500">*</span>
+                    </label>
+                    <CustomSelect
+                      name="country"
+                      value={mentorData.country}
+                      onChange={(option) =>
+                        setMentorData({
+                          ...mentorData,
+                          country: option ? option.value : "",
+                        })
+                      }
+                      options={countries}
+                      placeholder="Select Country"
+                      required
+                                            height="1.5rem"
+                      fontSize="0.75rem"
+                    />
+                    {mentorErrors.country && (
+                      <div className="text-xs text-red-600">{mentorErrors.country}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Language <span className="text-red-500">*</span>
+                    </label>
+                    <CustomSelect
+                      name="language"
+                      value={mentorData.language}
+                      onChange={(option) =>
+                        setMentorData({
+                          ...mentorData,
+                          language: option ? option.value : "",
+                        })
+                      }
+                      options={languages}
+                      placeholder="Select Language"
+                      required
+                                            height="1.5rem"
+                      fontSize="0.75rem"
+                    />
+                    {mentorErrors.language && (
+                      <div className="text-xs text-red-600">{mentorErrors.language}</div>
+                    )}
+                  </div>
                   <button
                     type="button"
                     onClick={() => setShowMoreMentor(true)}
@@ -460,72 +627,73 @@ const Register: React.FC = () => {
                     Fill Optional Fields
                   </button>
                 </>
-              ) : (
+              )}
+              {/* Optional fields in showMoreMentor */}
+              {showMoreMentor && (
                 <>
-                  <input
-                    type="text"
-                    name="expertise"
-                    placeholder="Expertise"
-                    value={mentorData.expertise}
-                    onChange={handleMentorChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {mentorErrors.expertise && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.expertise}
-                    </div>
-                  )}
-                  <textarea
-                    name="bio"
-                    placeholder="Bio"
-                    value={mentorData.bio}
-                    onChange={handleMentorChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {mentorErrors.bio && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.bio}
-                    </div>
-                  )}
-                  <input
-                    type="text"
-                    name="certifications"
-                    placeholder="Certifications"
-                    value={mentorData.certifications}
-                    onChange={handleMentorChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {mentorErrors.certifications && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.certifications}
-                    </div>
-                  )}
-                  <input
-                    type="text"
-                    name="social_links"
-                    placeholder="Social Links"
-                    value={mentorData.social_links}
-                    onChange={handleMentorChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {mentorErrors.social_links && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.social_links}
-                    </div>
-                  )}
-                  <input
-                    type="text"
-                    name="contact_number"
-                    placeholder="Contact Number"
-                    value={mentorData.contact_number}
-                    onChange={handleMentorChange}
-                    className="w-full border p-1.5 rounded text-sm"
-                  />
-                  {mentorErrors.contact_number && (
-                    <div className="text-xs text-red-600">
-                      {mentorErrors.contact_number}
-                    </div>
-                  )}
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Bio <span className="text-gray-400">(optional)</span>
+                    </label>
+                    <textarea
+                      name="bio"
+                      placeholder="Bio"
+                      value={mentorData.bio}
+                      onChange={handleMentorChange}
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {mentorErrors.bio && (
+                      <div className="text-xs text-red-600">{mentorErrors.bio}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Certifications <span className="text-gray-400">(optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="certifications"
+                      placeholder="Certifications"
+                      value={mentorData.certifications}
+                      onChange={handleMentorChange}
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {mentorErrors.certifications && (
+                      <div className="text-xs text-red-600">{mentorErrors.certifications}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Social Links <span className="text-gray-400">(optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="social_links"
+                      placeholder="Social Links"
+                      value={mentorData.social_links}
+                      onChange={handleMentorChange}
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {mentorErrors.social_links && (
+                      <div className="text-xs text-red-600">{mentorErrors.social_links}</div>
+                    )}
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1">
+                      Contact Number <span className="text-gray-400">(optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="contact_number"
+                      placeholder="Contact Number"
+                      value={mentorData.contact_number}
+                      onChange={handleMentorChange}
+                      className="w-full border p-1 rounded text-xs"
+                    />
+                    {mentorErrors.contact_number && (
+                      <div className="text-xs text-red-600">{mentorErrors.contact_number}</div>
+                    )}
+                  </div>
                   <button
                     type="button"
                     onClick={() => setShowMoreMentor(false)}
@@ -535,7 +703,6 @@ const Register: React.FC = () => {
                   </button>
                 </>
               )}
-
               <button
                 type="submit"
                 disabled={loading}

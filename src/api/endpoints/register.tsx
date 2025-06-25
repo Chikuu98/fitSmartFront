@@ -5,6 +5,8 @@ export const registerMember = async (data: {
   email: string;
   password: string;
   gender: string;
+  country: string;
+  language: string;
   age: number;
   height: number;
   weight: number;

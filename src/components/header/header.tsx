@@ -18,7 +18,10 @@ const Header = () => {
 
   const memberNavItems = [{ title: "Dashboard", link: "/member-dashboard" }];
 
-  const mentorNavItems = [{ title: "Dashboard", link: "/mentor-dashboard" }];
+  const mentorNavItems = [
+    { title: "Dashboard", link: "/mentor-dashboard" },
+    { title: "My Bookings", link: "/mentor/my-bookings" },
+  ];
 
   const navItems =
     role === UserRole.ADMIN
@@ -41,7 +44,7 @@ const Header = () => {
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
     document.documentElement.setAttribute(
       "data-color-mode",
-      isDarkMode ? "dark" : "light",
+      isDarkMode ? "dark" : "light"
     );
   }, [isDarkMode]);
 
@@ -59,25 +62,25 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="bg-white dark:bg-black text-black dark:text-white px-20 py-3 flex items-center shadow-md border-b border-gray-300 dark:border-gray-800">
+    <header className="bg-white dark:bg-black text-black dark:text-white px-4 md:px-20 py-3 flex items-center shadow-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
       {/* Left - Logo */}
-      <Link to={navItems.length > 0 ? navItems[0].link : "/"}>
+      <Link to={navItems.length > 0 ? navItems[0].link : "/"} className="flex items-center focus:outline-none">
         <img
           src={isDarkMode ? logoDark : logoLight}
           alt="FitSmart Logo"
-          className="h-9"
+          className="h-9 w-auto transition-transform duration-200 hover:scale-105"
         />
       </Link>
 
       {/* Right - Navigation + User */}
-      <div className="ml-auto flex items-center gap-x-8 text-sm font-medium">
+      <div className="ml-auto flex items-center gap-x-4 md:gap-x-8 text-sm font-medium">
         {/* Navigation */}
-        <nav className="flex items-center gap-x-6">
+        <nav className="flex items-center gap-x-4 md:gap-x-6">
           {navItems.map((item) => (
             <Link
               key={item.link}
               to={item.link}
-              className="hover:text-blue-600 dark:hover:text-blue-400"
+              className="px-2 py-1 rounded transition-colors duration-150 hover:text-orange-600 dark:hover:text-orange-400 focus:outline-none"
             >
               {item.title}
             </Link>
@@ -88,33 +91,34 @@ const Header = () => {
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="focus:outline-none hover:text-blue-600 dark:hover:text-blue-400"
+            className="flex items-center justify-center rounded-full p-1.5 transition-colors duration-150 hover:bg-orange-100 dark:hover:bg-orange-900 focus:outline-non"
+            aria-label="User menu"
           >
-            <UserCircle />
+            <UserCircle className="w-7 h-7 text-orange-500 dark:text-orange-300 transition-colors duration-150" />
           </button>
 
           {isOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50">
+            <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-[#18181c] border border-gray-200 dark:border-orange-900 rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in">
               <button
-                className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
+                className="flex items-center w-full px-4 py-2 hover:bg-orange-100 dark:hover:bg-orange-800 text-sm transition-colors text-blue-900 dark:text-orange-200"
                 onClick={() => {
                   setIsOpen(false);
-                  console.log("Account clicked");
+                  // Account click handler
                 }}
               >
                 <User className="w-4 h-4 mr-2" /> Account
               </button>
               <button
-                className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
+                className="flex items-center w-full px-4 py-2 hover:bg-orange-100 dark:hover:bg-orange-800 text-sm transition-colors text-blue-900 dark:text-orange-200"
                 onClick={() => {
                   setIsOpen(false);
-                  console.log("Settings clicked");
+                  // Settings click handler
                 }}
               >
                 <Settings className="w-4 h-4 mr-2" /> Settings
               </button>
               <button
-                className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
+                className="flex items-center w-full px-4 py-2 hover:bg-orange-100 dark:hover:bg-orange-800 text-sm transition-colors text-blue-900 dark:text-orange-200"
                 onClick={() => {
                   setIsDarkMode(!isDarkMode);
                   setIsOpen(false);
@@ -132,7 +136,7 @@ const Header = () => {
                 )}
               </button>
               <button
-                className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-neutral-700 text-sm text-red-600"
+                className="flex items-center w-full px-4 py-2 hover:bg-orange-100 dark:hover:bg-orange-800 text-sm text-red-600 transition-colors"
                 onClick={() => {
                   setIsOpen(false);
                   dispatch(logout());
