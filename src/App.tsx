@@ -7,16 +7,22 @@ import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./routes/protectedRoute";
 import MainLayout from "./layouts/mainLayout";
 import Register from "./pages/Register/Register";
+import LandingPage from "./pages/Landing/LandingPage";
 import { UserRole } from "./enums/userDetailEnums";
+import BookingListMentor from "./pages/MentorBooking/Mentor/BookingListMentor";
+import { CreateTimeSlot } from "./pages/MentorBooking/Mentor/CreateTimeSlot";
+import { MyMentorSlotList } from "./pages/MentorBooking/Mentor/MyMentorSlotList";
+import { EditTimeSlot } from "./pages/MentorBooking/Mentor/EditTimeSlot";
+import { UpdateBooking } from "./pages/MentorBooking/Mentor/UpdateBooking";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        
+
         {/* Admin Routes */}
         <Route element={<ProtectedRoute allowedRoles={[UserRole.ADMIN]} />}>
           <Route element={<MainLayout />}>
@@ -35,6 +41,17 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={[UserRole.MENTOR]} />}>
           <Route element={<MainLayout />}>
             <Route path="/mentor-dashboard" element={<MentorDashboard />} />
+            <Route path="/mentor/my-bookings" element={<BookingListMentor />} />
+            <Route path="/mentor/create-slot" element={<CreateTimeSlot />} />
+            <Route path="/mentor/my-slots" element={<MyMentorSlotList />} />
+            <Route
+              path="/mentor/time-slots/edit/:slotId"
+              element={<EditTimeSlot />}
+            />
+            <Route
+              path="/mentor/bookings/update/:bookingId"
+              element={<UpdateBooking />}
+            />
           </Route>
         </Route>
       </Routes>
