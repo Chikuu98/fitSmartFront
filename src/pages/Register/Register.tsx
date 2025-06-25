@@ -2,13 +2,18 @@ import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerMember, registerMentor } from "../../api/endpoints/register";
 import logodark from "../../assets/logodark.png";
+import logolight from "../../assets/logolight.png";
 import { Gender } from "../../enums/userDetailEnums";
 import countryList from "react-select-country-list";
 import CustomSelect from "../../components/ui/customSelect";
 import ISO6391 from "iso-639-1";
 import { filterPayload } from "../../utils/filterPayload";
+import { useTheme } from "../../hooks/useTheme";
 
 const Register: React.FC = () => {
+  // Use the custom theme hook for consistent theme management
+  const { isDarkMode } = useTheme();
+
   const [activeTab, setActiveTab] = useState<"member" | "mentor">("member");
   const [showMoreMember, setShowMoreMember] = useState(false);
   const [showMoreMentor, setShowMoreMentor] = useState(false);
@@ -158,11 +163,23 @@ const Register: React.FC = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen flex flex-col md:flex-row bg-white">
       {/* Left Side Cover - always fills left half, no white space */}
       <div className="hidden md:block md:w-1/2 h-screen bg-gradient-to-br from-blue-800 to-orange-600 text-white">
         <div className="flex flex-col items-center justify-center h-full w-full">
           <img src={logodark} alt="FitSmart Logo" className="h-20 mb-4" />
+=======
+    <div className="min-h-screen flex flex-col md:flex-row bg-white dark:bg-gray-900 transition-colors duration-300">
+      {/* Left Side Cover - always fills left half, no white space */}
+      <div className="hidden md:block md:w-1/2 h-screen bg-gradient-to-br from-blue-800 to-orange-600 text-white">
+        <div className="flex flex-col items-center justify-center h-full w-full">
+          <img
+            src={isDarkMode ? logodark : logolight}
+            alt="FitSmart Logo"
+            className="h-20 mb-4"
+          />
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
           <h2 className="text-2xl font-bold mb-1 text-center">Join with us!</h2>
           <p className="text-base md:text-md text-center max-w-xs">
             Empower your fitness journey with smart guidance and a supportive
@@ -171,23 +188,27 @@ const Register: React.FC = () => {
         </div>
       </div>
       {/* Right Side Form */}
+<<<<<<< HEAD
       <div className="w-full min-h-screen md:min-h-0 md:w-1/2 flex flex-col justify-center items-center px-2 py-4 md:px-6 md:py-8">
+=======
+      <div className="w-full min-h-screen md:min-h-0 md:w-1/2 flex flex-col justify-center items-center px-2 py-4 md:px-6 md:py-8 bg-gray-50 dark:bg-gray-900">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
         <div className="flex mb-4 w-full max-w-md">
           <button
-            className={`flex-1 py-2 font-semibold rounded-tl-lg border-b-2 ${
+            className={`flex-1 py-2 font-semibold rounded-tl-lg border-b-2 transition-colors ${
               activeTab === "member"
-                ? "border-blue-500 text-blue-500 bg-blue-50"
-                : "border-gray-200 text-gray-500 bg-white"
+                ? "border-blue-500 text-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400"
+                : "border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800"
             }`}
             onClick={() => setActiveTab("member")}
           >
             Member Sign Up
           </button>
           <button
-            className={`flex-1 py-2 font-semibold rounded-tr-lg border-b-2 ${
+            className={`flex-1 py-2 font-semibold rounded-tr-lg border-b-2 transition-colors ${
               activeTab === "mentor"
-                ? "border-orange-500 text-orange-500 bg-orange-50"
-                : "border-gray-200 text-gray-500 bg-white"
+                ? "border-orange-500 text-orange-500 bg-orange-50 dark:bg-orange-900/20 dark:text-orange-400"
+                : "border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800"
             }`}
             onClick={() => setActiveTab("mentor")}
           >
@@ -195,9 +216,13 @@ const Register: React.FC = () => {
           </button>
         </div>
 
+<<<<<<< HEAD
         <div className="w-full max-w-md bg-white rounded-lg shadow p-3 md:p-4 overflow-y-auto max-h-[90vh] text-xs md:text-sm">
+=======
+        <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900/50 p-3 md:p-4 overflow-y-auto max-h-[90vh] text-xs md:text-sm border border-gray-200 dark:border-gray-700 transition-colors">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
           {generalError && (
-            <div className="mb-4 text-center text-red-600 text-sm">
+            <div className="mb-4 text-center text-red-600 dark:text-red-400 text-sm">
               {generalError}
             </div>
           )}
@@ -206,7 +231,11 @@ const Register: React.FC = () => {
               {!showMoreMember && (
                 <>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Full Name <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -216,16 +245,27 @@ const Register: React.FC = () => {
                       value={memberData.name}
                       onChange={handleMemberChange}
                       required
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.name && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                    />
+                    {memberErrors.name && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.name}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Email <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -235,16 +275,27 @@ const Register: React.FC = () => {
                       value={memberData.email}
                       onChange={handleMemberChange}
                       required
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.email && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                    />
+                    {memberErrors.email && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.email}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Password <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -254,16 +305,27 @@ const Register: React.FC = () => {
                       value={memberData.password}
                       onChange={handleMemberChange}
                       required
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.password && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                    />
+                    {memberErrors.password && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.password}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Gender <span className="text-red-500">*</span>
                     </label>
                     <CustomSelect
@@ -285,13 +347,21 @@ const Register: React.FC = () => {
                       fontSize="0.75rem"
                     />
                     {memberErrors.gender && (
+<<<<<<< HEAD
                       <div className="text-xs text-red-600">
+=======
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.gender}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Country <span className="text-red-500">*</span>
                     </label>
                     <CustomSelect
@@ -310,13 +380,21 @@ const Register: React.FC = () => {
                       fontSize="0.75rem"
                     />
                     {memberErrors.country && (
+<<<<<<< HEAD
                       <div className="text-xs text-red-600">
+=======
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.country}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Language <span className="text-red-500">*</span>
                     </label>
                     <CustomSelect
@@ -335,7 +413,11 @@ const Register: React.FC = () => {
                       fontSize="0.75rem"
                     />
                     {memberErrors.language && (
+<<<<<<< HEAD
                       <div className="text-xs text-red-600">
+=======
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.language}
                       </div>
                     )}
@@ -352,8 +434,16 @@ const Register: React.FC = () => {
               {showMoreMember && (
                 <>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
                       Age <span className="text-gray-400">(optional)</span>
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Age{" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                     </label>
                     <input
                       type="number"
@@ -361,18 +451,33 @@ const Register: React.FC = () => {
                       placeholder="Age"
                       value={memberData.age}
                       onChange={handleMemberChange}
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.age && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                    />
+                    {memberErrors.age && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.age}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
                       Height (cm){" "}
                       <span className="text-gray-400">(optional)</span>
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Height (cm){" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                     </label>
                     <input
                       type="number"
@@ -380,18 +485,33 @@ const Register: React.FC = () => {
                       placeholder="Height (cm)"
                       value={memberData.height}
                       onChange={handleMemberChange}
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.height && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                    />
+                    {memberErrors.height && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.height}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
                       Weight (kg){" "}
                       <span className="text-gray-400">(optional)</span>
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Weight (kg){" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                     </label>
                     <input
                       type="number"
@@ -399,17 +519,32 @@ const Register: React.FC = () => {
                       placeholder="Weight (kg)"
                       value={memberData.weight}
                       onChange={handleMemberChange}
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.weight && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                    />
+                    {memberErrors.weight && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.weight}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
                       Goal <span className="text-gray-400">(optional)</span>
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Goal{" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                     </label>
                     <input
                       type="text"
@@ -417,18 +552,33 @@ const Register: React.FC = () => {
                       placeholder="Goal"
                       value={memberData.goal}
                       onChange={handleMemberChange}
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.goal && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                    />
+                    {memberErrors.goal && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.goal}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
                       Dietary Preference{" "}
                       <span className="text-gray-400">(optional)</span>
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Dietary Preference{" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                     </label>
                     <input
                       type="text"
@@ -436,18 +586,33 @@ const Register: React.FC = () => {
                       placeholder="Dietary Preference"
                       value={memberData.dietary_preference}
                       onChange={handleMemberChange}
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {memberErrors.dietary_preference && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                    />
+                    {memberErrors.dietary_preference && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.dietary_preference}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
                       Fitness Level{" "}
                       <span className="text-gray-400">(optional)</span>
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Fitness Level{" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                     </label>
                     <CustomSelect
                       name="fitness_level"
@@ -468,7 +633,11 @@ const Register: React.FC = () => {
                       fontSize="0.75rem"
                     />
                     {memberErrors.fitness_level && (
+<<<<<<< HEAD
                       <div className="text-xs text-red-600">
+=======
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {memberErrors.fitness_level}
                       </div>
                     )}
@@ -476,7 +645,7 @@ const Register: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowMoreMember(false)}
-                    className="text-sm text-red-600 hover:underline"
+                    className="text-sm text-red-600 dark:text-red-400 hover:underline"
                   >
                     Back to * Required Fields
                   </button>
@@ -489,11 +658,11 @@ const Register: React.FC = () => {
               >
                 {loading ? "Registering..." : "Sign Up as Member"}
               </button>
-              <div className="text-center mt-3 text-xs text-gray-600">
+              <div className="text-center mt-3 text-xs text-gray-600 dark:text-gray-400">
                 Already have an account?{" "}
                 <button
                   onClick={() => navigate("/login")}
-                  className="text-blue-500 hover:underline"
+                  className="text-blue-500 dark:text-blue-400 hover:underline"
                 >
                   Login
                 </button>
@@ -504,7 +673,11 @@ const Register: React.FC = () => {
               {!showMoreMentor && (
                 <>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Full Name <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -514,16 +687,27 @@ const Register: React.FC = () => {
                       value={mentorData.name}
                       onChange={handleMentorChange}
                       required
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.name && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                    />
+                    {mentorErrors.name && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.name}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Email <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -533,16 +717,27 @@ const Register: React.FC = () => {
                       value={mentorData.email}
                       onChange={handleMentorChange}
                       required
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.email && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                    />
+                    {mentorErrors.email && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.email}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Password <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -552,16 +747,27 @@ const Register: React.FC = () => {
                       value={mentorData.password}
                       onChange={handleMentorChange}
                       required
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.password && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                    />
+                    {mentorErrors.password && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.password}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Gender <span className="text-red-500">*</span>
                     </label>
                     <CustomSelect
@@ -583,13 +789,21 @@ const Register: React.FC = () => {
                       fontSize="0.75rem"
                     />
                     {mentorErrors.gender && (
+<<<<<<< HEAD
                       <div className="text-xs text-red-600">
+=======
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.gender}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Expertise <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -599,16 +813,27 @@ const Register: React.FC = () => {
                       value={mentorData.expertise}
                       onChange={handleMentorChange}
                       required
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.expertise && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                    />
+                    {mentorErrors.expertise && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.expertise}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Country <span className="text-red-500">*</span>
                     </label>
                     <CustomSelect
@@ -627,13 +852,21 @@ const Register: React.FC = () => {
                       fontSize="0.75rem"
                     />
                     {mentorErrors.country && (
+<<<<<<< HEAD
                       <div className="text-xs text-red-600">
+=======
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.country}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                       Language <span className="text-red-500">*</span>
                     </label>
                     <CustomSelect
@@ -652,7 +885,11 @@ const Register: React.FC = () => {
                       fontSize="0.75rem"
                     />
                     {mentorErrors.language && (
+<<<<<<< HEAD
                       <div className="text-xs text-red-600">
+=======
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.language}
                       </div>
                     )}
@@ -660,7 +897,7 @@ const Register: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowMoreMentor(true)}
-                    className="text-sm text-orange-600 hover:underline"
+                    className="text-sm text-orange-600 dark:text-orange-400 hover:underline"
                   >
                     Fill Optional Fields
                   </button>
@@ -669,26 +906,49 @@ const Register: React.FC = () => {
               {showMoreMentor && (
                 <>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
                       Bio <span className="text-gray-400">(optional)</span>
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Bio{" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                     </label>
                     <textarea
                       name="bio"
                       placeholder="Bio"
                       value={mentorData.bio}
                       onChange={handleMentorChange}
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.bio && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                    />
+                    {mentorErrors.bio && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.bio}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
                       Certifications{" "}
                       <span className="text-gray-400">(optional)</span>
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Certifications{" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                     </label>
                     <input
                       type="text"
@@ -696,18 +956,33 @@ const Register: React.FC = () => {
                       placeholder="Certifications"
                       value={mentorData.certifications}
                       onChange={handleMentorChange}
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.certifications && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                    />
+                    {mentorErrors.certifications && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.certifications}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
                       Social Links{" "}
                       <span className="text-gray-400">(optional)</span>
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Social Links{" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                     </label>
                     <input
                       type="text"
@@ -715,18 +990,33 @@ const Register: React.FC = () => {
                       placeholder="Social Links"
                       value={mentorData.social_links}
                       onChange={handleMentorChange}
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.social_links && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                    />
+                    {mentorErrors.social_links && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.social_links}
                       </div>
                     )}
                   </div>
                   <div className="mb-2">
+<<<<<<< HEAD
                     <label className="block text-xs font-medium mb-1">
                       Contact Number{" "}
                       <span className="text-gray-400">(optional)</span>
+=======
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Contact Number{" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                     </label>
                     <input
                       type="text"
@@ -734,10 +1024,17 @@ const Register: React.FC = () => {
                       placeholder="Contact Number"
                       value={mentorData.contact_number}
                       onChange={handleMentorChange}
+<<<<<<< HEAD
                       className="w-full border p-1 rounded text-xs"
                     />
                     {mentorErrors.contact_number && (
                       <div className="text-xs text-red-600">
+=======
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                    />
+                    {mentorErrors.contact_number && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+>>>>>>> f6e53a6 (booking accept, create meeting , slot management by mentor)
                         {mentorErrors.contact_number}
                       </div>
                     )}
@@ -745,7 +1042,7 @@ const Register: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowMoreMentor(false)}
-                    className="text-sm text-red-600 hover:underline"
+                    className="text-sm text-red-600 dark:text-red-400 hover:underline"
                   >
                     Back to * Required Fields
                   </button>
@@ -758,11 +1055,11 @@ const Register: React.FC = () => {
               >
                 {loading ? "Registering..." : "Sign Up as Mentor"}
               </button>
-              <div className="text-center mt-3 text-xs text-gray-600">
+              <div className="text-center mt-3 text-xs text-gray-600 dark:text-gray-400">
                 Already have an account?{" "}
                 <button
                   onClick={() => navigate("/login")}
-                  className="text-orange-600 hover:underline"
+                  className="text-orange-600 dark:text-orange-400 hover:underline"
                 >
                   Login
                 </button>

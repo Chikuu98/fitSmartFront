@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${access_token}`;
     }
 
-    if (["post", "put", "delete"].includes(config.method || "")) {
+    if (["post", "put", "delete", "patch"].includes(config.method || "")) {
       toastId = toast.loading("Please wait...");
     }
 
@@ -33,7 +33,9 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     if (
-      ["post", "put", "delete"].includes(response.config.method || "") &&
+      ["post", "put", "delete", "patch"].includes(
+        response.config.method || "",
+      ) &&
       !response.data.noToast
     ) {
       if (response.data.success === true) {

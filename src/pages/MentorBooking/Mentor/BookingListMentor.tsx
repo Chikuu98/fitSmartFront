@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   BadgeCheck,
   Clock,
@@ -8,15 +9,25 @@ import {
   Mail,
   Calendar,
   CreditCard,
+  AlertCircle,
+  Edit,
 } from "lucide-react";
 import type { Booking } from "../../../interfaces/booking";
 import { getBookingsByMentorId } from "../../../api/endpoints/bookings";
-import { Button } from "../../../components/ui/button";
+import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
 import type { RootState } from "../../../store/store";
+import { useCreateGoogleMeeting } from "../../../hooks/useCreateGoogleMeeting";
+import { acceptBooking, cancelBooking } from "../../../api/endpoints/bookings";
+import { toast } from "react-toastify";
+import { Button } from "../../../components/ui";
 
 const BookingListMentor: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [loadingId, setLoadingId] = useState<number | null>(null);
   const mentorId = useSelector((state: RootState) => state.auth.user?.id);
+  const { openDialog, ConfirmDialog } = useConfirmationDialog();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!mentorId) return;
@@ -31,13 +42,89 @@ const BookingListMentor: React.FC = () => {
     fetchBookings();
   }, [mentorId]);
 
+  const handleMeetingSuccess = () => {
+    refetchBookings();
+  };
+
+  const handleMeetingError = (err: any) => {
+    console.error(err);
+  };
+
+  const refetchBookings = async () => {
+    if (!mentorId) return;
+    try {
+      const data = await getBookingsByMentorId(mentorId);
+      setBookings(data);
+    } catch (error) {
+      toast.error("Failed to reload bookings");
+    }
+  };
+
+  const handleAccept = async (booking: Booking) => {
+    if (!booking.google_meet_link) {
+      toast.info("You must create a meeting before accepting.");
+      return;
+    }
+
+    openDialog({
+      title: "Accept Booking",
+      message: `Are you sure you want to accept the booking with ${booking.member?.name}?`,
+      confirmText: "Accept",
+      cancelText: "Cancel",
+      variant: "info",
+      loading: loadingId === booking.id,
+      onConfirm: async (close) => {
+        close();
+        setLoadingId(booking.id);
+        try {
+          await acceptBooking(booking.id, booking.google_meet_link!);
+          refetchBookings();
+        } catch (err) {
+        } finally {
+          setLoadingId(null);
+        }
+      },
+    });
+  };
+
+  const handleCancel = async (booking: Booking) => {
+    openDialog({
+      title: "Cancel Booking",
+      message: `Are you sure you want to cancel the booking with ${booking.member?.name}? This action cannot be undone.`,
+      confirmText: "Cancel Booking",
+      cancelText: "Keep Booking",
+      variant: "danger",
+      loading: loadingId === booking.id,
+      onConfirm: async (close) => {
+        close();
+        setLoadingId(booking.id);
+        try {
+          await cancelBooking(booking.id);
+          refetchBookings();
+        } catch (err) {
+        } finally {
+          setLoadingId(null);
+        }
+      },
+    });
+  };
+
+  const createMeeting = useCreateGoogleMeeting(
+    selectedBooking,
+    handleMeetingSuccess,
+    handleMeetingError,
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900 transition-colors duration-300 p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
         <div className="space-y-6">
           {bookings.length === 0 ? (
-            <div className="text-center text-gray-400 dark:text-gray-500 py-16">
-              No bookings found.
+            <div className="text-center py-16">
+              <AlertCircle className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-orange-100 mb-2">
+                No bookings found
+              </h3>
             </div>
           ) : (
             bookings.map((booking) => (
@@ -48,36 +135,57 @@ const BookingListMentor: React.FC = () => {
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 mb-1">
                   <div className="flex flex-col gap-1">
                     <p className="font-semibold text-lg text-blue-900 dark:text-orange-200 flex items-center gap-2">
-                      {booking.member?.name}
+                      <BadgeCheck className="w-5 h-5" /> {booking.member?.name}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1">
                       <Mail className="w-4 h-4" /> {booking.member?.email}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {booking.mentorSlot?.date} &bull;{" "}
-                      {booking.mentorSlot?.start_time} -{" "}
+                      {booking.mentorSlot?.date} &bull;
+                      {booking.mentorSlot?.start_time} -
                       {booking.mentorSlot?.end_time}
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <div className="flex gap-2 items-center">
-                      {booking.status === "accepted" && (
-                        <BadgeCheck className="text-green-500" />
-                      )}
                       {booking.status === "pending" && (
-                        <Clock className="text-yellow-500" />
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs rounded-full font-medium">
+                          <Clock className="w-4 h-4" /> Pending
+                        </span>
+                      )}
+                      {booking.status === "accepted" && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded-full font-medium">
+                          <BadgeCheck className="w-4 h-4" /> Accepted
+                        </span>
                       )}
                       {booking.status === "rejected" && (
-                        <XCircle className="text-red-500" />
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs rounded-full font-medium">
+                          <XCircle className="w-4 h-4" /> Rejected
+                        </span>
                       )}
-                      <span className="capitalize text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-orange-950 text-blue-800 dark:text-orange-200 border border-blue-200 dark:border-orange-800">
-                        {booking.status}
-                      </span>
+                      {booking.status === "cancelled" && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 text-xs rounded-full font-medium">
+                          <XCircle className="w-4 h-4" /> Cancelled
+                        </span>
+                      )}
+                      {booking.status === "completed" && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full font-medium">
+                          <BadgeCheck className="w-4 h-4" /> Completed
+                        </span>
+                      )}
                     </div>
                     <span className="text-xs flex items-center gap-1 text-gray-500 dark:text-gray-300 mt-1">
-                      <CreditCard className="w-4 h-4" /> Payment:{" "}
-                      <span className="font-medium text-gray-700 dark:text-orange-200">
+                      <CreditCard className="w-4 h-4" /> Payment:
+                      <span
+                        className={`font-medium ${
+                          booking.payment_status === "paid"
+                            ? "text-green-600 dark:text-green-400"
+                            : booking.payment_status === "refunded"
+                            ? "text-orange-600 dark:text-orange-400"
+                            : "text-red-600 dark:text-red-400"
+                        }`}
+                      >
                         {booking.payment_status}
                       </span>
                     </span>
@@ -85,44 +193,61 @@ const BookingListMentor: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
-                  {booking.google_meet_link ? (
-                    <a
-                      href={booking.google_meet_link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 text-sm text-blue-700 dark:text-orange-300 hover:underline font-medium transition"
-                    >
-                      <Video size={16} /> Join Meeting
-                    </a>
-                  ) : (
-                    <div className="flex gap-3">
-                      <Button
-                        variant="blue"
-                        className="shadow-sm group-hover:scale-105 transition"
-                        onClick={() =>
-                          console.log("Create Meeting", booking.id)
-                        }
+                  <div className="flex items-center gap-4">
+                    {booking.google_meet_link ? (
+                      <a
+                        href={booking.google_meet_link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 text-sm text-blue-700 dark:text-orange-300 hover:underline font-medium transition"
                       >
-                        Create Meeting
-                      </Button>
-                    </div>
-                  )}
+                        <Video size={16} /> Join Meeting
+                      </a>
+                    ) : null}
+
+                    <Button
+                      variant="outline"
+                      className="shadow-sm group-hover:scale-105 transition text-xs px-3 py-1"
+                      onClick={() =>
+                        navigate(`/mentor/bookings/update/${booking.id}`)
+                      }
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                  </div>
 
                   {booking.status === "pending" && (
                     <div className="flex gap-3">
                       <Button
-                        variant="default"
+                        variant="blue"
                         className="shadow-sm group-hover:scale-105 transition"
-                        onClick={() => console.log("Accept", booking.id)}
+                        disabled={loadingId === booking.id}
+                        onClick={() => {
+                          setSelectedBooking(booking);
+                          createMeeting();
+                        }}
+                      >
+                        {loadingId === booking.id
+                          ? "Creating..."
+                          : booking.google_meet_link
+                            ? "Meeting Created"
+                            : "Create Meeting"}
+                      </Button>
+                      <Button
+                        variant="true"
+                        className="shadow-sm group-hover:scale-105 transition"
+                        disabled={loadingId === booking.id}
+                        onClick={() => handleAccept(booking)}
                       >
                         Accept
                       </Button>
                       <Button
                         variant="red"
                         className="shadow-sm group-hover:scale-105 transition"
-                        onClick={() => console.log("Reject", booking.id)}
+                        disabled={loadingId === booking.id}
+                        onClick={() => handleCancel(booking)}
                       >
-                        Reject
+                        Cancel
                       </Button>
                     </div>
                   )}
@@ -131,6 +256,9 @@ const BookingListMentor: React.FC = () => {
             ))
           )}
         </div>
+
+        {/* Confirmation Dialog */}
+        <ConfirmDialog />
       </div>
     </div>
   );
