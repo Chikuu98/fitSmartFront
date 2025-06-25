@@ -8,6 +8,7 @@ import ProtectedRoute from "./routes/protectedRoute";
 import MainLayout from "./layouts/mainLayout";
 import Register from "./pages/Register/Register";
 import { UserRole } from "./enums/userDetailEnums";
+import BookingListMentor from "./pages/MentorBooking/Mentor/BookingListMentor";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        
+
         {/* Admin Routes */}
         <Route element={<ProtectedRoute allowedRoles={[UserRole.ADMIN]} />}>
           <Route element={<MainLayout />}>
@@ -35,6 +36,7 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={[UserRole.MENTOR]} />}>
           <Route element={<MainLayout />}>
             <Route path="/mentor-dashboard" element={<MentorDashboard />} />
+            <Route path="/mentor/my-bookings" element={<BookingListMentor />} />
           </Route>
         </Route>
       </Routes>

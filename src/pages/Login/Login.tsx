@@ -39,7 +39,8 @@ const Login = () => {
           Welcome Back!
         </h2>
         <p className="text-base md:text-lg text-center max-w-xs">
-          Sign in to continue your FitSmart journey and reach your fitness goals with smart guidance.
+          Sign in to continue your FitSmart journey and reach your fitness goals
+          with smart guidance.
         </p>
       </div>
       <div className="w-full min-h-screen md:min-h-0 md:w-1/2 flex flex-col justify-center items-center p-6 md:p-12">

@@ -30,10 +30,10 @@ export const login = createAsyncThunk(
       return response.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(
-        err.response?.data?.message || "Login failed"
+        err.response?.data?.message || "Login failed",
       );
     }
-  }
+  },
 );
 
 const authSlice = createSlice({

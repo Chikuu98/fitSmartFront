@@ -24,10 +24,10 @@ const Header = () => {
     role === UserRole.ADMIN
       ? adminNavItems
       : role === UserRole.MEMBER
-      ? memberNavItems
-      : role === UserRole.MENTOR
-      ? mentorNavItems
-      : [];
+        ? memberNavItems
+        : role === UserRole.MENTOR
+          ? mentorNavItems
+          : [];
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== "undefined") {
@@ -41,7 +41,7 @@ const Header = () => {
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
     document.documentElement.setAttribute(
       "data-color-mode",
-      isDarkMode ? "dark" : "light"
+      isDarkMode ? "dark" : "light",
     );
   }, [isDarkMode]);
 

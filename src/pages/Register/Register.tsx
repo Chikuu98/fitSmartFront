@@ -40,16 +40,16 @@ const Register: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [memberErrors, setMemberErrors] = useState<{ [key: string]: string }>(
-    {}
+    {},
   );
   const [mentorErrors, setMentorErrors] = useState<{ [key: string]: string }>(
-    {}
+    {},
   );
   const [generalError, setGeneralError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleMemberChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     setMemberData({ ...memberData, [e.target.name]: e.target.value });
     setMemberErrors({ ...memberErrors, [e.target.name]: "" }); // Clear error on change
@@ -58,7 +58,7 @@ const Register: React.FC = () => {
   const handleMentorChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     setMentorData({ ...mentorData, [e.target.name]: e.target.value });
     setMentorErrors({ ...mentorErrors, [e.target.name]: "" }); // Clear error on change
@@ -94,7 +94,7 @@ const Register: React.FC = () => {
         const errorArr = err.response.data.validation_erros;
         const errorObj = errorArr.reduce(
           (acc: any, curr: any) => ({ ...acc, ...curr }),
-          {}
+          {},
         );
         setMemberErrors(errorObj);
       } else if (err?.response?.data?.message) {
@@ -131,7 +131,7 @@ const Register: React.FC = () => {
         const errorArr = err.response.data.validation_erros;
         const errorObj = errorArr.reduce(
           (acc: any, curr: any) => ({ ...acc, ...curr }),
-          {}
+          {},
         );
         setMentorErrors(errorObj);
       } else if (err?.response?.data?.message) {
