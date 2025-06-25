@@ -157,7 +157,7 @@ const Header = () => {
                     ref={(el) => {
                       dropdownRefs.current[item.title] = el;
                     }}
-                    className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#18181c] border border-gray-200 dark:border-orange-900 rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in"
+                    className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#18181c] border border-gray-200 dark:border-orange-900 rounded shadow-xl z-50 overflow-hidden animate-fade-in"
                   >
                     {item.dropdownItems.map((dropdownItem) => (
                       <Link
@@ -189,14 +189,14 @@ const Header = () => {
           <button
             ref={userTriggerRef}
             onClick={() => setIsUserOpen((prev) => !prev)}
-            className="flex items-center justify-center rounded-full p-1.5 transition-colors duration-150 hover:bg-orange-100 dark:hover:bg-orange-900 focus:outline-non"
+            className="flex items-center justify-center rounded-full p-1.5 transition-colors duration-150 hover:bg-orange-100 dark:hover:bg-orange-900 focus:outline-nono"
             aria-label="User menu"
           >
             <UserCircle className="w-7 h-7 text-orange-500 dark:text-orange-300 transition-colors duration-150" />
           </button>
 
           {isUserOpen && (
-            <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-[#18181c] border border-gray-200 dark:border-orange-900 rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in">
+            <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-[#18181c] border border-gray-200 dark:border-orange-900 rounded shadow-xl z-50 overflow-hidden animate-fade-in">
               <button
                 className="flex items-center w-full px-4 py-2 hover:bg-orange-100 dark:hover:bg-orange-800 text-sm transition-colors text-blue-900 dark:text-orange-200"
                 onClick={() => {

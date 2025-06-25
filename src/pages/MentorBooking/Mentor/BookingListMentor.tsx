@@ -23,7 +23,7 @@ const BookingListMentor: React.FC = () => {
     const fetchBookings = async () => {
       try {
         const data = await getBookingsByMentorId(mentorId);
-        setBookings(data.data);
+        setBookings(data);
       } catch (error) {
         console.error("Failed to load bookings", error);
       }
