@@ -6,6 +6,7 @@ import { Gender } from "../../enums/userDetailEnums";
 import countryList from "react-select-country-list";
 import CustomSelect from "../../components/ui/customSelect";
 import ISO6391 from "iso-639-1";
+import { filterPayload } from "../../utils/filterPayload";
 
 const Register: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"member" | "mentor">("member");
@@ -84,11 +85,7 @@ const Register: React.FC = () => {
         height: memberData.height ? Number(memberData.height) : undefined,
         weight: memberData.weight ? Number(memberData.weight) : undefined,
       };
-      const payload = Object.fromEntries(
-        Object.entries(rawPayload).filter(
-          ([_, v]) => v !== undefined && v !== "",
-        ),
-      );
+      const payload = filterPayload(rawPayload);
       await registerMember(payload);
       setMemberData({
         name: "",
@@ -128,11 +125,7 @@ const Register: React.FC = () => {
     setGeneralError(null);
     try {
       const rawPayload = { ...mentorData };
-      const payload = Object.fromEntries(
-        Object.entries(rawPayload).filter(
-          ([_, v]) => v !== undefined && v !== "",
-        ),
-      );
+      const payload = filterPayload(rawPayload);
       await registerMentor(payload);
       setMentorData({
         name: "",
