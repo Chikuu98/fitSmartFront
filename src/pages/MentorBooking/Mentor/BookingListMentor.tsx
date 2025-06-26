@@ -135,57 +135,36 @@ const BookingListMentor: React.FC = () => {
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 mb-1">
                   <div className="flex flex-col gap-1">
                     <p className="font-semibold text-lg text-blue-900 dark:text-orange-200 flex items-center gap-2">
-                      <BadgeCheck className="w-5 h-5" /> {booking.member?.name}
+                      {booking.member?.name}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1">
                       <Mail className="w-4 h-4" /> {booking.member?.email}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {booking.mentorSlot?.date} &bull;
-                      {booking.mentorSlot?.start_time} -
+                      {booking.mentorSlot?.date} &bull;{" "}
+                      {booking.mentorSlot?.start_time} -{" "}
                       {booking.mentorSlot?.end_time}
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <div className="flex gap-2 items-center">
-                      {booking.status === "pending" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs rounded-full font-medium">
-                          <Clock className="w-4 h-4" /> Pending
-                        </span>
-                      )}
                       {booking.status === "accepted" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded-full font-medium">
-                          <BadgeCheck className="w-4 h-4" /> Accepted
-                        </span>
+                        <BadgeCheck className="text-green-500" />
+                      )}
+                      {booking.status === "pending" && (
+                        <Clock className="text-yellow-500" />
                       )}
                       {booking.status === "rejected" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs rounded-full font-medium">
-                          <XCircle className="w-4 h-4" /> Rejected
-                        </span>
+                        <XCircle className="text-red-500" />
                       )}
-                      {booking.status === "cancelled" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 text-xs rounded-full font-medium">
-                          <XCircle className="w-4 h-4" /> Cancelled
-                        </span>
-                      )}
-                      {booking.status === "completed" && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full font-medium">
-                          <BadgeCheck className="w-4 h-4" /> Completed
-                        </span>
-                      )}
+                      <span className="capitalize text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-orange-950 text-blue-800 dark:text-orange-200 border border-blue-200 dark:border-orange-800">
+                        {booking.status}
+                      </span>
                     </div>
                     <span className="text-xs flex items-center gap-1 text-gray-500 dark:text-gray-300 mt-1">
-                      <CreditCard className="w-4 h-4" /> Payment:
-                      <span
-                        className={`font-medium ${
-                          booking.payment_status === "paid"
-                            ? "text-green-600 dark:text-green-400"
-                            : booking.payment_status === "refunded"
-                            ? "text-orange-600 dark:text-orange-400"
-                            : "text-red-600 dark:text-red-400"
-                        }`}
-                      >
+                      <CreditCard className="w-4 h-4" /> Payment:{" "}
+                      <span className="font-medium text-gray-700 dark:text-orange-200">
                         {booking.payment_status}
                       </span>
                     </span>
