@@ -1,4 +1,4 @@
-// Utility to filter out undefined and empty string values from an object
+
 export function filterPayload<T extends Record<string, any>>(
   rawPayload: T,
 ): Partial<T> {

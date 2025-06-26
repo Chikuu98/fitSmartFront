@@ -13,8 +13,8 @@ export interface Booking {
     start_time: string;
     end_time: string;
   };
-  status: "pending" | "accepted" | "rejected";
-  payment_status: "unpaid" | "paid";
+  status: "pending" | "accepted" | "rejected" | "cancelled" | "completed";
+  payment_status: "unpaid" | "paid" | "refunded";
   google_meet_link?: string;
   created_at: string;
   updated_at: string;

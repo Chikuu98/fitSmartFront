@@ -50,7 +50,7 @@ const Header = () => {
       dropdown: true,
       dropdownItems: [
         { label: "Create Slot", to: "/mentor/create-slot" },
-        { label: "My Slots", to: "/mentor/my-slots" },
+        { label: "Available Slots", to: "/mentor/my-slots" },
       ],
     },
   ];
