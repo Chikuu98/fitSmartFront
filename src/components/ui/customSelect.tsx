@@ -18,8 +18,8 @@ interface CustomSelectProps {
   required?: boolean;
   isClearable?: boolean;
   isSearchable?: boolean;
-  height?: string; // e.g. '2rem', '32px'
-  fontSize?: string; // e.g. '0.75rem', '12px'
+  height?: string; // default '2rem', '32px'
+  fontSize?: string; // default '0.75rem', '12px'
   icon?: React.ReactNode;
   showIcon?: boolean;
 }

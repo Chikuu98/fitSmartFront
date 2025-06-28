@@ -134,12 +134,11 @@ const SearchForMentor: React.FC = () => {
                 placeholder="Search by name, expertise..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="
-                        w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg 
+                className="w-full pl-10 pr-4 border border-gray-300 dark:border-gray-600 rounded-lg 
                          bg-white dark:bg-gray-700 text-gray-900 dark:text-white
                          focus:ring-1 focus:ring-orange-500 focus:border-transparent focus:outline-none
-                         placeholder-gray-500 dark:placeholder-gray-400
-                "
+                         placeholder-gray-500 dark:placeholder-gray-400"
+                style={{ height: "2.5rem", fontSize: "0.95rem" }}
               />
             </div>
 
@@ -154,6 +153,8 @@ const SearchForMentor: React.FC = () => {
               isSearchable
               icon={<MapPin className="h-4 w-4" />}
               showIcon
+              height="2.5rem"
+              fontSize="0.95rem"
             />
 
             {/* Language Filter */}
@@ -167,6 +168,8 @@ const SearchForMentor: React.FC = () => {
               isSearchable
               icon={<Globe className="h-4 w-4" />}
               showIcon
+              height="2.5rem"
+              fontSize="0.95rem"
             />
 
             {/* Action Buttons */}
@@ -176,6 +179,7 @@ const SearchForMentor: React.FC = () => {
                 onClick={handleSearch}
                 className="flex-1"
                 disabled={loading}
+                style={{ height: "2.5rem", fontSize: "0.95rem" }}
               >
                 {loading ? "Searching..." : "Search"}
               </Button>
@@ -183,6 +187,7 @@ const SearchForMentor: React.FC = () => {
                 variant="outline"
                 onClick={clearFilters}
                 disabled={loading}
+                style={{ height: "2.5rem", fontSize: "0.95rem" }}
               >
                 Clear
               </Button>
@@ -313,7 +318,7 @@ const SearchForMentor: React.FC = () => {
                         className="flex-1 flex items-center justify-center gap-2"
                       >
                         <Calendar className="h-4 w-4" />
-                        Book Session
+                        Look for a Session
                       </Button>
                       <Button
                         variant="outline"
