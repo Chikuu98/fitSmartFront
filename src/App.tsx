@@ -14,6 +14,7 @@ import { CreateTimeSlot } from "./pages/MentorBooking/Mentor/CreateTimeSlot";
 import { MyMentorSlotList } from "./pages/MentorBooking/Mentor/MyMentorSlotList";
 import { EditTimeSlot } from "./pages/MentorBooking/Mentor/EditTimeSlot";
 import { UpdateBooking } from "./pages/MentorBooking/Mentor/UpdateBooking";
+import SearchForMentor from "./pages/MentorBooking/Member/SearchForMentor";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={[UserRole.MEMBER]} />}>
           <Route element={<MainLayout />}>
             <Route path="/member-dashboard" element={<MemberDashboard />} />
+            <Route path="/member/search-for-mentor" element={<SearchForMentor />} />
           </Route>
         </Route>
 
