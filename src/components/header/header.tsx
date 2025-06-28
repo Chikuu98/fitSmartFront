@@ -36,6 +36,14 @@ const Header = () => {
 
   const memberNavItems: NavItem[] = [
     { title: "Dashboard", link: "/member-dashboard" },
+        {
+      title: "Mentor Booking",
+      dropdown: true,
+      dropdownItems: [
+        { label: "Search Mentors", to: "/member/search-for-mentor" },
+        { label: "My Bookings", to: "/member/my-bookings" },
+      ],
+    },
   ];
 
   const mentorNavItems: NavItem[] = [

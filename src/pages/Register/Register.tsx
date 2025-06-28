@@ -1,27 +1,21 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerMember, registerMentor } from "../../api/endpoints/register";
 import logodark from "../../assets/logodark.png";
 import logolight from "../../assets/logolight.png";
 import { Gender } from "../../enums/userDetailEnums";
-import countryList from "react-select-country-list";
 import CustomSelect from "../../components/ui/customSelect";
-import ISO6391 from "iso-639-1";
 import { filterPayload } from "../../utils/filterPayload";
+import { languageOptions } from "../../utils/languageOptions";
+import { countryOptions } from "../../utils/countryOptions";
 import { useTheme } from "../../hooks/useTheme";
 
 const Register: React.FC = () => {
-  // Use the custom theme hook for consistent theme management
   const { isDarkMode } = useTheme();
 
   const [activeTab, setActiveTab] = useState<"member" | "mentor">("member");
   const [showMoreMember, setShowMoreMember] = useState(false);
   const [showMoreMentor, setShowMoreMentor] = useState(false);
-  const countries = useMemo(() => countryList().getData(), []);
-  const languages = ISO6391.getAllNames().map((name) => ({
-    value: name,
-    label: name,
-  }));
 
   const [memberData, setMemberData] = useState({
     name: "",
@@ -312,7 +306,7 @@ const Register: React.FC = () => {
                           country: option ? option.value : "",
                         })
                       }
-                      options={countries}
+                      options={countryOptions}
                       placeholder="Select Country"
                       required
                       height="1.5rem"
@@ -337,7 +331,7 @@ const Register: React.FC = () => {
                           language: option ? option.value : "",
                         })
                       }
-                      options={languages}
+                      options={languageOptions}
                       placeholder="Select Language"
                       required
                       height="1.5rem"
@@ -643,7 +637,7 @@ const Register: React.FC = () => {
                           country: option ? option.value : "",
                         })
                       }
-                      options={countries}
+                      options={countryOptions}
                       placeholder="Select Country"
                       required
                       height="1.5rem"
@@ -668,7 +662,7 @@ const Register: React.FC = () => {
                           language: option ? option.value : "",
                         })
                       }
-                      options={languages}
+                      options={languageOptions}
                       placeholder="Select Language"
                       required
                       height="1.5rem"
