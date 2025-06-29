@@ -15,14 +15,18 @@ import { MyMentorSlotList } from "./pages/MentorBooking/Mentor/MyMentorSlotList"
 import { EditTimeSlot } from "./pages/MentorBooking/Mentor/EditTimeSlot";
 import { UpdateBooking } from "./pages/MentorBooking/Mentor/UpdateBooking";
 import SearchForMentor from "./pages/MentorBooking/Member/SearchForMentor";
+import Unauthorized from "./pages/Unauthorized/Unauthorizred";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 
 function App() {
   return (
     <>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Admin Routes */}
         <Route element={<ProtectedRoute allowedRoles={[UserRole.ADMIN]} />}>
@@ -35,7 +39,10 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={[UserRole.MEMBER]} />}>
           <Route element={<MainLayout />}>
             <Route path="/member-dashboard" element={<MemberDashboard />} />
-            <Route path="/member/search-for-mentor" element={<SearchForMentor />} />
+            <Route
+              path="/member/search-for-mentor"
+              element={<SearchForMentor />}
+            />
           </Route>
         </Route>
 
@@ -56,6 +63,8 @@ function App() {
             />
           </Route>
         </Route>
+
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
 
       <ToastContainer
