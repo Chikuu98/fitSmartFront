@@ -5,12 +5,8 @@ import type { AppDispatch, RootState } from "../../store/store";
 import { login } from "../../store/authSlice";
 import { UserRole } from "../../enums/userDetailEnums";
 import logodark from "../../assets/logodark.png";
-import logolight from "../../assets/logolight.png";
-import { useTheme } from "../../hooks/useTheme";
 
 const Login = () => {
-  // Use the custom theme hook for consistent theme management
-  const { isDarkMode } = useTheme();
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -40,7 +36,7 @@ const Login = () => {
     <div className="min-h-screen flex flex-col justify-center items-center md:flex-row md:justify-start bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="hidden md:flex md:h-screen md:w-1/2 flex-col justify-center items-center bg-gradient-to-br from-blue-800 to-orange-600 text-white p-8 md:p-12">
         <img
-          src={isDarkMode ? logodark : logolight}
+          src={logodark}
           alt="FitSmart Logo"
           className="h-20 mb-6"
         />

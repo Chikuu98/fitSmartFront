@@ -2,16 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerMember, registerMentor } from "../../api/endpoints/register";
 import logodark from "../../assets/logodark.png";
-import logolight from "../../assets/logolight.png";
 import { Gender } from "../../enums/userDetailEnums";
 import CustomSelect from "../../components/ui/customSelect";
 import { filterPayload } from "../../utils/filterPayload";
 import { languageOptions } from "../../utils/languageOptions";
 import { countryOptions } from "../../utils/countryOptions";
-import { useTheme } from "../../hooks/useTheme";
 
 const Register: React.FC = () => {
-  const { isDarkMode } = useTheme();
 
   const [activeTab, setActiveTab] = useState<"member" | "mentor">("member");
   const [showMoreMember, setShowMoreMember] = useState(false);
@@ -162,7 +159,7 @@ const Register: React.FC = () => {
       <div className="hidden md:block md:w-1/2 h-screen bg-gradient-to-br from-blue-800 to-orange-600 text-white">
         <div className="flex flex-col items-center justify-center h-full w-full">
           <img
-            src={isDarkMode ? logodark : logolight}
+            src={logodark}
             alt="FitSmart Logo"
             className="h-20 mb-4"
           />
@@ -219,7 +216,7 @@ const Register: React.FC = () => {
                       value={memberData.name}
                       onChange={handleMemberChange}
                       required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {memberErrors.name && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -238,7 +235,7 @@ const Register: React.FC = () => {
                       value={memberData.email}
                       onChange={handleMemberChange}
                       required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {memberErrors.email && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -257,7 +254,7 @@ const Register: React.FC = () => {
                       value={memberData.password}
                       onChange={handleMemberChange}
                       required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {memberErrors.password && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -367,7 +364,7 @@ const Register: React.FC = () => {
                       placeholder="Age"
                       value={memberData.age}
                       onChange={handleMemberChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {memberErrors.age && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -388,7 +385,7 @@ const Register: React.FC = () => {
                       placeholder="Height (cm)"
                       value={memberData.height}
                       onChange={handleMemberChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {memberErrors.height && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -409,7 +406,7 @@ const Register: React.FC = () => {
                       placeholder="Weight (kg)"
                       value={memberData.weight}
                       onChange={handleMemberChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {memberErrors.weight && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -430,7 +427,7 @@ const Register: React.FC = () => {
                       placeholder="Goal"
                       value={memberData.goal}
                       onChange={handleMemberChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {memberErrors.goal && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -451,7 +448,7 @@ const Register: React.FC = () => {
                       placeholder="Dietary Preference"
                       value={memberData.dietary_preference}
                       onChange={handleMemberChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {memberErrors.dietary_preference && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -531,7 +528,7 @@ const Register: React.FC = () => {
                       value={mentorData.name}
                       onChange={handleMentorChange}
                       required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {mentorErrors.name && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -550,7 +547,7 @@ const Register: React.FC = () => {
                       value={mentorData.email}
                       onChange={handleMentorChange}
                       required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {mentorErrors.email && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -569,7 +566,7 @@ const Register: React.FC = () => {
                       value={mentorData.password}
                       onChange={handleMentorChange}
                       required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {mentorErrors.password && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -616,7 +613,7 @@ const Register: React.FC = () => {
                       value={mentorData.expertise}
                       onChange={handleMentorChange}
                       required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {mentorErrors.expertise && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -697,7 +694,7 @@ const Register: React.FC = () => {
                       placeholder="Bio"
                       value={mentorData.bio}
                       onChange={handleMentorChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {mentorErrors.bio && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -718,7 +715,7 @@ const Register: React.FC = () => {
                       placeholder="Certifications"
                       value={mentorData.certifications}
                       onChange={handleMentorChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {mentorErrors.certifications && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -739,7 +736,7 @@ const Register: React.FC = () => {
                       placeholder="Social Links"
                       value={mentorData.social_links}
                       onChange={handleMentorChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {mentorErrors.social_links && (
                       <div className="text-xs text-red-600 dark:text-red-400">
@@ -760,7 +757,7 @@ const Register: React.FC = () => {
                       placeholder="Contact Number"
                       value={mentorData.contact_number}
                       onChange={handleMentorChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400 focus:border-transparent transition-colors"
+                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                     />
                     {mentorErrors.contact_number && (
                       <div className="text-xs text-red-600 dark:text-red-400">

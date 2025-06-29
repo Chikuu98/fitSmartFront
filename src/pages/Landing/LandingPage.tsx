@@ -360,7 +360,7 @@ const LandingPage: React.FC = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <img
-                src={isDarkMode ? logoDark : logoLight}
+                src={logoDark}
                 alt="FitSmart Logo"
                 className="h-10 w-auto mb-4"
               />
