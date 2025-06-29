@@ -115,7 +115,6 @@ const Header = () => {
 
   return (
     <header className="bg-white dark:bg-black text-black dark:text-white px-4 md:px-20 py-3 flex items-center border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
-      {/* Left - Logo */}
       <Link
         to={navItems.length > 0 && navItems[0].link ? navItems[0].link : "/"}
         className="flex items-center focus:outline-none"
@@ -127,9 +126,7 @@ const Header = () => {
         />
       </Link>
 
-      {/* Right - Navigation + User */}
       <div className="ml-auto flex items-center gap-x-4 md:gap-x-8 text-sm font-medium">
-        {/* Navigation */}
         <nav className="flex items-center gap-x-4 md:gap-x-6">
           {navItems.map((item) =>
             item.dropdown && item.dropdownItems ? (
@@ -143,7 +140,7 @@ const Header = () => {
                       openDropdown === item.title ? null : item.title,
                     )
                   }
-                  className="px-2 py-1 rounded transition-colors duration-150 hover:text-orange-600 dark:hover:text-orange-400 focus:outline-none flex items-center gap-1"
+                  className="px-2 py-1 rounded transition-colors duration-150 hover:text-orange-600 dark:hover:text-orange-300 focus:outline-none flex items-center gap-1"
                 >
                   {item.title}
                   <svg
@@ -184,7 +181,7 @@ const Header = () => {
               <Link
                 key={item.link}
                 to={item.link || "/"}
-                className="px-2 py-1 rounded transition-colors duration-150 hover:text-orange-600 dark:hover:text-orange-400 focus:outline-none"
+                className="px-2 py-1 rounded transition-colors duration-150 hover:text-orange-600 dark:hover:text-orange-300 focus:outline-none"
               >
                 {item.title}
               </Link>

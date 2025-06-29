@@ -20,7 +20,6 @@ interface UpdateBookingDto {
   google_meet_link?: string;
 }
 
-// Status and payment status options for the select dropdowns
 const statusOptions = [
   { value: "pending", label: "Pending" },
   { value: "accepted", label: "Accepted" },
@@ -260,6 +259,8 @@ export function UpdateBooking() {
               label="Google Meet Link"
               placeholder="https://meet.google.com/..."
               icon={<Link2 className="w-4 h-4" />}
+              size="md"
+              rounded="xl"
             />
 
             <div className="flex gap-4 pt-4">

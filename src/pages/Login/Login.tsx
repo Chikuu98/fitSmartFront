@@ -5,12 +5,8 @@ import type { AppDispatch, RootState } from "../../store/store";
 import { login } from "../../store/authSlice";
 import { UserRole } from "../../enums/userDetailEnums";
 import logodark from "../../assets/logodark.png";
-import logolight from "../../assets/logolight.png";
-import { useTheme } from "../../hooks/useTheme";
 
 const Login = () => {
-  // Use the custom theme hook for consistent theme management
-  const { isDarkMode } = useTheme();
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -40,7 +36,7 @@ const Login = () => {
     <div className="min-h-screen flex flex-col justify-center items-center md:flex-row md:justify-start bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="hidden md:flex md:h-screen md:w-1/2 flex-col justify-center items-center bg-gradient-to-br from-blue-800 to-orange-600 text-white p-8 md:p-12">
         <img
-          src={isDarkMode ? logodark : logolight}
+          src={logodark}
           alt="FitSmart Logo"
           className="h-20 mb-6"
         />
@@ -64,7 +60,7 @@ const Login = () => {
               </label>
               <input
                 type="email"
-                className="w-full border border-gray-300 dark:border-gray-600 p-1.5 rounded text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                className="w-full border border-gray-300 dark:border-gray-600 p-1.5 rounded text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -77,7 +73,7 @@ const Login = () => {
               </label>
               <input
                 type="password"
-                className="w-full border border-gray-300 dark:border-gray-600 p-1.5 rounded text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-colors"
+                className="w-full border border-gray-300 dark:border-gray-600 p-1.5 rounded text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

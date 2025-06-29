@@ -15,14 +15,21 @@ import { MyMentorSlotList } from "./pages/MentorBooking/Mentor/MyMentorSlotList"
 import { EditTimeSlot } from "./pages/MentorBooking/Mentor/EditTimeSlot";
 import { UpdateBooking } from "./pages/MentorBooking/Mentor/UpdateBooking";
 import SearchForMentor from "./pages/MentorBooking/Member/SearchForMentor";
+import MentorSlotList from "./pages/MentorBooking/Member/MentorSlotList";
+import CreateBooking from "./pages/MentorBooking/Member/CreateBooking";
+import Unauthorized from "./pages/Unauthorized/Unauthorizred";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
+import MyBookings from "./pages/MentorBooking/Member/MyBookings";
 
 function App() {
   return (
     <>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Admin Routes */}
         <Route element={<ProtectedRoute allowedRoles={[UserRole.ADMIN]} />}>
@@ -35,7 +42,19 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={[UserRole.MEMBER]} />}>
           <Route element={<MainLayout />}>
             <Route path="/member-dashboard" element={<MemberDashboard />} />
-            <Route path="/member/search-for-mentor" element={<SearchForMentor />} />
+            <Route
+              path="/member/search-for-mentor"
+              element={<SearchForMentor />}
+            />
+            <Route
+              path="/member/mentor-slots/:mentorId"
+              element={<MentorSlotList />}
+            />
+            <Route
+              path="/member/create-booking/:mentorId/:slotId"
+              element={<CreateBooking />}
+            />
+            <Route path="/member/my-bookings" element={<MyBookings />} />
           </Route>
         </Route>
 
@@ -56,6 +75,8 @@ function App() {
             />
           </Route>
         </Route>
+
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
 
       <ToastContainer

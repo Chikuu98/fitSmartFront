@@ -27,11 +27,6 @@ const SearchForMentor: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
 
-  useEffect(() => {
-    if (user && user.role !== "member") {
-      navigate("/dashboard");
-    }
-  }, [user, navigate]);
 
   const [mentors, setMentors] = useState<Mentor[]>([]);
   const [loading, setLoading] = useState(false);
@@ -91,7 +86,7 @@ const SearchForMentor: React.FC = () => {
   });
 
   const handleBookMentor = (mentorId: number) => {
-    navigate(`/member/create-booking/${mentorId}`);
+    navigate(`/member/mentor-slots/${mentorId}`);
   };
 
   if (user?.role !== "member") {

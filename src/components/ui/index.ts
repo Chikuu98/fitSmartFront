@@ -2,6 +2,7 @@
 export { DateInput } from "./dateInput";
 export { TimeInput } from "./timeInput";
 export { default as FormInput } from "./formInput";
+export { default as TextAreaInput } from "./textAreaInput";
 
 // Other UI Components
 export { Button } from "./button";
