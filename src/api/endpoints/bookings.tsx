@@ -14,9 +14,26 @@ export const getBookingsByMentorId = async (mentorId: number) => {
   return response.data.data;
 };
 
+export const getBookingsByMemberId = async (memberId: number) => {
+  const response = await axiosInstance.get(
+    withApiUrl(`bookings/member/${memberId}`),
+  );
+  return response.data.data;
+};
+
 export const getBookingById = async (bookingId: number) => {
   const response = await axiosInstance.get(withApiUrl(`bookings/${bookingId}`));
   return response.data.data;
+};
+
+export const createBooking = async (bookingData: {
+  mentor_slot_id: number;
+}) => {
+  const response = await axiosInstance.post(
+    withApiUrl("bookings"),
+    bookingData,
+  );
+  return response.data;
 };
 
 export const updateBooking = async (

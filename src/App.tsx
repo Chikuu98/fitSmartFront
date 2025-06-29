@@ -15,8 +15,11 @@ import { MyMentorSlotList } from "./pages/MentorBooking/Mentor/MyMentorSlotList"
 import { EditTimeSlot } from "./pages/MentorBooking/Mentor/EditTimeSlot";
 import { UpdateBooking } from "./pages/MentorBooking/Mentor/UpdateBooking";
 import SearchForMentor from "./pages/MentorBooking/Member/SearchForMentor";
+import MentorSlotList from "./pages/MentorBooking/Member/MentorSlotList";
+import CreateBooking from "./pages/MentorBooking/Member/CreateBooking";
 import Unauthorized from "./pages/Unauthorized/Unauthorizred";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
+import MyBookings from "./pages/MentorBooking/Member/MyBookings";
 
 function App() {
   return (
@@ -43,6 +46,15 @@ function App() {
               path="/member/search-for-mentor"
               element={<SearchForMentor />}
             />
+            <Route
+              path="/member/mentor-slots/:mentorId"
+              element={<MentorSlotList />}
+            />
+            <Route
+              path="/member/create-booking/:mentorId/:slotId"
+              element={<CreateBooking />}
+            />
+            <Route path="/member/my-bookings" element={<MyBookings />} />
           </Route>
         </Route>
 

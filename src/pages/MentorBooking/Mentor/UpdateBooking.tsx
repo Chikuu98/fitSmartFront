@@ -20,7 +20,6 @@ interface UpdateBookingDto {
   google_meet_link?: string;
 }
 
-// Status and payment status options for the select dropdowns
 const statusOptions = [
   { value: "pending", label: "Pending" },
   { value: "accepted", label: "Accepted" },

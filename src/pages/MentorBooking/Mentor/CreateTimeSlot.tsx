@@ -54,7 +54,6 @@ export function CreateTimeSlot() {
             });
           })
           .catch(() => {
-            // Error handling is done by axios interceptor
           })
           .finally(() => {
             setLoading(false);
@@ -65,7 +64,7 @@ export function CreateTimeSlot() {
 
   const handleClear = () => {
     if (!formData.date && !formData.start_time && !formData.end_time) {
-      return; // Nothing to clear
+      return;
     }
 
     openDialog({
