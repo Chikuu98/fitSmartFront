@@ -260,6 +260,8 @@ export function UpdateBooking() {
               label="Google Meet Link"
               placeholder="https://meet.google.com/..."
               icon={<Link2 className="w-4 h-4" />}
+              size="md"
+              rounded="xl"
             />
 
             <div className="flex gap-4 pt-4">

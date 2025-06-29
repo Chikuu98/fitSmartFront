@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { registerMember, registerMentor } from "../../api/endpoints/register";
 import logodark from "../../assets/logodark.png";
 import { Gender } from "../../enums/userDetailEnums";
-import CustomSelect from "../../components/ui/customSelect";
+import { CustomSelect, FormInput, TextAreaInput } from "../../components/ui";
 import { filterPayload } from "../../utils/filterPayload";
 import { languageOptions } from "../../utils/languageOptions";
 import { countryOptions } from "../../utils/countryOptions";
@@ -176,7 +176,7 @@ const Register: React.FC = () => {
           <button
             className={`flex-1 py-2 font-semibold rounded-tl-lg border-b-2 transition-colors ${
               activeTab === "member"
-                ? "border-blue-500 text-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400"
+                ? "border-orange-500 text-orange-500 bg-orange-50 dark:bg-orange-900/20 dark:text-orange-400"
                 : "border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800"
             }`}
             onClick={() => setActiveTab("member")}
@@ -205,63 +205,36 @@ const Register: React.FC = () => {
             <form onSubmit={handleMemberSubmit} className="space-y-2">
               {!showMoreMember && (
                 <>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Full Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Full Name"
-                      value={memberData.name}
-                      onChange={handleMemberChange}
-                      required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {memberErrors.name && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {memberErrors.name}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Email <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                      value={memberData.email}
-                      onChange={handleMemberChange}
-                      required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {memberErrors.email && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {memberErrors.email}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Password <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      placeholder="Password"
-                      value={memberData.password}
-                      onChange={handleMemberChange}
-                      required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {memberErrors.password && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {memberErrors.password}
-                      </div>
-                    )}
-                  </div>
+                  <FormInput
+                    label="Full Name"
+                    name="name"
+                    type="text"
+                    placeholder="Full Name"
+                    value={memberData.name}
+                    onChange={handleMemberChange}
+                    required
+                    error={memberErrors.name}
+                  />
+                  <FormInput
+                    label="Email"
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    value={memberData.email}
+                    onChange={handleMemberChange}
+                    required
+                    error={memberErrors.email}
+                  />
+                  <FormInput
+                    label="Password"
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    value={memberData.password}
+                    onChange={handleMemberChange}
+                    required
+                    error={memberErrors.password}
+                  />
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
                       Gender <span className="text-red-500">*</span>
@@ -343,7 +316,7 @@ const Register: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowMoreMember(true)}
-                    className="text-sm text-blue-600 hover:underline"
+                    className="text-sm text-orange-600 hover:underline"
                   >
                     Fill Optional Fields
                   </button>
@@ -351,111 +324,51 @@ const Register: React.FC = () => {
               )}
               {showMoreMember && (
                 <>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Age{" "}
-                      <span className="text-gray-400 dark:text-gray-500">
-                        (optional)
-                      </span>
-                    </label>
-                    <input
-                      type="number"
-                      name="age"
-                      placeholder="Age"
-                      value={memberData.age}
-                      onChange={handleMemberChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {memberErrors.age && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {memberErrors.age}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Height (cm){" "}
-                      <span className="text-gray-400 dark:text-gray-500">
-                        (optional)
-                      </span>
-                    </label>
-                    <input
-                      type="number"
-                      name="height"
-                      placeholder="Height (cm)"
-                      value={memberData.height}
-                      onChange={handleMemberChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {memberErrors.height && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {memberErrors.height}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Weight (kg){" "}
-                      <span className="text-gray-400 dark:text-gray-500">
-                        (optional)
-                      </span>
-                    </label>
-                    <input
-                      type="number"
-                      name="weight"
-                      placeholder="Weight (kg)"
-                      value={memberData.weight}
-                      onChange={handleMemberChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {memberErrors.weight && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {memberErrors.weight}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Goal{" "}
-                      <span className="text-gray-400 dark:text-gray-500">
-                        (optional)
-                      </span>
-                    </label>
-                    <input
-                      type="text"
-                      name="goal"
-                      placeholder="Goal"
-                      value={memberData.goal}
-                      onChange={handleMemberChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {memberErrors.goal && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {memberErrors.goal}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Dietary Preference{" "}
-                      <span className="text-gray-400 dark:text-gray-500">
-                        (optional)
-                      </span>
-                    </label>
-                    <input
-                      type="text"
-                      name="dietary_preference"
-                      placeholder="Dietary Preference"
-                      value={memberData.dietary_preference}
-                      onChange={handleMemberChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {memberErrors.dietary_preference && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {memberErrors.dietary_preference}
-                      </div>
-                    )}
-                  </div>
+                  <FormInput
+                    label="Age (optional)"
+                    name="age"
+                    type="number"
+                    placeholder="Age"
+                    value={memberData.age}
+                    onChange={handleMemberChange}
+                    error={memberErrors.age}
+                  />
+                  <FormInput
+                    label="Height (cm) (optional)"
+                    name="height"
+                    type="number"
+                    placeholder="Height (cm)"
+                    value={memberData.height}
+                    onChange={handleMemberChange}
+                    error={memberErrors.height}
+                  />
+                  <FormInput
+                    label="Weight (kg) (optional)"
+                    name="weight"
+                    type="number"
+                    placeholder="Weight (kg)"
+                    value={memberData.weight}
+                    onChange={handleMemberChange}
+                    error={memberErrors.weight}
+                  />
+                  <FormInput
+                    label="Goal (optional)"
+                    name="goal"
+                    type="text"
+                    placeholder="Goal"
+                    value={memberData.goal}
+                    onChange={handleMemberChange}
+                    error={memberErrors.goal}
+                  />
+                  <FormInput
+                    label="Dietary Preference (optional)"
+                    name="dietary_preference"
+                    type="text"
+                    placeholder="Dietary Preference"
+                    value={memberData.dietary_preference}
+                    onChange={handleMemberChange}
+                    error={memberErrors.dietary_preference}
+                  />
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
                       Fitness Level{" "}
@@ -499,7 +412,7 @@ const Register: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded font-semibold text-sm"
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded font-semibold text-sm"
               >
                 {loading ? "Registering..." : "Sign Up as Member"}
               </button>
@@ -507,7 +420,7 @@ const Register: React.FC = () => {
                 Already have an account?{" "}
                 <button
                   onClick={() => navigate("/login")}
-                  className="text-blue-500 dark:text-blue-400 hover:underline"
+                  className="text-orange-500 dark:text-orange-400 hover:underline"
                 >
                   Login
                 </button>
@@ -517,63 +430,36 @@ const Register: React.FC = () => {
             <form onSubmit={handleMentorSubmit} className="space-y-2">
               {!showMoreMentor && (
                 <>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Full Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Full Name"
-                      value={mentorData.name}
-                      onChange={handleMentorChange}
-                      required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {mentorErrors.name && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {mentorErrors.name}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Email <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                      value={mentorData.email}
-                      onChange={handleMentorChange}
-                      required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {mentorErrors.email && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {mentorErrors.email}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Password <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      placeholder="Password"
-                      value={mentorData.password}
-                      onChange={handleMentorChange}
-                      required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {mentorErrors.password && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {mentorErrors.password}
-                      </div>
-                    )}
-                  </div>
+                  <FormInput
+                    label="Full Name"
+                    name="name"
+                    type="text"
+                    placeholder="Full Name"
+                    value={mentorData.name}
+                    onChange={handleMentorChange}
+                    required
+                    error={mentorErrors.name}
+                  />
+                  <FormInput
+                    label="Email"
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    value={mentorData.email}
+                    onChange={handleMentorChange}
+                    required
+                    error={mentorErrors.email}
+                  />
+                  <FormInput
+                    label="Password"
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    value={mentorData.password}
+                    onChange={handleMentorChange}
+                    required
+                    error={mentorErrors.password}
+                  />
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
                       Gender <span className="text-red-500">*</span>
@@ -602,25 +488,16 @@ const Register: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Expertise <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="expertise"
-                      placeholder="Expertise"
-                      value={mentorData.expertise}
-                      onChange={handleMentorChange}
-                      required
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {mentorErrors.expertise && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {mentorErrors.expertise}
-                      </div>
-                    )}
-                  </div>
+                  <FormInput
+                    label="Expertise"
+                    name="expertise"
+                    type="text"
+                    placeholder="Expertise"
+                    value={mentorData.expertise}
+                    onChange={handleMentorChange}
+                    required
+                    error={mentorErrors.expertise}
+                  />
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
                       Country <span className="text-red-500">*</span>
@@ -682,89 +559,41 @@ const Register: React.FC = () => {
               )}
               {showMoreMentor && (
                 <>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Bio{" "}
-                      <span className="text-gray-400 dark:text-gray-500">
-                        (optional)
-                      </span>
-                    </label>
-                    <textarea
-                      name="bio"
-                      placeholder="Bio"
-                      value={mentorData.bio}
-                      onChange={handleMentorChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {mentorErrors.bio && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {mentorErrors.bio}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Certifications{" "}
-                      <span className="text-gray-400 dark:text-gray-500">
-                        (optional)
-                      </span>
-                    </label>
-                    <input
-                      type="text"
-                      name="certifications"
-                      placeholder="Certifications"
-                      value={mentorData.certifications}
-                      onChange={handleMentorChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {mentorErrors.certifications && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {mentorErrors.certifications}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Social Links{" "}
-                      <span className="text-gray-400 dark:text-gray-500">
-                        (optional)
-                      </span>
-                    </label>
-                    <input
-                      type="text"
-                      name="social_links"
-                      placeholder="Social Links"
-                      value={mentorData.social_links}
-                      onChange={handleMentorChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {mentorErrors.social_links && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {mentorErrors.social_links}
-                      </div>
-                    )}
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
-                      Contact Number{" "}
-                      <span className="text-gray-400 dark:text-gray-500">
-                        (optional)
-                      </span>
-                    </label>
-                    <input
-                      type="text"
-                      name="contact_number"
-                      placeholder="Contact Number"
-                      value={mentorData.contact_number}
-                      onChange={handleMentorChange}
-                      className="w-full border border-gray-300 dark:border-gray-600 p-1 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:outline-none transition-colors"
-                    />
-                    {mentorErrors.contact_number && (
-                      <div className="text-xs text-red-600 dark:text-red-400">
-                        {mentorErrors.contact_number}
-                      </div>
-                    )}
-                  </div>
+                  <TextAreaInput
+                    label="Bio (optional)"
+                    name="bio"
+                    placeholder="Bio"
+                    value={mentorData.bio}
+                    onChange={handleMentorChange}
+                    error={mentorErrors.bio}
+                  />
+                  <FormInput
+                    label="Certifications (optional)"
+                    name="certifications"
+                    type="text"
+                    placeholder="Certifications"
+                    value={mentorData.certifications}
+                    onChange={handleMentorChange}
+                    error={mentorErrors.certifications}
+                  />
+                  <FormInput
+                    label="Social Links (optional)"
+                    name="social_links"
+                    type="text"
+                    placeholder="Social Links"
+                    value={mentorData.social_links}
+                    onChange={handleMentorChange}
+                    error={mentorErrors.social_links}
+                  />
+                  <FormInput
+                    label="Contact Number (optional)"
+                    name="contact_number"
+                    type="text"
+                    placeholder="Contact Number"
+                    value={mentorData.contact_number}
+                    onChange={handleMentorChange}
+                    error={mentorErrors.contact_number}
+                  />
                   <button
                     type="button"
                     onClick={() => setShowMoreMentor(false)}
