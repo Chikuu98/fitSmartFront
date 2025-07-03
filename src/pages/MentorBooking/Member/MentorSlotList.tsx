@@ -150,6 +150,7 @@ const MentorSlotList: React.FC = () => {
         </div>
 
         {/* Mentor Information Card */}
+        {/* can we also add certifications and social links in this card? */}
         {mentor && (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
             <div className="flex items-start gap-4">
@@ -163,7 +164,7 @@ const MentorSlotList: React.FC = () => {
                       {mentor.name}
                     </h2>
                     <p className="text-lg text-gray-600 dark:text-gray-400">
-                      {mentor.mentorDetails?.expertise || 'Fitness Expert'}
+                      {mentor.mentorDetail?.expertise || 'Fitness Expert'}
                     </p>
                   </div>
                   <div className="flex items-center text-yellow-500">
@@ -183,10 +184,42 @@ const MentorSlotList: React.FC = () => {
                   </div>
                 </div>
 
-                {mentor.mentorDetails?.bio && (
+                {mentor.mentorDetail?.bio && (
                   <p className="text-gray-600 dark:text-gray-400 mt-3">
-                    {mentor.mentorDetails.bio}
+                    {mentor.mentorDetail.bio}
                   </p>
+                )}
+                {mentor.mentorDetail?.certification?.map(cert => (
+                  <div key={cert.id} className="mt-3">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">
+                      Certification: {cert.title}
+                    </h4>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      Issued by {cert.issuer} on{' '}
+                      {new Date(cert.issue_date).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+                {mentor.mentorDetail?.socialLink && mentor.mentorDetail.socialLink.length > 0 && (
+                  <div className="mt-3">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">
+                      Social Links
+                    </h4>
+                    <ul className="list-disc list-inside text-xs text-gray-600 dark:text-gray-400">
+                      {mentor.mentorDetail.socialLink.map(link => (
+                        <li key={link.id}>
+                          <a
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 dark:text-blue-400 hover:underline"
+                          >
+                            {link.platform}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
               </div>
             </div>

@@ -1,3 +1,5 @@
+import type { Mentor } from "./mentor";
+
 export interface Booking {
   id: number;
   member?: {
@@ -12,21 +14,7 @@ export interface Booking {
     date: string;
     start_time: string;
     end_time: string;
-    mentor?: {
-      id: number;
-      name: string;
-      email: string;
-      country?: string;
-      language?: string;
-      mentorDetails?: {
-        id: number;
-        expertise: string;
-        bio: string;
-        certifications: string;
-        social_links: string;
-        contact_number: string;
-      };
-    };
+    mentor?: Mentor;
   };
   status: "pending" | "accepted" | "rejected" | "cancelled" | "completed";
   payment_status: "unpaid" | "paid" | "refunded";

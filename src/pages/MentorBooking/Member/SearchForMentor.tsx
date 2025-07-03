@@ -79,7 +79,7 @@ const SearchForMentor: React.FC = () => {
     const searchLower = searchTerm.toLowerCase();
     return (
       mentor.name.toLowerCase().includes(searchLower) ||
-      mentor.mentorDetails?.expertise?.toLowerCase().includes(searchLower) ||
+      mentor.mentorDetail?.expertise?.toLowerCase().includes(searchLower) ||
       mentor.country.toLowerCase().includes(searchLower) ||
       mentor.language.toLowerCase().includes(searchLower)
     );
@@ -254,7 +254,7 @@ const SearchForMentor: React.FC = () => {
                             {mentor.name}
                           </h3>
                           <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {mentor.mentorDetails?.expertise ||
+                            {mentor.mentorDetail?.expertise ||
                               "Fitness Expert"}
                           </p>
                         </div>
@@ -278,7 +278,7 @@ const SearchForMentor: React.FC = () => {
                     </div>
 
                     {/* Bio */}
-                    {mentor.mentorDetails?.bio && (
+                    {mentor.mentorDetail?.bio && (
                       <p
                         className="text-sm text-gray-600 dark:text-gray-400 mb-4 overflow-hidden"
                         style={{
@@ -287,18 +287,23 @@ const SearchForMentor: React.FC = () => {
                           WebkitBoxOrient: "vertical",
                         }}
                       >
-                        {mentor.mentorDetails.bio}
+                        {mentor.mentorDetail.bio}
                       </p>
                     )}
 
                     {/* Certifications */}
-                    {mentor.mentorDetails?.certifications && (
+                    {mentor.mentorDetail?.certification && (
                       <div className="mb-4">
                         <h4 className="text-xs font-medium text-gray-900 dark:text-white mb-1">
                           Certifications
                         </h4>
                         <p className="text-xs text-gray-600 dark:text-gray-400">
-                          {mentor.mentorDetails.certifications}
+                          {mentor.mentorDetail.certification?.map((cert) => (
+                            <span key={cert.id} className="block">
+                              {cert.title} by {cert.issuer} (
+                              {new Date(cert.issue_date).toLocaleDateString()})
+                            </span>
+                          ))}
                         </p>
                       </div>
                     )}

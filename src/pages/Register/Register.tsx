@@ -38,8 +38,6 @@ const Register: React.FC = () => {
     bio: "",
     country: "",
     language: "",
-    certifications: "",
-    social_links: "",
     contact_number: "",
   });
 
@@ -132,8 +130,6 @@ const Register: React.FC = () => {
         bio: "",
         country: "",
         language: "",
-        certifications: "",
-        social_links: "",
         contact_number: "",
       });
     } catch (err: any) {
@@ -566,24 +562,6 @@ const Register: React.FC = () => {
                     value={mentorData.bio}
                     onChange={handleMentorChange}
                     error={mentorErrors.bio}
-                  />
-                  <FormInput
-                    label="Certifications (optional)"
-                    name="certifications"
-                    type="text"
-                    placeholder="Certifications"
-                    value={mentorData.certifications}
-                    onChange={handleMentorChange}
-                    error={mentorErrors.certifications}
-                  />
-                  <FormInput
-                    label="Social Links (optional)"
-                    name="social_links"
-                    type="text"
-                    placeholder="Social Links"
-                    value={mentorData.social_links}
-                    onChange={handleMentorChange}
-                    error={mentorErrors.social_links}
                   />
                   <FormInput
                     label="Contact Number (optional)"

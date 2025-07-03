@@ -295,7 +295,7 @@ const MyBookings: React.FC = () => {
                                 {booking.mentorSlot?.mentor?.name || 'Unknown Mentor'}
                               </h3>
                               <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {booking.mentorSlot?.mentor?.mentorDetails?.expertise || 'Fitness Expert'}
+                                {booking.mentorSlot?.mentor?.mentorDetail?.expertise || 'Fitness Expert'}
                               </p>
                             </div>
                             

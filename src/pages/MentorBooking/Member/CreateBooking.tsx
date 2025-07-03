@@ -21,7 +21,6 @@ import { createBooking } from '../../../api/endpoints/bookings';
 import type { MentorSlot } from '../../../interfaces/mentorSlot';
 import type { Mentor } from '../../../interfaces/mentor';
 import type { RootState } from '../../../store/store';
-import { toast } from 'react-toastify';
 
 const CreateBooking: React.FC = () => {
   const { mentorId, slotId } = useParams<{ mentorId: string; slotId: string }>();
@@ -101,11 +100,9 @@ const CreateBooking: React.FC = () => {
             mentor_slot_id: slot.id,
           });
           
-          toast.success('Booking created successfully! Your mentor will review and confirm your booking.');
           navigate('/member/my-bookings');
         } catch (err: any) {
           console.error('Error creating booking:', err);
-          toast.error('Failed to create booking. Please try again.');
         } finally {
           setBookingLoading(false);
         }
@@ -223,7 +220,7 @@ const CreateBooking: React.FC = () => {
                       {mentor.name}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400">
-                      {mentor.mentorDetails?.expertise || 'Fitness Expert'}
+                      {mentor.mentorDetail?.expertise || 'Fitness Expert'}
                     </p>
                   </div>
                   <div className="flex items-center text-yellow-500">
@@ -245,20 +242,43 @@ const CreateBooking: React.FC = () => {
               </div>
             </div>
 
-            {mentor.mentorDetails?.bio && (
+            {mentor.mentorDetail?.bio && (
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2">About</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {mentor.mentorDetails.bio}
+                  {mentor.mentorDetail.bio}
                 </p>
               </div>
             )}
 
-            {mentor.mentorDetails?.certifications && (
+            {mentor.mentorDetail?.certification && (
               <div className="mt-4">
                 <h4 className="font-medium text-gray-900 dark:text-white mb-2">Certifications</h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {mentor.mentorDetails.certifications}
+                  {mentor.mentorDetail.certification?.map(cert => (
+                    <span key={cert.id} className="block">
+                      {cert.title} by {cert.issuer} ({new Date(cert.issue_date).toLocaleDateString()})
+                    </span>
+                  )) || 'No certifications available'}
+                </p>
+              </div>
+            )}
+
+            {mentor.mentorDetail?.socialLink && (
+              <div className="mt-4">
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2">Social Links</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {mentor.mentorDetail.socialLink.map(link => (
+                    <a
+                      key={link.id}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block hover:underline"
+                    >
+                      {link.platform}: {link.url}
+                    </a>
+                  ))}
                 </p>
               </div>
             )}

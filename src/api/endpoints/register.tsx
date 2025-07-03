@@ -30,8 +30,6 @@ export const registerMentor = async (
     bio: string;
     country: string;
     language: string;
-    certifications: string;
-    social_links: string;
     contact_number: string;
   }>,
 ) => {
