@@ -47,11 +47,11 @@ function App() {
               element={<SearchForMentor />}
             />
             <Route
-              path="/member/mentor-slots/:mentorId"
+              path="/member/mentor-slots/:mentor_id"
               element={<MentorSlotList />}
             />
             <Route
-              path="/member/create-booking/:mentorId/:slotId"
+              path="/member/create-booking/:mentor_id/:slotId"
               element={<CreateBooking />}
             />
             <Route path="/member/my-bookings" element={<MyBookings />} />
@@ -70,7 +70,7 @@ function App() {
               element={<EditTimeSlot />}
             />
             <Route
-              path="/mentor/bookings/update/:bookingId"
+              path="/mentor/bookings/update/:booking_id"
               element={<UpdateBooking />}
             />
           </Route>

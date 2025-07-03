@@ -17,8 +17,19 @@ export interface Booking {
     mentor?: Mentor;
   };
   status: "pending" | "accepted" | "rejected" | "cancelled" | "completed";
-  payment_status: "unpaid" | "paid" | "refunded";
+  bookingPayment?: BookingPayment;
   google_meet_link?: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface BookingPayment {
+  id: number;
+  status: "paid" | "unpaid" | "refunded";
+  payment_method?: "stripe" | "paypal";
+  transaction_id: string;
+  amount: number;
+  currency: string;
+  paid_at?: string;
+  refunded_at?: string;
 }

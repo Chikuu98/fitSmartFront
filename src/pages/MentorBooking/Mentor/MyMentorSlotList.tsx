@@ -23,20 +23,20 @@ export function MyMentorSlotList() {
   const [slots, setSlots] = useState<MentorSlot[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState<number | null>(null);
-  const mentorId = useSelector((state: RootState) => state.auth.user?.id);
+  const mentor_id = useSelector((state: RootState) => state.auth.user?.id);
   const navigate = useNavigate();
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
 
   useEffect(() => {
-    if (!mentorId) return;
+    if (!mentor_id) return;
     fetchSlots();
-  }, [mentorId]);
+  }, [mentor_id]);
 
   const fetchSlots = async () => {
-    if (!mentorId) return;
+    if (!mentor_id) return;
     try {
       setLoading(true);
-      const data = await getMentorSlots(mentorId);
+      const data = await getMentorSlots(mentor_id);
       setSlots(data);
     } catch (error: any) {
       toast.error("Failed to load time slots");

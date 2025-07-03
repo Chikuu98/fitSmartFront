@@ -23,7 +23,7 @@ import type { Mentor } from '../../../interfaces/mentor';
 import type { RootState } from '../../../store/store';
 
 const CreateBooking: React.FC = () => {
-  const { mentorId, slotId } = useParams<{ mentorId: string; slotId: string }>();
+  const { mentor_id, slotId } = useParams<{ mentor_id: string; slotId: string }>();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
@@ -35,10 +35,10 @@ const CreateBooking: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (mentorId && slotId) {
+    if (mentor_id && slotId) {
       fetchData();
     }
-  }, [mentorId, slotId, user, navigate]);
+  }, [mentor_id, slotId, user, navigate]);
 
   const fetchData = async () => {
     try {
@@ -46,7 +46,7 @@ const CreateBooking: React.FC = () => {
       
       // Fetch mentor data
       const mentors = await getMentorList();
-      const mentorData = mentors.find(m => m.id === Number(mentorId));
+      const mentorData = mentors.find(m => m.id === Number(mentor_id));
       
       if (!mentorData) {
         setError('Mentor not found');
@@ -78,7 +78,7 @@ const CreateBooking: React.FC = () => {
   };
 
   const handleGoBack = () => {
-    navigate(`/member/mentor-slots/${mentorId}`);
+    navigate(`/member/mentor-slots/${mentor_id}`);
   };
 
   const handleCreateBooking = () => {

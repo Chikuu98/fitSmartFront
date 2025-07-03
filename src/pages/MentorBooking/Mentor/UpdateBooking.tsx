@@ -12,12 +12,14 @@ import { useConfirmationDialog } from "../../../components/ui/confirmationDialog
 import CustomSelect from "../../../components/ui/customSelect";
 import type { Booking } from "../../../interfaces/booking";
 import { updateBooking, getBookingById } from "../../../api/endpoints/bookings";
-import { toast } from "react-toastify";
 
 interface UpdateBookingDto {
   status?: string;
-  payment_status?: string;
   google_meet_link?: string;
+}
+
+interface UpdateBookingPaymentDto {
+  payment_status?: string;
 }
 
 const statusOptions = [
@@ -35,45 +37,54 @@ const paymentStatusOptions = [
 ];
 
 export function UpdateBooking() {
-  const { bookingId } = useParams<{ bookingId: string }>();
+  const { booking_id } = useParams<{ booking_id: string }>();
   const navigate = useNavigate();
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
   const [formData, setFormData] = useState<UpdateBookingDto>({
     status: "",
-    payment_status: "",
     google_meet_link: "",
   });
   const [originalData, setOriginalData] = useState<UpdateBookingDto>({
     status: "",
-    payment_status: "",
     google_meet_link: "",
+  });
+  const [paymentData, setPaymentData] = useState<UpdateBookingPaymentDto>({
+    payment_status: "",
+  });
+  const [originalPaymentData, setOriginalPaymentData] = useState<UpdateBookingPaymentDto>({
+    payment_status: "",
   });
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
 
   useEffect(() => {
-    if (bookingId) {
+    if (booking_id) {
       fetchBooking();
     }
-  }, [bookingId]);
+  }, [booking_id]);
 
   const fetchBooking = async () => {
-    if (!bookingId) return;
+    if (!booking_id) return;
 
     try {
       setFetchLoading(true);
-      const bookingData: Booking = await getBookingById(Number(bookingId));
+      const bookingData: Booking = await getBookingById(Number(booking_id));
       setBooking(bookingData);
+      
       const updateData = {
         status: bookingData.status,
-        payment_status: bookingData.payment_status,
         google_meet_link: bookingData.google_meet_link || "",
       };
       setFormData(updateData);
       setOriginalData(updateData);
+
+      const paymentUpdateData = {
+        payment_status: bookingData.bookingPayment?.status || "unpaid",
+      };
+      setPaymentData(paymentUpdateData);
+      setOriginalPaymentData(paymentUpdateData);
     } catch (error: any) {
-      toast.error("Failed to load booking");
       navigate(-1);
     } finally {
       setFetchLoading(false);
@@ -83,8 +94,8 @@ export function UpdateBooking() {
   const hasChanges = () => {
     return (
       formData.status !== originalData.status ||
-      formData.payment_status !== originalData.payment_status ||
-      formData.google_meet_link !== originalData.google_meet_link
+      formData.google_meet_link !== originalData.google_meet_link ||
+      paymentData.payment_status !== originalPaymentData.payment_status
     );
   };
 
@@ -117,16 +128,23 @@ export function UpdateBooking() {
 
   const handleSelectChange =
     (name: string) => (option: { value: string; label: string } | null) => {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: option?.value || "",
-      }));
+      if (name === "payment_status") {
+        setPaymentData((prev) => ({
+          ...prev,
+          [name]: option?.value || "",
+        }));
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: option?.value || "",
+        }));
+      }
     };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!bookingId) return;
+    if (!booking_id) return;
 
     openDialog({
       title: "Update Booking",
@@ -145,18 +163,20 @@ export function UpdateBooking() {
             updateData.status = formData.status;
           }
 
-          if (
-            formData.payment_status !== originalData.payment_status &&
-            formData.payment_status
-          ) {
-            updateData.payment_status = formData.payment_status;
-          }
-
           if (formData.google_meet_link !== originalData.google_meet_link) {
             updateData.google_meet_link = formData.google_meet_link;
           }
 
-          await updateBooking(Number(bookingId), updateData);
+          // Handle payment status update separately
+          if (paymentData.payment_status !== originalPaymentData.payment_status && paymentData.payment_status) {
+            // For now, include payment status in the booking update
+            // You may need to create a separate API endpoint for this
+            updateData.bookingPayment = {
+              status: paymentData.payment_status
+            };
+          }
+
+          await updateBooking(Number(booking_id), updateData);
           navigate(-1);
         } catch (error: any) {
           // Error handling is done by axios interceptor
@@ -214,6 +234,12 @@ export function UpdateBooking() {
                   {booking.mentorSlot?.start_time} -{" "}
                   {booking.mentorSlot?.end_time}
                 </p>
+                <p>
+                  <DollarSign className="w-4 h-4 inline mr-2" />
+                  Current Payment Status: {booking.bookingPayment?.status 
+                    ? booking.bookingPayment.status.charAt(0).toUpperCase() + booking.bookingPayment.status.slice(1)
+                    : "No payment record"}
+                </p>
               </div>
             </div>
           )}
@@ -242,7 +268,7 @@ export function UpdateBooking() {
               </label>
               <CustomSelect
                 name="payment_status"
-                value={formData.payment_status || ""}
+                value={paymentData.payment_status || ""}
                 onChange={handleSelectChange("payment_status")}
                 options={paymentStatusOptions}
                 placeholder="Select payment status..."

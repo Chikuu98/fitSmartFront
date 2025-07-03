@@ -25,22 +25,22 @@ const BookingListMentor: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [loadingId, setLoadingId] = useState<number | null>(null);
-  const mentorId = useSelector((state: RootState) => state.auth.user?.id);
+  const mentor_id = useSelector((state: RootState) => state.auth.user?.id);
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!mentorId) return;
+    if (!mentor_id) return;
     const fetchBookings = async () => {
       try {
-        const data = await getBookingsByMentorId(mentorId);
+        const data = await getBookingsByMentorId(mentor_id);
         setBookings(data);
       } catch (error) {
         console.error("Failed to load bookings", error);
       }
     };
     fetchBookings();
-  }, [mentorId]);
+  }, [mentor_id]);
 
   const handleMeetingSuccess = () => {
     refetchBookings();
@@ -51,9 +51,9 @@ const BookingListMentor: React.FC = () => {
   };
 
   const refetchBookings = async () => {
-    if (!mentorId) return;
+    if (!mentor_id) return;
     try {
-      const data = await getBookingsByMentorId(mentorId);
+      const data = await getBookingsByMentorId(mentor_id);
       setBookings(data);
     } catch (error) {
       toast.error("Failed to reload bookings");
@@ -165,7 +165,9 @@ const BookingListMentor: React.FC = () => {
                     <span className="text-xs flex items-center gap-1 text-gray-500 dark:text-gray-300 mt-1">
                       <CreditCard className="w-4 h-4" /> Payment:{" "}
                       <span className="font-medium text-gray-700 dark:text-orange-200">
-                        {booking.payment_status}
+                        {booking.bookingPayment && booking.bookingPayment.status
+                          ? booking.bookingPayment.status.charAt(0).toUpperCase() + booking.bookingPayment.status.slice(1)
+                          : 'Unpaid'}
                       </span>
                     </span>
                   </div>

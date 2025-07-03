@@ -85,8 +85,8 @@ const SearchForMentor: React.FC = () => {
     );
   });
 
-  const handleBookMentor = (mentorId: number) => {
-    navigate(`/member/mentor-slots/${mentorId}`);
+  const handleBookMentor = (mentor_id: number) => {
+    navigate(`/member/mentor-slots/${mentor_id}`);
   };
 
   if (user?.role !== "member") {

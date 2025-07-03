@@ -21,7 +21,7 @@ import type { RootState } from '../../../store/store';
 import { toast } from 'react-toastify';
 
 const MentorSlotList: React.FC = () => {
-  const { mentorId } = useParams<{ mentorId: string }>();
+  const { mentor_id } = useParams<{ mentor_id: string }>();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -31,16 +31,16 @@ const MentorSlotList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (mentorId) {
+    if (mentor_id) {
       fetchMentorData();
       fetchSlots();
     }
-  }, [mentorId, user, navigate]);
+  }, [mentor_id, user, navigate]);
 
   const fetchMentorData = async () => {
     try {
       const mentors = await getMentorList();
-      const mentorData = mentors.find(m => m.id === Number(mentorId));
+      const mentorData = mentors.find(m => m.id === Number(mentor_id));
       if (mentorData) {
         setMentor(mentorData);
       } else {
@@ -53,11 +53,11 @@ const MentorSlotList: React.FC = () => {
   };
 
   const fetchSlots = async () => {
-    if (!mentorId) return;
+    if (!mentor_id) return;
 
     try {
       setLoading(true);
-      const data = await getMentorSlots(Number(mentorId));
+      const data = await getMentorSlots(Number(mentor_id));
       // Filter only available slots (not booked)
       const availableSlots = data.filter(slot => !slot.is_booked);
       setSlots(availableSlots);
@@ -76,7 +76,7 @@ const MentorSlotList: React.FC = () => {
 
   const handleBookSlot = (slotId: number) => {
     // Navigate to booking creation page with mentor and slot info
-    navigate(`/member/create-booking/${mentorId}/${slotId}`);
+    navigate(`/member/create-booking/${mentor_id}/${slotId}`);
   };
 
   const formatDate = (dateString: string) => {

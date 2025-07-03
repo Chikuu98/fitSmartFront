@@ -24,10 +24,10 @@ export const updateMentorSlot = async (slotId: number, dto: UpdateSlotDto) => {
 };
 
 export const getMentorSlots = async (
-  mentorId: number,
+  mentor_id: number,
 ): Promise<MentorSlot[]> => {
   const response = await axiosInstance.get(
-    withApiUrl(`mentor-slots/mentor/${mentorId}`),
+    withApiUrl(`mentor-slots/mentor/${mentor_id}`),
   );
   return response.data.data;
 };
