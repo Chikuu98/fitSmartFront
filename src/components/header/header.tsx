@@ -1,8 +1,19 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useRef, useEffect } from "react";
 import type { RootState } from "../../store/store";
-import { LogOut, Moon, Settings, Sun, User, UserCircle, Menu, X, ChevronDown, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import {
+  LogOut,
+  Moon,
+  Settings,
+  Sun,
+  User,
+  UserCircle,
+  Menu,
+  X,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../store/authSlice";
 import logoLight from "../../assets/logolight.png";
 import logoDark from "../../assets/logodark.png";
@@ -25,7 +36,9 @@ const Header = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [expandedMobileSections, setExpandedMobileSections] = useState<Set<string>>(new Set());
+  const [expandedMobileSections, setExpandedMobileSections] = useState<
+    Set<string>
+  >(new Set());
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const triggerRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   const userDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -33,6 +46,7 @@ const Header = () => {
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuButtonRef = useRef<HTMLButtonElement | null>(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const adminNavItems: NavItem[] = [
     { title: "Dashboard", link: "/admin-dashboard" },
@@ -40,7 +54,7 @@ const Header = () => {
 
   const memberNavItems: NavItem[] = [
     { title: "Dashboard", link: "/member-dashboard" },
-        {
+    {
       title: "Mentor Booking",
       dropdown: true,
       dropdownItems: [
@@ -77,7 +91,7 @@ const Header = () => {
           : [];
 
   const toggleMobileSection = (sectionTitle: string) => {
-    setExpandedMobileSections(prev => {
+    setExpandedMobileSections((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(sectionTitle)) {
         newSet.delete(sectionTitle);
@@ -242,7 +256,7 @@ const Header = () => {
                   className="flex items-center w-full px-4 py-2 hover:bg-orange-100 dark:hover:bg-orange-800 text-sm transition-colors text-blue-900 dark:text-orange-200"
                   onClick={() => {
                     setIsUserOpen(false);
-                    // Account click handler
+                    navigate("/account");
                   }}
                 >
                   <User className="w-4 h-4 mr-2" /> Account
@@ -347,7 +361,7 @@ const Header = () => {
                       <ChevronRight className="w-4 h-4 transition-transform duration-200" />
                     )}
                   </button>
-                  
+
                   {/* Expandable Section Content */}
                   {isMobileSectionExpanded(item.title) && (
                     <div className="pl-4 space-y-1 animate-fade-in">
@@ -381,8 +395,8 @@ const Header = () => {
               <button
                 className="flex items-center w-full px-3 py-2 rounded-md text-sm text-gray-900 dark:text-gray-100 transition-colors hover:bg-orange-100 dark:hover:bg-orange-900 hover:text-orange-600 dark:hover:text-orange-300"
                 onClick={() => {
+                  navigate("/account");
                   closeMobileMenu();
-                  // Account click handler
                 }}
               >
                 <User className="w-4 h-4 mr-3" /> Account

@@ -51,9 +51,10 @@ export function UpdateBooking() {
   const [paymentData, setPaymentData] = useState<UpdateBookingPaymentDto>({
     payment_status: "",
   });
-  const [originalPaymentData, setOriginalPaymentData] = useState<UpdateBookingPaymentDto>({
-    payment_status: "",
-  });
+  const [originalPaymentData, setOriginalPaymentData] =
+    useState<UpdateBookingPaymentDto>({
+      payment_status: "",
+    });
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
@@ -71,7 +72,7 @@ export function UpdateBooking() {
       setFetchLoading(true);
       const bookingData: Booking = await getBookingById(Number(booking_id));
       setBooking(bookingData);
-      
+
       const updateData = {
         status: bookingData.status,
         google_meet_link: bookingData.google_meet_link || "",
@@ -168,11 +169,14 @@ export function UpdateBooking() {
           }
 
           // Handle payment status update separately
-          if (paymentData.payment_status !== originalPaymentData.payment_status && paymentData.payment_status) {
+          if (
+            paymentData.payment_status !== originalPaymentData.payment_status &&
+            paymentData.payment_status
+          ) {
             // For now, include payment status in the booking update
             // You may need to create a separate API endpoint for this
             updateData.bookingPayment = {
-              status: paymentData.payment_status
+              status: paymentData.payment_status,
             };
           }
 
@@ -236,8 +240,10 @@ export function UpdateBooking() {
                 </p>
                 <p>
                   <DollarSign className="w-4 h-4 inline mr-2" />
-                  Current Payment Status: {booking.bookingPayment?.status 
-                    ? booking.bookingPayment.status.charAt(0).toUpperCase() + booking.bookingPayment.status.slice(1)
+                  Current Payment Status:{" "}
+                  {booking.bookingPayment?.status
+                    ? booking.bookingPayment.status.charAt(0).toUpperCase() +
+                      booking.bookingPayment.status.slice(1)
                     : "No payment record"}
                 </p>
               </div>

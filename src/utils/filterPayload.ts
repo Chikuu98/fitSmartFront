@@ -1,4 +1,3 @@
-
 export function filterPayload<T extends Record<string, any>>(
   rawPayload: T,
 ): Partial<T> {

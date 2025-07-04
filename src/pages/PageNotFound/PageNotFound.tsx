@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { SearchX } from 'lucide-react';
-import type { RootState } from '../../store/store';
-import { UserRole } from '../../enums/userDetailEnums';
-import { initializeTheme } from '../../hooks/useTheme';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { SearchX } from "lucide-react";
+import type { RootState } from "../../store/store";
+import { UserRole } from "../../enums/userDetailEnums";
+import { initializeTheme } from "../../hooks/useTheme";
 
 const PageNotFound: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
-  
+
   useEffect(() => {
     initializeTheme();
   }, []);
@@ -20,38 +20,38 @@ const PageNotFound: React.FC = () => {
 
   const handleGoToDashboard = () => {
     if (!user) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     switch (user.role) {
       case UserRole.ADMIN:
-        navigate('/admin-dashboard');
+        navigate("/admin-dashboard");
         break;
       case UserRole.MEMBER:
-        navigate('/member-dashboard');
+        navigate("/member-dashboard");
         break;
       case UserRole.MENTOR:
-        navigate('/mentor-dashboard');
+        navigate("/mentor-dashboard");
         break;
       default:
-        navigate('/');
+        navigate("/");
         break;
     }
   };
 
   const getDashboardLabel = () => {
-    if (!user) return 'Login';
-    
+    if (!user) return "Login";
+
     switch (user.role) {
       case UserRole.ADMIN:
-        return 'Admin Dashboard';
+        return "Admin Dashboard";
       case UserRole.MEMBER:
-        return 'Member Dashboard';
+        return "Member Dashboard";
       case UserRole.MENTOR:
-        return 'Mentor Dashboard';
+        return "Mentor Dashboard";
       default:
-        return 'Home';
+        return "Home";
     }
   };
 
@@ -71,8 +71,8 @@ const PageNotFound: React.FC = () => {
         </h2>
 
         <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-          Oops! The page you're looking for doesn't exist. 
-          It might have been moved, deleted, or the URL might be incorrect.
+          Oops! The page you're looking for doesn't exist. It might have been
+          moved, deleted, or the URL might be incorrect.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

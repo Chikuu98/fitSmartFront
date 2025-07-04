@@ -53,8 +53,7 @@ export function CreateTimeSlot() {
               end_time: "",
             });
           })
-          .catch(() => {
-          })
+          .catch(() => {})
           .finally(() => {
             setLoading(false);
           });
