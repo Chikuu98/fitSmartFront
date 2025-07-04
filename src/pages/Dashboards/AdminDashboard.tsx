@@ -12,6 +12,7 @@ import {
   Settings,
   BarChart3,
   Database,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import type { RootState } from "../../store/store";
@@ -190,45 +191,57 @@ const AdminDashboard: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Admin Tools */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Admin Tools</h2>
             </div>
-            <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="p-6 flex flex-col gap-4">
               <Button
                 variant="outline"
-                className="h-20 flex-col gap-2"
+                className="w-full flex items-center justify-between border-2 border-orange-500 text-orange-500 bg-transparent rounded-full py-4 px-6 text-base font-semibold hover:bg-orange-50 dark:hover:bg-orange-950 transition-all"
                 onClick={() => console.log('User management')}
               >
-                <Users className="w-6 h-6" />
-                <span>User Management</span>
+                <div className="flex items-center gap-3">
+                  <Users className="w-5 h-5" />
+                  User Management
+                </div>
+                <ChevronRight className="w-5 h-5" />
               </Button>
 
               <Button
                 variant="outline"
-                className="h-20 flex-col gap-2"
+                className="w-full flex items-center justify-between border-2 border-orange-500 text-orange-500 bg-transparent rounded-full py-4 px-6 text-base font-semibold hover:bg-orange-50 dark:hover:bg-orange-950 transition-all"
                 onClick={() => console.log('Analytics')}
               >
-                <BarChart3 className="w-6 h-6" />
-                <span>Analytics</span>
+                <div className="flex items-center gap-3">
+                  <BarChart3 className="w-5 h-5" />
+                  Analytics
+                </div>
+                <ChevronRight className="w-5 h-5" />
               </Button>
 
               <Button
                 variant="outline"
-                className="h-20 flex-col gap-2"
+                className="w-full flex items-center justify-between border-2 border-orange-500 text-orange-500 bg-transparent rounded-full py-4 px-6 text-base font-semibold hover:bg-orange-50 dark:hover:bg-orange-950 transition-all"
                 onClick={() => console.log('System settings')}
               >
-                <Settings className="w-6 h-6" />
-                <span>System Settings</span>
+                <div className="flex items-center gap-3">
+                  <Settings className="w-5 h-5" />
+                  System Settings
+                </div>
+                <ChevronRight className="w-5 h-5" />
               </Button>
 
               <Button
                 variant="outline"
-                className="h-20 flex-col gap-2"
+                className="w-full flex items-center justify-between border-2 border-orange-500 text-orange-500 bg-transparent rounded-full py-4 px-6 text-base font-semibold hover:bg-orange-50 dark:hover:bg-orange-950 transition-all"
                 onClick={() => console.log('Database')}
               >
-                <Database className="w-6 h-6" />
-                <span>Database</span>
+                <div className="flex items-center gap-3">
+                  <Database className="w-5 h-5" />
+                  Database
+                </div>
+                <ChevronRight className="w-5 h-5" />
               </Button>
             </div>
           </div>
@@ -270,7 +283,7 @@ const AdminDashboard: React.FC = () => {
             <div className="flex flex-wrap gap-3">
               <Button
                 variant="outline"
-                className="bg-white text-orange-600 hover:bg-gray-50"
+                className="bg-white dark:bg-gray-800 text-orange-600 dark:text-orange-100 hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => console.log('Add user')}
               >
                 <UserPlus className="w-4 h-4 mr-2" />
@@ -278,7 +291,7 @@ const AdminDashboard: React.FC = () => {
               </Button>
               <Button
                 variant="outline"
-                className="bg-white text-orange-600 hover:bg-gray-50"
+                className="bg-white dark:bg-gray-800 text-orange-600 dark:text-orange-100 hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => console.log('View reports')}
               >
                 <TrendingUp className="w-4 h-4 mr-2" />
@@ -286,7 +299,7 @@ const AdminDashboard: React.FC = () => {
               </Button>
               <Button
                 variant="outline"
-                className="bg-white text-orange-600 hover:bg-gray-50"
+                className="bg-white dark:bg-gray-800 text-orange-600 dark:text-orange-100 hover:bg-gray-50 dark:hover:bg-gray-700"
                 onClick={() => console.log('System health')}
               >
                 <Activity className="w-4 h-4 mr-2" />

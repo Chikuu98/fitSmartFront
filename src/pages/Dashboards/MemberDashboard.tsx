@@ -144,15 +144,15 @@ const MemberDashboard: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Quick Actions */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Quick Actions</h2>
             </div>
-            <div className="p-6 space-y-4">
+            <div className="p-6 flex flex-col gap-4">
               <Button
                 variant="orange"
                 onClick={() => navigate('/member/search-for-mentor')}
-                className="w-full justify-between"
+                className="w-full flex items-center justify-between rounded-full py-4 px-6 text-base font-semibold shadow-none hover:shadow-md transition-all"
               >
                 <div className="flex items-center gap-3">
                   <Plus className="w-5 h-5" />
@@ -164,7 +164,7 @@ const MemberDashboard: React.FC = () => {
               <Button
                 variant="outline"
                 onClick={() => navigate('/member/my-bookings')}
-                className="w-full justify-between"
+                className="w-full flex items-center justify-between border-2 border-orange-500 text-orange-500 bg-transparent rounded-full py-4 px-6 text-base font-semibold hover:bg-orange-50 dark:hover:bg-orange-950 transition-all"
               >
                 <div className="flex items-center gap-3">
                   <BookOpen className="w-5 h-5" />
@@ -176,7 +176,7 @@ const MemberDashboard: React.FC = () => {
               <Button
                 variant="outline"
                 onClick={() => navigate('/member/search-for-mentor')}
-                className="w-full justify-between"
+                className="w-full flex items-center justify-between border-2 border-orange-500 text-orange-500 bg-transparent rounded-full py-4 px-6 text-base font-semibold hover:bg-orange-50 dark:hover:bg-orange-950 transition-all"
               >
                 <div className="flex items-center gap-3">
                   <Users className="w-5 h-5" />
@@ -211,7 +211,7 @@ const MemberDashboard: React.FC = () => {
                     variant="orange"
                     onClick={() => navigate('/member/search-for-mentor')}
                   >
-                    Book Your First Session
+                    Book Session Now
                   </Button>
                 </div>
               ) : (
