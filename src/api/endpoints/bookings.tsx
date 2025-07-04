@@ -7,22 +7,22 @@ function withApiUrl(path: string) {
   return `${appConfig.apiUrl.replace(/\/?$/, "/")}${path.replace(/^\//, "")}`;
 }
 
-export const getBookingsByMentorId = async (mentorId: number) => {
+export const getBookingsByMentorId = async (mentor_id: number) => {
   const response = await axiosInstance.get(
-    withApiUrl(`bookings/mentor/${mentorId}`),
+    withApiUrl(`bookings/mentor/${mentor_id}`),
   );
   return response.data.data;
 };
 
-export const getBookingsByMemberId = async (memberId: number) => {
+export const getBookingsByMemberId = async (member_id: number) => {
   const response = await axiosInstance.get(
-    withApiUrl(`bookings/member/${memberId}`),
+    withApiUrl(`bookings/member/${member_id}`),
   );
   return response.data.data;
 };
 
-export const getBookingById = async (bookingId: number) => {
-  const response = await axiosInstance.get(withApiUrl(`bookings/${bookingId}`));
+export const getBookingById = async (booking_id: number) => {
+  const response = await axiosInstance.get(withApiUrl(`bookings/${booking_id}`));
   return response.data.data;
 };
 
@@ -37,26 +37,28 @@ export const createBooking = async (bookingData: {
 };
 
 export const updateBooking = async (
-  bookingId: number,
+  booking_id: number,
   updateData: {
     status?: string;
-    payment_status?: string;
     google_meet_link?: string;
+    bookingPayment?: {
+      status?: string;
+    };
   },
 ) => {
   const response = await axiosInstance.patch(
-    withApiUrl(`bookings/${bookingId}`),
+    withApiUrl(`bookings/${booking_id}`),
     updateData,
   );
   return response.data;
 };
 
 export const acceptBooking = async (
-  bookingId: number,
+  booking_id: number,
   googleMeetLink: string,
 ) => {
   const response = await axiosInstance.patch(
-    withApiUrl(`bookings/${bookingId}/accept`),
+    withApiUrl(`bookings/${booking_id}/accept`),
     {
       google_meet_link: googleMeetLink,
     },
@@ -65,11 +67,11 @@ export const acceptBooking = async (
 };
 
 export const updateBookingMeetLink = async (
-  bookingId: number,
+  booking_id: number,
   googleMeetLink: string,
 ) => {
   const response = await axiosInstance.patch(
-    withApiUrl(`bookings/${bookingId}`),
+    withApiUrl(`bookings/${booking_id}`),
     {
       google_meet_link: googleMeetLink,
     },
@@ -78,12 +80,12 @@ export const updateBookingMeetLink = async (
 };
 
 export const updateBookingMeetLinkSilent = async (
-  bookingId: number,
+  booking_id: number,
   googleMeetLink: string,
 ) => {
   // Use regular axios instead of axiosInstance to avoid automatic toast
   const response = await axios.patch(
-    withApiUrl(`bookings/${bookingId}`),
+    withApiUrl(`bookings/${booking_id}`),
     {
       google_meet_link: googleMeetLink,
     },
@@ -98,9 +100,9 @@ export const updateBookingMeetLinkSilent = async (
   return response.data;
 };
 
-export const cancelBooking = async (bookingId: number) => {
+export const cancelBooking = async (booking_id: number) => {
   const response = await axiosInstance.patch(
-    withApiUrl(`bookings/${bookingId}/cancel`),
+    withApiUrl(`bookings/${booking_id}/cancel`),
   );
   return response.data;
 };

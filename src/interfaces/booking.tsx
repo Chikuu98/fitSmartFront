@@ -1,3 +1,5 @@
+import type { Mentor } from "./mentor";
+
 export interface Booking {
   id: number;
   member?: {
@@ -12,25 +14,22 @@ export interface Booking {
     date: string;
     start_time: string;
     end_time: string;
-    mentor?: {
-      id: number;
-      name: string;
-      email: string;
-      country?: string;
-      language?: string;
-      mentorDetails?: {
-        id: number;
-        expertise: string;
-        bio: string;
-        certifications: string;
-        social_links: string;
-        contact_number: string;
-      };
-    };
+    mentor?: Mentor;
   };
   status: "pending" | "accepted" | "rejected" | "cancelled" | "completed";
-  payment_status: "unpaid" | "paid" | "refunded";
+  bookingPayment?: BookingPayment;
   google_meet_link?: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface BookingPayment {
+  id: number;
+  status: "paid" | "unpaid" | "refunded";
+  payment_method?: "stripe" | "paypal";
+  transaction_id: string;
+  amount: number;
+  currency: string;
+  paid_at?: string;
+  refunded_at?: string;
 }

@@ -295,7 +295,7 @@ const MyBookings: React.FC = () => {
                                 {booking.mentorSlot?.mentor?.name || 'Unknown Mentor'}
                               </h3>
                               <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {booking.mentorSlot?.mentor?.mentorDetails?.expertise || 'Fitness Expert'}
+                                {booking.mentorSlot?.mentor?.mentorDetail?.expertise || 'Fitness Expert'}
                               </p>
                             </div>
                             
@@ -331,8 +331,10 @@ const MyBookings: React.FC = () => {
                             
                             <div className="flex items-center gap-2">
                               <CreditCard className="w-4 h-4" />
-                              <span className={getPaymentStatusColor(booking.payment_status)}>
-                                Payment: {booking.payment_status.charAt(0).toUpperCase() + booking.payment_status.slice(1)}
+                              <span className={getPaymentStatusColor(booking.bookingPayment?.status || 'unpaid')}>
+                                Payment: {(booking.bookingPayment?.status
+                                  ? booking.bookingPayment.status.charAt(0).toUpperCase() + booking.bookingPayment.status.slice(1)
+                                  : 'Unpaid')}
                               </span>
                             </div>
                           </div>

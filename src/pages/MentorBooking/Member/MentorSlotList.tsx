@@ -21,7 +21,7 @@ import type { RootState } from '../../../store/store';
 import { toast } from 'react-toastify';
 
 const MentorSlotList: React.FC = () => {
-  const { mentorId } = useParams<{ mentorId: string }>();
+  const { mentor_id } = useParams<{ mentor_id: string }>();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
 
@@ -31,16 +31,16 @@ const MentorSlotList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (mentorId) {
+    if (mentor_id) {
       fetchMentorData();
       fetchSlots();
     }
-  }, [mentorId, user, navigate]);
+  }, [mentor_id, user, navigate]);
 
   const fetchMentorData = async () => {
     try {
       const mentors = await getMentorList();
-      const mentorData = mentors.find(m => m.id === Number(mentorId));
+      const mentorData = mentors.find(m => m.id === Number(mentor_id));
       if (mentorData) {
         setMentor(mentorData);
       } else {
@@ -53,11 +53,11 @@ const MentorSlotList: React.FC = () => {
   };
 
   const fetchSlots = async () => {
-    if (!mentorId) return;
+    if (!mentor_id) return;
 
     try {
       setLoading(true);
-      const data = await getMentorSlots(Number(mentorId));
+      const data = await getMentorSlots(Number(mentor_id));
       // Filter only available slots (not booked)
       const availableSlots = data.filter(slot => !slot.is_booked);
       setSlots(availableSlots);
@@ -76,7 +76,7 @@ const MentorSlotList: React.FC = () => {
 
   const handleBookSlot = (slotId: number) => {
     // Navigate to booking creation page with mentor and slot info
-    navigate(`/member/create-booking/${mentorId}/${slotId}`);
+    navigate(`/member/create-booking/${mentor_id}/${slotId}`);
   };
 
   const formatDate = (dateString: string) => {
@@ -150,6 +150,7 @@ const MentorSlotList: React.FC = () => {
         </div>
 
         {/* Mentor Information Card */}
+        {/* can we also add certifications and social links in this card? */}
         {mentor && (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
             <div className="flex items-start gap-4">
@@ -163,7 +164,7 @@ const MentorSlotList: React.FC = () => {
                       {mentor.name}
                     </h2>
                     <p className="text-lg text-gray-600 dark:text-gray-400">
-                      {mentor.mentorDetails?.expertise || 'Fitness Expert'}
+                      {mentor.mentorDetail?.expertise || 'Fitness Expert'}
                     </p>
                   </div>
                   <div className="flex items-center text-yellow-500">
@@ -183,10 +184,42 @@ const MentorSlotList: React.FC = () => {
                   </div>
                 </div>
 
-                {mentor.mentorDetails?.bio && (
+                {mentor.mentorDetail?.bio && (
                   <p className="text-gray-600 dark:text-gray-400 mt-3">
-                    {mentor.mentorDetails.bio}
+                    {mentor.mentorDetail.bio}
                   </p>
+                )}
+                {mentor.mentorDetail?.certification?.map(cert => (
+                  <div key={cert.id} className="mt-3">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">
+                      Certification: {cert.title}
+                    </h4>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      Issued by {cert.issuer} on{' '}
+                      {new Date(cert.issue_date).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+                {mentor.mentorDetail?.socialLink && mentor.mentorDetail.socialLink.length > 0 && (
+                  <div className="mt-3">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">
+                      Social Links
+                    </h4>
+                    <ul className="list-disc list-inside text-xs text-gray-600 dark:text-gray-400">
+                      {mentor.mentorDetail.socialLink.map(link => (
+                        <li key={link.id}>
+                          <a
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 dark:text-blue-400 hover:underline"
+                          >
+                            {link.platform}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
               </div>
             </div>
