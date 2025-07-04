@@ -166,8 +166,11 @@ const BookingListMentor: React.FC = () => {
                       <CreditCard className="w-4 h-4" /> Payment:{" "}
                       <span className="font-medium text-gray-700 dark:text-orange-200">
                         {booking.bookingPayment && booking.bookingPayment.status
-                          ? booking.bookingPayment.status.charAt(0).toUpperCase() + booking.bookingPayment.status.slice(1)
-                          : 'Unpaid'}
+                          ? booking.bookingPayment.status
+                              .charAt(0)
+                              .toUpperCase() +
+                            booking.bookingPayment.status.slice(1)
+                          : "Unpaid"}
                       </span>
                     </span>
                   </div>

@@ -7,7 +7,6 @@ import { UserRole } from "../../enums/userDetailEnums";
 import logodark from "../../assets/logodark.png";
 
 const Login = () => {
-
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { loading } = useSelector((state: RootState) => state.auth);
@@ -35,11 +34,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center md:flex-row md:justify-start bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="hidden md:flex md:h-screen md:w-1/2 flex-col justify-center items-center bg-gradient-to-br from-blue-800 to-orange-600 text-white p-8 md:p-12">
-        <img
-          src={logodark}
-          alt="FitSmart Logo"
-          className="h-20 mb-6"
-        />
+        <img src={logodark} alt="FitSmart Logo" className="h-20 mb-6" />
         <h2 className="text-2xl md:text-3xl font-bold mb-2 text-center">
           Welcome Back!
         </h2>

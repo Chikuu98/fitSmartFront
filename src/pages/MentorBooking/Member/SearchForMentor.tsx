@@ -27,7 +27,6 @@ const SearchForMentor: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
 
-
   const [mentors, setMentors] = useState<Mentor[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -254,8 +253,7 @@ const SearchForMentor: React.FC = () => {
                             {mentor.name}
                           </h3>
                           <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {mentor.mentorDetail?.expertise ||
-                              "Fitness Expert"}
+                            {mentor.mentorDetail?.expertise || "Fitness Expert"}
                           </p>
                         </div>
                       </div>

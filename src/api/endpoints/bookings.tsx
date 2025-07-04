@@ -22,7 +22,9 @@ export const getBookingsByMemberId = async (member_id: number) => {
 };
 
 export const getBookingById = async (booking_id: number) => {
-  const response = await axiosInstance.get(withApiUrl(`bookings/${booking_id}`));
+  const response = await axiosInstance.get(
+    withApiUrl(`bookings/${booking_id}`),
+  );
   return response.data.data;
 };
 

@@ -20,6 +20,7 @@ import CreateBooking from "./pages/MentorBooking/Member/CreateBooking";
 import Unauthorized from "./pages/Unauthorized/Unauthorizred";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import MyBookings from "./pages/MentorBooking/Member/MyBookings";
+import ProfileUpdate from "./pages/UserAccount/ProfileUpdate";
 
 function App() {
   return (
@@ -30,6 +31,19 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+
+        {/* Protected Routes for all users */}
+        <Route
+          element={
+            <ProtectedRoute
+              allowedRoles={[UserRole.ADMIN, UserRole.MEMBER, UserRole.MENTOR]}
+            />
+          }
+        >
+          <Route element={<MainLayout />}>
+            <Route path="/account" element={<ProfileUpdate />} />
+          </Route>
+        </Route>
 
         {/* Admin Routes */}
         <Route element={<ProtectedRoute allowedRoles={[UserRole.ADMIN]} />}>

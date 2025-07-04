@@ -9,7 +9,6 @@ import { languageOptions } from "../../utils/languageOptions";
 import { countryOptions } from "../../utils/countryOptions";
 
 const Register: React.FC = () => {
-
   const [activeTab, setActiveTab] = useState<"member" | "mentor">("member");
   const [showMoreMember, setShowMoreMember] = useState(false);
   const [showMoreMentor, setShowMoreMentor] = useState(false);
@@ -154,11 +153,7 @@ const Register: React.FC = () => {
       {/* Left Side Cover - always fills left half, no white space */}
       <div className="hidden md:block md:w-1/2 h-screen bg-gradient-to-br from-blue-800 to-orange-600 text-white">
         <div className="flex flex-col items-center justify-center h-full w-full">
-          <img
-            src={logodark}
-            alt="FitSmart Logo"
-            className="h-20 mb-4"
-          />
+          <img src={logodark} alt="FitSmart Logo" className="h-20 mb-4" />
           <h2 className="text-2xl font-bold mb-1 text-center">Join with us!</h2>
           <p className="text-base md:text-md text-center max-w-xs">
             Empower your fitness journey with smart guidance and a supportive

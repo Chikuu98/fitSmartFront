@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   Calendar,
   Clock,
@@ -12,18 +12,21 @@ import {
   AlertCircle,
   CheckCircle,
   FileText,
-} from 'lucide-react';
-import { Button } from '../../../components/ui/button';
-import { useConfirmationDialog } from '../../../components/ui/confirmationDialog';
-import { getSlotById } from '../../../api/endpoints/mentorSlots';
-import { getMentorList } from '../../../api/endpoints/mentors';
-import { createBooking } from '../../../api/endpoints/bookings';
-import type { MentorSlot } from '../../../interfaces/mentorSlot';
-import type { Mentor } from '../../../interfaces/mentor';
-import type { RootState } from '../../../store/store';
+} from "lucide-react";
+import { Button } from "../../../components/ui/button";
+import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
+import { getSlotById } from "../../../api/endpoints/mentorSlots";
+import { getMentorList } from "../../../api/endpoints/mentors";
+import { createBooking } from "../../../api/endpoints/bookings";
+import type { MentorSlot } from "../../../interfaces/mentorSlot";
+import type { Mentor } from "../../../interfaces/mentor";
+import type { RootState } from "../../../store/store";
 
 const CreateBooking: React.FC = () => {
-  const { mentor_id, slotId } = useParams<{ mentor_id: string; slotId: string }>();
+  const { mentor_id, slotId } = useParams<{
+    mentor_id: string;
+    slotId: string;
+  }>();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
@@ -43,35 +46,35 @@ const CreateBooking: React.FC = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch mentor data
       const mentors = await getMentorList();
-      const mentorData = mentors.find(m => m.id === Number(mentor_id));
-      
+      const mentorData = mentors.find((m) => m.id === Number(mentor_id));
+
       if (!mentorData) {
-        setError('Mentor not found');
+        setError("Mentor not found");
         return;
       }
-      
+
       setMentor(mentorData);
 
       // Fetch slot data
       const slotData = await getSlotById(Number(slotId));
-      
+
       if (!slotData) {
-        setError('Time slot not found');
+        setError("Time slot not found");
         return;
       }
 
       if (slotData.is_booked) {
-        setError('This time slot is no longer available');
+        setError("This time slot is no longer available");
         return;
       }
 
       setSlot(slotData);
     } catch (err) {
-      console.error('Error fetching data:', err);
-      setError('Failed to load booking information');
+      console.error("Error fetching data:", err);
+      setError("Failed to load booking information");
     } finally {
       setLoading(false);
     }
@@ -85,24 +88,24 @@ const CreateBooking: React.FC = () => {
     if (!slot || !mentor) return;
 
     openDialog({
-      title: 'Confirm Booking',
+      title: "Confirm Booking",
       message: `Are you sure you want to book this session with ${mentor.name}?`,
-      confirmText: 'Book Session',
-      cancelText: 'Cancel',
-      variant: 'info',
+      confirmText: "Book Session",
+      cancelText: "Cancel",
+      variant: "info",
       loading: bookingLoading,
       onConfirm: async (close) => {
         close();
         setBookingLoading(true);
-        
+
         try {
           await createBooking({
             mentor_slot_id: slot.id,
           });
-          
-          navigate('/member/my-bookings');
+
+          navigate("/member/my-bookings");
         } catch (err: any) {
-          console.error('Error creating booking:', err);
+          console.error("Error creating booking:", err);
         } finally {
           setBookingLoading(false);
         }
@@ -112,18 +115,18 @@ const CreateBooking: React.FC = () => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   const formatTime = (timeString: string) => {
-    return new Date(`1970-01-01T${timeString}`).toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
+    return new Date(`1970-01-01T${timeString}`).toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
       hour12: true,
     });
   };
@@ -208,7 +211,7 @@ const CreateBooking: React.FC = () => {
               <User className="w-5 h-5 text-orange-600 dark:text-orange-400" />
               Your Mentor
             </h2>
-            
+
             <div className="flex items-start gap-4 mb-4">
               <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center">
                 <User className="h-8 w-8 text-orange-600 dark:text-orange-400" />
@@ -220,7 +223,7 @@ const CreateBooking: React.FC = () => {
                       {mentor.name}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400">
-                      {mentor.mentorDetail?.expertise || 'Fitness Expert'}
+                      {mentor.mentorDetail?.expertise || "Fitness Expert"}
                     </p>
                   </div>
                   <div className="flex items-center text-yellow-500">
@@ -228,7 +231,7 @@ const CreateBooking: React.FC = () => {
                     <span className="text-sm ml-1">4.8</span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
                   <div className="flex items-center">
                     <MapPin className="h-4 w-4 mr-1" />
@@ -244,7 +247,9 @@ const CreateBooking: React.FC = () => {
 
             {mentor.mentorDetail?.bio && (
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                <h4 className="font-medium text-gray-900 dark:text-white mb-2">About</h4>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                  About
+                </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   {mentor.mentorDetail.bio}
                 </p>
@@ -253,22 +258,27 @@ const CreateBooking: React.FC = () => {
 
             {mentor.mentorDetail?.certification && (
               <div className="mt-4">
-                <h4 className="font-medium text-gray-900 dark:text-white mb-2">Certifications</h4>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                  Certifications
+                </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {mentor.mentorDetail.certification?.map(cert => (
+                  {mentor.mentorDetail.certification?.map((cert) => (
                     <span key={cert.id} className="block">
-                      {cert.title} by {cert.issuer} ({new Date(cert.issue_date).toLocaleDateString()})
+                      {cert.title} by {cert.issuer} (
+                      {new Date(cert.issue_date).toLocaleDateString()})
                     </span>
-                  )) || 'No certifications available'}
+                  )) || "No certifications available"}
                 </p>
               </div>
             )}
 
             {mentor.mentorDetail?.socialLink && (
               <div className="mt-4">
-                <h4 className="font-medium text-gray-900 dark:text-white mb-2">Social Links</h4>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                  Social Links
+                </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {mentor.mentorDetail.socialLink.map(link => (
+                  {mentor.mentorDetail.socialLink.map((link) => (
                     <a
                       key={link.id}
                       href={link.url}
@@ -292,22 +302,29 @@ const CreateBooking: React.FC = () => {
                 <Calendar className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                 Session Details
               </h2>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Calendar className="w-5 h-5 text-gray-500" />
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Date</p>
-                    <p className="text-gray-600 dark:text-gray-400">{formatDate(slot.date)}</p>
+                    <p className="font-medium text-gray-900 dark:text-white">
+                      Date
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {formatDate(slot.date)}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5 text-gray-500" />
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Time</p>
+                    <p className="font-medium text-gray-900 dark:text-white">
+                      Time
+                    </p>
                     <p className="text-gray-600 dark:text-gray-400">
-                      {formatTime(slot.start_time)} - {formatTime(slot.end_time)}
+                      {formatTime(slot.start_time)} -{" "}
+                      {formatTime(slot.end_time)}
                     </p>
                   </div>
                 </div>
@@ -315,8 +332,12 @@ const CreateBooking: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-green-500" />
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">Status</p>
-                    <p className="text-green-600 dark:text-green-400">Available</p>
+                    <p className="font-medium text-gray-900 dark:text-white">
+                      Status
+                    </p>
+                    <p className="text-green-600 dark:text-green-400">
+                      Available
+                    </p>
                   </div>
                 </div>
               </div>
@@ -328,23 +349,39 @@ const CreateBooking: React.FC = () => {
                 <FileText className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                 Booking Information
               </h2>
-              
+
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Member:</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{user?.name}</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Member:
+                  </span>
+                  <span className="font-medium text-gray-900 dark:text-white">
+                    {user?.name}
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Email:</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{user?.email}</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Email:
+                  </span>
+                  <span className="font-medium text-gray-900 dark:text-white">
+                    {user?.email}
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Session Type:</span>
-                  <span className="font-medium text-gray-900 dark:text-white">1-on-1 Mentoring</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Session Type:
+                  </span>
+                  <span className="font-medium text-gray-900 dark:text-white">
+                    1-on-1 Mentoring
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Payment Status:</span>
-                  <span className="font-medium text-orange-600 dark:text-orange-400">Pending</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Payment Status:
+                  </span>
+                  <span className="font-medium text-orange-600 dark:text-orange-400">
+                    Pending
+                  </span>
                 </div>
               </div>
 
@@ -356,8 +393,9 @@ const CreateBooking: React.FC = () => {
                       Booking Process
                     </p>
                     <p className="text-blue-700 dark:text-blue-300">
-                      After you confirm this booking, your mentor will review and accept it. 
-                      You'll receive a notification once confirmed, and meeting details will be shared.
+                      After you confirm this booking, your mentor will review
+                      and accept it. You'll receive a notification once
+                      confirmed, and meeting details will be shared.
                     </p>
                   </div>
                 </div>
@@ -380,7 +418,7 @@ const CreateBooking: React.FC = () => {
                 className="flex-1"
                 disabled={bookingLoading}
               >
-                {bookingLoading ? 'Creating Booking...' : 'Confirm Booking'}
+                {bookingLoading ? "Creating Booking..." : "Confirm Booking"}
               </Button>
             </div>
           </div>

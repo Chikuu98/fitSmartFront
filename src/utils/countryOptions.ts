@@ -6,10 +6,12 @@ export interface CountryOption {
 }
 
 export const getCountryOptions = (): CountryOption[] => {
-  return countryList().getData().map((country: any) => ({
-    value: country.value,
-    label: country.label,
-  }));
+  return countryList()
+    .getData()
+    .map((country: any) => ({
+      value: country.value,
+      label: country.label,
+    }));
 };
 
 export const countryOptions = getCountryOptions();
