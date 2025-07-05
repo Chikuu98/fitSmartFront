@@ -57,11 +57,11 @@ const SearchForMentor: React.FC = () => {
     const filters: MentorListFilters = {};
 
     if (selectedCountry) {
-      filters.country = selectedCountry.label;
+      filters.country = selectedCountry.value;
     }
 
     if (selectedLanguage) {
-      filters.language = selectedLanguage.label;
+      filters.language = selectedLanguage.value;
     }
 
     fetchMentors(filters);
@@ -196,12 +196,12 @@ const SearchForMentor: React.FC = () => {
               </span>
               {selectedCountry && (
                 <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-sm rounded-full">
-                  {selectedCountry.label}
+                  {selectedCountry.value}
                 </span>
               )}
               {selectedLanguage && (
                 <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm rounded-full">
-                  {selectedLanguage.label}
+                  {selectedLanguage.value}
                 </span>
               )}
             </div>

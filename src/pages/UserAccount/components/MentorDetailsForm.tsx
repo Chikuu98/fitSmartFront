@@ -48,6 +48,7 @@ const MentorDetailsForm: React.FC<MentorDetailsFormProps> = ({
               }
               placeholder="e.g., Fitness and Nutrition Expert"
               size="md"
+              rounded="xl"
               required
             />
 
@@ -63,6 +64,7 @@ const MentorDetailsForm: React.FC<MentorDetailsFormProps> = ({
               }
               placeholder="e.g., +1234567890"
               size="md"
+              rounded="xl"
             />
           </div>
 
@@ -78,6 +80,7 @@ const MentorDetailsForm: React.FC<MentorDetailsFormProps> = ({
             }
             placeholder="Tell us about your experience and qualifications..."
             rows={4}
+            size="md"
           />
 
           <div className="flex justify-end">
