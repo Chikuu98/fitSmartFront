@@ -51,6 +51,7 @@ const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
               }
               placeholder="Enter your full name"
               size="md"
+              rounded="xl"
               required
             />
 
@@ -64,6 +65,7 @@ const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
               }
               placeholder="Enter your email"
               size="md"
+              rounded="xl"
               required
             />
 

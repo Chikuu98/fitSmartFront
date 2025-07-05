@@ -51,6 +51,7 @@ const CertificationItem: React.FC<CertificationItemProps> = ({
               setEditData((prev) => ({ ...prev, title: e.target.value }))
             }
             size="md"
+            rounded="xl"
             required
           />
           <FormInput
@@ -61,6 +62,7 @@ const CertificationItem: React.FC<CertificationItemProps> = ({
               setEditData((prev) => ({ ...prev, issuer: e.target.value }))
             }
             size="md"
+            rounded="xl"
             required
           />
           <FormInput
@@ -72,6 +74,7 @@ const CertificationItem: React.FC<CertificationItemProps> = ({
               setEditData((prev) => ({ ...prev, issue_date: e.target.value }))
             }
             size="md"
+            rounded="xl"
           />
         </div>
         <div className="flex space-x-2 mt-4">
@@ -188,6 +191,7 @@ const CertificationsSection: React.FC<CertificationsSectionProps> = ({
                 }
                 placeholder="Certification title"
                 size="md"
+                rounded="xl"
                 required
               />
               <FormInput
@@ -202,6 +206,7 @@ const CertificationsSection: React.FC<CertificationsSectionProps> = ({
                 }
                 placeholder="Issuing organization"
                 size="md"
+                rounded="xl"
                 required
               />
               <FormInput
@@ -216,6 +221,7 @@ const CertificationsSection: React.FC<CertificationsSectionProps> = ({
                   }))
                 }
                 size="md"
+                rounded="xl"
               />
             </div>
             <div className="flex space-x-2 mt-4">

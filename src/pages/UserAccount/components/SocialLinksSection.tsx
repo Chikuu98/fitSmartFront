@@ -50,6 +50,7 @@ const SocialLinkItem: React.FC<SocialLinkItemProps> = ({
               setEditData((prev) => ({ ...prev, platform: e.target.value }))
             }
             size="md"
+            rounded="xl"
             required
           />
           <FormInput
@@ -61,6 +62,7 @@ const SocialLinkItem: React.FC<SocialLinkItemProps> = ({
               setEditData((prev) => ({ ...prev, url: e.target.value }))
             }
             size="md"
+            rounded="xl"
             required
           />
         </div>
@@ -178,6 +180,7 @@ const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({
                 placeholder="e.g., LinkedIn, Instagram"
                 size="md"
                 required
+                rounded="xl"
               />
               <FormInput
                 label="URL"
@@ -190,6 +193,7 @@ const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({
                 placeholder="https://..."
                 size="md"
                 required
+                rounded="xl"
               />
             </div>
             <div className="flex space-x-2 mt-4">

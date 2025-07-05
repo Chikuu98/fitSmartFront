@@ -56,6 +56,7 @@ const MemberDetailsForm: React.FC<MemberDetailsFormProps> = ({
               }
               placeholder="Enter your age"
               size="md"
+              rounded="xl"
             />
 
             <FormInput
@@ -74,6 +75,7 @@ const MemberDetailsForm: React.FC<MemberDetailsFormProps> = ({
               }
               placeholder="Enter your height"
               size="md"
+              rounded="xl"
             />
 
             <FormInput
@@ -92,6 +94,7 @@ const MemberDetailsForm: React.FC<MemberDetailsFormProps> = ({
               }
               placeholder="Enter your weight"
               size="md"
+              rounded="xl"
             />
 
             <CustomSelect
@@ -122,6 +125,7 @@ const MemberDetailsForm: React.FC<MemberDetailsFormProps> = ({
               }
               placeholder="e.g., Lose weight, Build muscle"
               size="md"
+              rounded="xl"
             />
 
             <FormInput
@@ -136,6 +140,7 @@ const MemberDetailsForm: React.FC<MemberDetailsFormProps> = ({
               }
               placeholder="e.g., Vegetarian, Vegan"
               size="md"
+              rounded="xl"
             />
           </div>
 
