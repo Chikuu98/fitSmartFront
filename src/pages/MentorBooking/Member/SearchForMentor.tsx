@@ -239,10 +239,10 @@ const SearchForMentor: React.FC = () => {
               {filteredMentors.map((mentor) => (
                 <div
                   key={mentor.id}
-                  className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden"
+                  className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden flex flex-col h-full"
                 >
                   {/* Card Header */}
-                  <div className="p-6 pb-4">
+                  <div className="p-6 pb-4 flex-1">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center">
                         <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center">
@@ -308,7 +308,7 @@ const SearchForMentor: React.FC = () => {
                   </div>
 
                   {/* Card Footer */}
-                  <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700">
+                  <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700 mt-auto">
                     <div className="flex gap-2">
                       <Button
                         variant="orange"
