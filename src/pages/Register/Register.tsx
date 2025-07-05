@@ -42,16 +42,16 @@ const Register: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [memberErrors, setMemberErrors] = useState<{ [key: string]: string }>(
-    {},
+    {}
   );
   const [mentorErrors, setMentorErrors] = useState<{ [key: string]: string }>(
-    {},
+    {}
   );
   const [generalError, setGeneralError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleMemberChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setMemberData({ ...memberData, [e.target.name]: e.target.value });
     setMemberErrors({ ...memberErrors, [e.target.name]: "" });
@@ -60,7 +60,7 @@ const Register: React.FC = () => {
   const handleMentorChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    >
   ) => {
     setMentorData({ ...mentorData, [e.target.name]: e.target.value });
     setMentorErrors({ ...mentorErrors, [e.target.name]: "" });
@@ -99,7 +99,7 @@ const Register: React.FC = () => {
         const errorArr = err.response.data.validation_errors;
         const errorObj = errorArr.reduce(
           (acc: any, curr: any) => ({ ...acc, ...curr }),
-          {},
+          {}
         );
         setMemberErrors(errorObj);
       } else if (err?.response?.data?.message) {
@@ -136,7 +136,7 @@ const Register: React.FC = () => {
         const errorArr = err.response.data.validation_errors;
         const errorObj = errorArr.reduce(
           (acc: any, curr: any) => ({ ...acc, ...curr }),
-          {},
+          {}
         );
         setMentorErrors(errorObj);
       } else if (err?.response?.data?.message) {
@@ -205,6 +205,7 @@ const Register: React.FC = () => {
                     onChange={handleMemberChange}
                     required
                     error={memberErrors.name}
+                    rounded="xl"
                   />
                   <FormInput
                     label="Email"
@@ -215,6 +216,7 @@ const Register: React.FC = () => {
                     onChange={handleMemberChange}
                     required
                     error={memberErrors.email}
+                    rounded="xl"
                   />
                   <FormInput
                     label="Password"
@@ -225,6 +227,7 @@ const Register: React.FC = () => {
                     onChange={handleMemberChange}
                     required
                     error={memberErrors.password}
+                    rounded="xl"
                   />
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
@@ -245,7 +248,7 @@ const Register: React.FC = () => {
                       }))}
                       placeholder="Select Gender"
                       required
-                      height="1.5rem"
+                      height="1.75rem"
                       fontSize="0.75rem"
                     />
                     {memberErrors.gender && (
@@ -270,7 +273,7 @@ const Register: React.FC = () => {
                       options={countryOptions}
                       placeholder="Select Country"
                       required
-                      height="1.5rem"
+                      height="1.75rem"
                       fontSize="0.75rem"
                     />
                     {memberErrors.country && (
@@ -295,7 +298,7 @@ const Register: React.FC = () => {
                       options={languageOptions}
                       placeholder="Select Language"
                       required
-                      height="1.5rem"
+                      height="1.75rem"
                       fontSize="0.75rem"
                     />
                     {memberErrors.language && (
@@ -323,6 +326,7 @@ const Register: React.FC = () => {
                     value={memberData.age}
                     onChange={handleMemberChange}
                     error={memberErrors.age}
+                    rounded="xl"
                   />
                   <FormInput
                     label="Height (cm) (optional)"
@@ -332,6 +336,7 @@ const Register: React.FC = () => {
                     value={memberData.height}
                     onChange={handleMemberChange}
                     error={memberErrors.height}
+                    rounded="xl"
                   />
                   <FormInput
                     label="Weight (kg) (optional)"
@@ -341,6 +346,7 @@ const Register: React.FC = () => {
                     value={memberData.weight}
                     onChange={handleMemberChange}
                     error={memberErrors.weight}
+                    rounded="xl"
                   />
                   <FormInput
                     label="Goal (optional)"
@@ -350,6 +356,7 @@ const Register: React.FC = () => {
                     value={memberData.goal}
                     onChange={handleMemberChange}
                     error={memberErrors.goal}
+                    rounded="xl"
                   />
                   <FormInput
                     label="Dietary Preference (optional)"
@@ -359,6 +366,7 @@ const Register: React.FC = () => {
                     value={memberData.dietary_preference}
                     onChange={handleMemberChange}
                     error={memberErrors.dietary_preference}
+                    rounded="xl"
                   />
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
@@ -382,7 +390,7 @@ const Register: React.FC = () => {
                         { value: "advanced", label: "Advanced" },
                       ]}
                       placeholder="Select Fitness Level"
-                      height="1.5rem"
+                      height="1.75rem"
                       fontSize="0.75rem"
                     />
                     {memberErrors.fitness_level && (
@@ -430,6 +438,7 @@ const Register: React.FC = () => {
                     onChange={handleMentorChange}
                     required
                     error={mentorErrors.name}
+                    rounded="xl"
                   />
                   <FormInput
                     label="Email"
@@ -440,6 +449,7 @@ const Register: React.FC = () => {
                     onChange={handleMentorChange}
                     required
                     error={mentorErrors.email}
+                    rounded="xl"
                   />
                   <FormInput
                     label="Password"
@@ -450,6 +460,18 @@ const Register: React.FC = () => {
                     onChange={handleMentorChange}
                     required
                     error={mentorErrors.password}
+                    rounded="xl"
+                  />
+                  <FormInput
+                    label="Expertise"
+                    name="expertise"
+                    type="text"
+                    placeholder="Expertise"
+                    value={mentorData.expertise}
+                    onChange={handleMentorChange}
+                    required
+                    error={mentorErrors.expertise}
+                    rounded="xl"
                   />
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
@@ -470,7 +492,7 @@ const Register: React.FC = () => {
                       }))}
                       placeholder="Select Gender"
                       required
-                      height="1.5rem"
+                      height="1.75rem"
                       fontSize="0.75rem"
                     />
                     {mentorErrors.gender && (
@@ -479,16 +501,6 @@ const Register: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <FormInput
-                    label="Expertise"
-                    name="expertise"
-                    type="text"
-                    placeholder="Expertise"
-                    value={mentorData.expertise}
-                    onChange={handleMentorChange}
-                    required
-                    error={mentorErrors.expertise}
-                  />
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
                       Country <span className="text-red-500">*</span>
@@ -505,7 +517,7 @@ const Register: React.FC = () => {
                       options={countryOptions}
                       placeholder="Select Country"
                       required
-                      height="1.5rem"
+                      height="1.75rem"
                       fontSize="0.75rem"
                     />
                     {mentorErrors.country && (
@@ -530,7 +542,7 @@ const Register: React.FC = () => {
                       options={languageOptions}
                       placeholder="Select Language"
                       required
-                      height="1.5rem"
+                      height="1.75rem"
                       fontSize="0.75rem"
                     />
                     {mentorErrors.language && (
@@ -566,6 +578,7 @@ const Register: React.FC = () => {
                     value={mentorData.contact_number}
                     onChange={handleMentorChange}
                     error={mentorErrors.contact_number}
+                    rounded="xl"
                   />
                   <button
                     type="button"

@@ -27,7 +27,7 @@ interface CustomSelectProps {
 const customStyles = (
   height?: string,
   fontSize?: string,
-  isDark?: boolean,
+  isDark?: boolean
 ): StylesConfig<Option, false> => {
   return {
     control: (provided, state) => ({
@@ -36,6 +36,7 @@ const customStyles = (
       borderColor: state.isFocused ? "#fb923c" : isDark ? "#4b5563" : "#d1d5db",
       boxShadow: state.isFocused ? "0 0 0 2px #fb923c33" : "none",
       minHeight: height || "2.5rem",
+      height: height || "2.5rem",
       color: isDark ? "#f3f4f6" : "#1f2937", // Use consistent text colors
       fontSize: fontSize || "0.95rem",
       transition: "all 0.2s",
@@ -81,12 +82,14 @@ const customStyles = (
       ...provided,
       color: isDark ? "#f3f4f6" : "#1f2937", // Consistent with control text color
       fontSize: fontSize || "0.95rem",
+      padding: height && height === "1.75rem" ? "1px 1px 6px 1px" : "0 8px",
     }),
     placeholder: (provided) => ({
       ...provided,
       color: "#a3a3a3",
       fontStyle: "italic",
       fontSize: fontSize || "0.95rem",
+      padding: height && height === "1.75rem" ? "1px 1px 6px 1px" : "0 8px",
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
@@ -96,8 +99,8 @@ const customStyles = (
     clearIndicator: (provided) => ({
       ...provided,
       color: "#fb923c",
-      padding: "0 8px",
       cursor: "pointer",
+      padding: height && height === "1.75rem" ? "1px 1px 6px 1px" : "0 8px",
     }),
     menuPortal: (base) => ({ ...base, zIndex: 9999 }),
   };
@@ -175,7 +178,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   // Memoize styles to avoid recreating on every render
   const memoizedStyles = useMemo(
     () => customStyles(height, fontSize, isDark),
-    [height, fontSize, isDark],
+    [height, fontSize, isDark]
   );
 
   const memoizedTheme = useMemo(
@@ -200,7 +203,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         neutral90: isDark ? "#f3f4f6" : "#111827",
       },
     }),
-    [isDark],
+    [isDark]
   );
 
   return (
