@@ -62,6 +62,10 @@ const Header = () => {
         { label: "My Bookings", to: "/member/my-bookings" },
       ],
     },
+    {
+      title: "Community Forum",
+      link: "/community-forum",
+    },
   ];
 
   const mentorNavItems: NavItem[] = [

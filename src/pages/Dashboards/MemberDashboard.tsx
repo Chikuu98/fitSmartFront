@@ -99,7 +99,7 @@ const MemberDashboard: React.FC = () => {
         {/* Welcome Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Welcome back, {user?.name?.split(" ")[0] || "Member"}! 👋
+            Welcome back, {user?.name?.split(" ")[0] || "Member"}!
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
             Ready to continue your fitness journey? Here's your overview.
