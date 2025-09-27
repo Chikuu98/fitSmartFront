@@ -43,7 +43,7 @@ const Login = () => {
           with smart guidance.
         </p>
       </div>
-      <div className="w-full min-h-screen md:min-h-0 md:w-1/2 flex flex-col justify-center items-center p-6 md:p-12 bg-gray-50 dark:bg-gray-900">
+      <div className="w-full min-h-screen md:min-h-0 md:w-1/2 flex flex-col justify-center items-center p-6 md:p-12 bg-white dark:bg-gray-900">
         <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-gray-900/50 p-6 md:p-8 border border-gray-200 dark:border-gray-700 transition-colors">
           <h2 className="text-xl md:text-2xl font-bold mb-6 text-center text-blue-500 dark:text-blue-400">
             Login to FitSmart

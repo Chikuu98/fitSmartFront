@@ -50,6 +50,13 @@ const Header = () => {
 
   const adminNavItems: NavItem[] = [
     { title: "Dashboard", link: "/admin-dashboard" },
+    { title: "Community Master",
+      dropdown: true,
+      dropdownItems: [
+        { label: "Forum Types", to: "/admin/manage-forum-types" },
+        { label: "Forum Tags", to: "/admin/manage-forum-tags" },
+      ],
+    }
   ];
 
   const memberNavItems: NavItem[] = [
@@ -61,6 +68,10 @@ const Header = () => {
         { label: "Search Mentors", to: "/member/search-for-mentor" },
         { label: "My Bookings", to: "/member/my-bookings" },
       ],
+    },
+    {
+      title: "Community Forum",
+      link: "/community-forum",
     },
   ];
 
