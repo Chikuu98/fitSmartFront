@@ -18,6 +18,20 @@ export const getForumTags = async (page?: number, limit?: number): Promise<Forum
   }
 };
 
+export const searchForumTags = async (searchTerm: string, limit?: number): Promise<ForumTagListResponse> => {
+  try {
+    const params = new URLSearchParams();
+    params.append('search', searchTerm);
+    if (limit !== undefined) params.append('limit', limit.toString());
+    
+    const response = await axiosInstance.get<ForumTagListResponse>(`/forum-tags?${params.toString()}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error searching forum tags:", error);
+    throw error;
+  }
+};
+
 export const getForumTagById = async (id: number): Promise<ForumTag> => {
   try {
     const response = await axiosInstance.get<{ success: boolean; data: ForumTag }>(`/forum-tags/${id}`);

@@ -8,6 +8,7 @@ export interface User {
   gender: Gender;
   country: string;
   language: string;
+  profile_pic?: string; // Optional profile picture URL
   created_at: string;
   updated_at: string;
   memberDetail?: MemberDetail;
