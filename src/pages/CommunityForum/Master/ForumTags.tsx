@@ -6,7 +6,9 @@ import { DataTable, type Column } from "../../../components/ui/dataTable";
 import FormModal from "../../../components/ui/formModal";
 import FormInput from "../../../components/ui/formInput";
 import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
-import type { ForumTag } from "../../../interfaces/forumTag";
+import Pagination from "../../../components/ui/pagination";
+import { usePagination } from "../../../hooks/usePagination";
+import type { ForumTag } from "../../../interfaces";
 import {
   getForumTags,
   createForumTag,
@@ -27,19 +29,36 @@ const ForumTags: React.FC = () => {
   const [editingTag, setEditingTag] = useState<ForumTag | null>(null);
   const [formData, setFormData] = useState<FormData>({ name: "" });
   const [formErrors, setFormErrors] = useState<Partial<FormData>>({});
+  
+  // Pagination hook
+  const {
+    currentPage,
+    itemsPerPage,
+    pagination,
+    setPagination,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handlePrevPage,
+    handleNextPage,
+    resetToFirstPage,
+  } = usePagination({
+    initialPage: 1,
+    initialItemsPerPage: 6,
+  });
 
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
 
   useEffect(() => {
-    fetchForumTags();
-  }, []);
+    fetchForumTags(currentPage, itemsPerPage);
+  }, [currentPage, itemsPerPage]);
 
-  const fetchForumTags = async () => {
+  const fetchForumTags = async (page: number = currentPage, limit: number = itemsPerPage) => {
     try {
       setLoading(true);
       setError(null);
-      const data = await getForumTags();
-      setForumTags(data);
+      const response = await getForumTags(page, limit);
+      setForumTags(response.data);
+      setPagination(response.pagination);
     } catch (err) {
       console.error("Error fetching forum tags:", err);
       setError("Failed to load forum tags");
@@ -73,7 +92,12 @@ const ForumTags: React.FC = () => {
         close();
         try {
           await deleteForumTag(tag.id);
-          fetchForumTags();
+          // If we're on the last page and delete the last item, go back a page
+          if (forumTags.length === 1 && currentPage > 1) {
+            resetToFirstPage();
+          } else {
+            fetchForumTags(currentPage, itemsPerPage);
+          }
         } catch (err) {
           console.error("Error deleting forum tag:", err);
         }
@@ -128,7 +152,7 @@ const ForumTags: React.FC = () => {
       }
 
       setIsModalOpen(false);
-      fetchForumTags();
+      fetchForumTags(currentPage, itemsPerPage);
     } catch (err: any) {
       console.error("Error saving forum tag:", err);
       
@@ -219,7 +243,7 @@ const ForumTags: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                    {forumTags.length}
+                    {pagination.total}
                   </p>
                   <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Total Tags
@@ -258,11 +282,26 @@ const ForumTags: React.FC = () => {
           onAdd={handleAdd}
           onEdit={handleEdit}
           onDelete={handleDelete}
-          onRefresh={fetchForumTags}
+          onRefresh={() => fetchForumTags(currentPage, itemsPerPage)}
           addButtonText="Add Tag"
           emptyStateText="No Forum Tags"
           emptyStateDescription="Create your first tag to start organizing forum discussions."
           keyField="id"
+        />
+
+        {/* Pagination Controls */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={pagination.totalPages}
+          totalItems={pagination.total}
+          itemsPerPage={itemsPerPage}
+          hasNext={pagination.hasNext}
+          hasPrev={pagination.hasPrev}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+          onPrevPage={handlePrevPage}
+          onNextPage={handleNextPage}
+          className="mt-4"
         />
 
         {/* Form Modal */}

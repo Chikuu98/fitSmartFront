@@ -1,10 +1,17 @@
 import { axiosInstance } from "../axiosInstance";
-import type { ForumTag, ForumTagListResponse } from "../../interfaces/forumTag";
+import type { ForumTag, ForumTagListResponse } from "../../interfaces";
 
-export const getForumTags = async (): Promise<ForumTag[]> => {
+export const getForumTags = async (page?: number, limit?: number): Promise<ForumTagListResponse> => {
   try {
-    const response = await axiosInstance.get<ForumTagListResponse>("/forum-tags");
-    return response.data.data;
+    const params = new URLSearchParams();
+    if (page !== undefined) params.append('page', page.toString());
+    if (limit !== undefined) params.append('limit', limit.toString());
+    
+    const queryString = params.toString();
+    const url = queryString ? `/forum-tags?${queryString}` : '/forum-tags';
+    
+    const response = await axiosInstance.get<ForumTagListResponse>(url);
+    return response.data;
   } catch (error) {
     console.error("Error fetching forum tags:", error);
     throw error;

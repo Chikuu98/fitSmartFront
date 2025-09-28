@@ -192,7 +192,7 @@ export function DataTable<T extends Record<string, any>>({
                   {columns.map((column) => (
                     <td
                       key={String(column.key)}
-                      className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100"
+                      className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 truncate"
                     >
                       {column.render
                         ? column.render(item[column.key], item)
