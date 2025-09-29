@@ -212,13 +212,20 @@ const NewsFeed: React.FC = () => {
               Connect, share, and learn from the fitness community
             </p>
           </div>
-          <Button
-            variant="orange"
-            className="mt-4 sm:mt-0"
-            onClick={() => navigate("/community-forum/create-thread")}
-          >
-            New Thread
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
+            <Button
+              variant="outline"
+              onClick={() => navigate("/community-forum/my-threads")}
+            >
+              My Threads
+            </Button>
+            <Button
+              variant="orange"
+              onClick={() => navigate("/community-forum/create-thread")}
+            >
+              New Thread
+            </Button>
+          </div>
         </div>
 
         {/* Search and Filters */}

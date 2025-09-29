@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
-  Plus,
   Edit3,
   Trash2,
   Heart,
@@ -116,14 +115,20 @@ const MyThreads: React.FC = () => {
               Manage your community discussions
             </p>
           </div>
-          <Button
-            variant="orange"
-            className="mt-4 sm:mt-0"
-            onClick={() => navigate("/community-forum/create-thread")}
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            New Thread
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
+            <Button
+              variant="outline"
+              onClick={() => navigate("/community-forum")}
+            >
+              All Threads
+            </Button>
+            <Button
+              variant="orange"
+              onClick={() => navigate("/community-forum/create-thread")}
+            >
+              New Thread
+            </Button>
+          </div>
         </div>
 
         {/* Stats Overview */}
@@ -201,7 +206,6 @@ const MyThreads: React.FC = () => {
               variant="orange"
               onClick={() => navigate("/community-forum/create-thread")}
             >
-              <Plus className="w-4 h-4 mr-2" />
               Create First Thread
             </Button>
           </div>
