@@ -12,7 +12,7 @@ import {
   ChevronDown,
   X,
 } from "lucide-react";
-import { Button, FormInput, CustomSelect } from "../../components/ui";
+import { Button, FormInput, CustomSelect, Modal, CreateThreadModalContent, ThreadDetailsModalContent } from "../../components/ui";
 import { getForumThreads } from "../../api/endpoints/threads";
 import { getForumTags, searchForumTags } from "../../api/endpoints/forumTags";
 import { getForumTypes } from "../../api/endpoints/forumTypes";
@@ -43,6 +43,9 @@ const NewsFeed: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [expandedThread, setExpandedThread] = useState<number | null>(null);
   const [tagSearchTerm, setTagSearchTerm] = useState("");
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showThreadModal, setShowThreadModal] = useState(false);
+  const [selectedThreadId, setSelectedThreadId] = useState<number | null>(null);
 
   const {
     currentPage,
@@ -221,7 +224,7 @@ const NewsFeed: React.FC = () => {
             </Button>
             <Button
               variant="orange"
-              onClick={() => navigate("/community-forum/create-thread")}
+              onClick={() => setShowCreateModal(true)}
             >
               New Thread
             </Button>
@@ -394,7 +397,7 @@ const NewsFeed: React.FC = () => {
               </p>
               <Button
                 variant="orange"
-                onClick={() => navigate("/community-forum/create-thread")}
+                onClick={() => setShowCreateModal(true)}
               >
                 Create First Thread
               </Button>
@@ -423,7 +426,13 @@ const NewsFeed: React.FC = () => {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-1">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        <h3 
+                          className="text-lg font-semibold text-gray-900 dark:text-white hover:text-orange-600 dark:hover:text-orange-400 cursor-pointer transition-colors"
+                          onClick={() => {
+                            setSelectedThreadId(thread.id);
+                            setShowThreadModal(true);
+                          }}
+                        >
                           {thread.title}
                         </h3>
                         {thread.forumType && (
@@ -496,7 +505,10 @@ const NewsFeed: React.FC = () => {
                       <span>{thread.likeCount || 0}</span>
                     </button>
                     <button
-                      onClick={() => navigate(`/community-forum/thread/${thread.id}`)}
+                      onClick={() => {
+                        setSelectedThreadId(thread.id);
+                        setShowThreadModal(true);
+                      }}
                       className="flex items-center space-x-1 px-3 py-1 rounded-full text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
                       <MessageCircle className="w-4 h-4" />
@@ -505,7 +517,10 @@ const NewsFeed: React.FC = () => {
                   </div>
                   <Button
                     variant="ghost"
-                    onClick={() => navigate(`/community-forum/thread/${thread.id}`)}
+                    onClick={() => {
+                      setSelectedThreadId(thread.id);
+                      setShowThreadModal(true);
+                    }}
                   >
                     View Thread
                   </Button>
@@ -538,6 +553,62 @@ const NewsFeed: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Create Thread Modal */}
+      <Modal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        title="Create New Thread"
+        size="lg"
+      >
+        <CreateThreadModalContent
+          onClose={() => setShowCreateModal(false)}
+          onThreadCreated={(newThread) => {
+            // Add the new thread to the beginning of the list
+            setThreads(prev => [newThread, ...prev]);
+            // Update pagination total count
+            setPagination({
+              ...pagination,
+              total: pagination.total + 1
+            });
+          }}
+        />
+      </Modal>
+
+      {/* Thread Details Modal */}
+      <Modal
+        isOpen={showThreadModal}
+        onClose={() => {
+          setShowThreadModal(false);
+          setSelectedThreadId(null);
+        }}
+        size="xl"
+      >
+        {selectedThreadId && (
+          <ThreadDetailsModalContent
+            threadId={selectedThreadId}
+            onClose={() => {
+              setShowThreadModal(false);
+              setSelectedThreadId(null);
+            }}
+            onThreadDeleted={(deletedThreadId) => {
+              // Remove deleted thread from list
+              setThreads(prev => prev.filter(t => t.id !== deletedThreadId));
+              // Update pagination total count
+              setPagination({
+                ...pagination,
+                total: Math.max(pagination.total - 1, 0)
+              });
+            }}
+            onThreadUpdated={(updatedThread) => {
+              // Update thread in list (for like counts, etc.)
+              setThreads(prev => prev.map(t => 
+                t.id === updatedThread.id ? updatedThread : t
+              ));
+            }}
+          />
+        )}
+      </Modal>
     </div>
   );
 };

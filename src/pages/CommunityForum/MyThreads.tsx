@@ -12,7 +12,7 @@ import {
   Eye,
   MoreVertical,
 } from "lucide-react";
-import { Button } from "../../components/ui/button";
+import { Button, Modal, CreateThreadModalContent, ThreadDetailsModalContent } from "../../components/ui";
 import { getMyForumThreads, deleteForumThread } from "../../api/endpoints/threads";
 import type { ForumThread } from "../../interfaces";
 import type { RootState } from "../../store/store";
@@ -28,12 +28,16 @@ const MyThreads: React.FC = () => {
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [deleting, setDeleting] = useState<number | null>(null);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showThreadModal, setShowThreadModal] = useState(false);
+  const [selectedThreadId, setSelectedThreadId] = useState<number | null>(null);
 
   const {
     currentPage,
     pagination,
     handleNextPage,
     handlePrevPage,
+    setPagination,
   } = usePagination();
 
   useEffect(() => {
@@ -124,7 +128,7 @@ const MyThreads: React.FC = () => {
             </Button>
             <Button
               variant="orange"
-              onClick={() => navigate("/community-forum/create-thread")}
+              onClick={() => setShowCreateModal(true)}
             >
               New Thread
             </Button>
@@ -204,7 +208,7 @@ const MyThreads: React.FC = () => {
             </p>
             <Button
               variant="orange"
-              onClick={() => navigate("/community-forum/create-thread")}
+              onClick={() => setShowCreateModal(true)}
             >
               Create First Thread
             </Button>
@@ -265,7 +269,8 @@ const MyThreads: React.FC = () => {
                               <div className="py-1">
                                 <button
                                   onClick={() => {
-                                    navigate(`/community-forum/thread/${thread.id}`);
+                                    setSelectedThreadId(thread.id);
+                                    setShowThreadModal(true);
                                     setActiveDropdown(null);
                                   }}
                                   className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center"
@@ -338,7 +343,10 @@ const MyThreads: React.FC = () => {
                     
                     <Button
                       variant="ghost"
-                      onClick={() => navigate(`/community-forum/thread/${thread.id}`)}
+                      onClick={() => {
+                        setSelectedThreadId(thread.id);
+                        setShowThreadModal(true);
+                      }}
                     >
                       View Details
                     </Button>
@@ -412,6 +420,62 @@ const MyThreads: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Create Thread Modal */}
+      <Modal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        title="Create New Thread"
+        size="lg"
+      >
+        <CreateThreadModalContent
+          onClose={() => setShowCreateModal(false)}
+          onThreadCreated={(newThread) => {
+            // Add the new thread to the beginning of the list
+            setThreads(prev => [newThread, ...prev]);
+            // Update pagination total count
+            setPagination({
+              ...pagination,
+              total: pagination.total + 1
+            });
+          }}
+        />
+      </Modal>
+
+      {/* Thread Details Modal */}
+      <Modal
+        isOpen={showThreadModal}
+        onClose={() => {
+          setShowThreadModal(false);
+          setSelectedThreadId(null);
+        }}
+        size="xl"
+      >
+        {selectedThreadId && (
+          <ThreadDetailsModalContent
+            threadId={selectedThreadId}
+            onClose={() => {
+              setShowThreadModal(false);
+              setSelectedThreadId(null);
+            }}
+            onThreadDeleted={(deletedThreadId) => {
+              // Remove deleted thread from list
+              setThreads(prev => prev.filter(t => t.id !== deletedThreadId));
+              // Update pagination total count
+              setPagination({
+                ...pagination,
+                total: Math.max(pagination.total - 1, 0)
+              });
+            }}
+            onThreadUpdated={(updatedThread) => {
+              // Update thread in list (for like counts, etc.)
+              setThreads(prev => prev.map(t => 
+                t.id === updatedThread.id ? updatedThread : t
+              ));
+            }}
+          />
+        )}
+      </Modal>
     </div>
   );
 };
