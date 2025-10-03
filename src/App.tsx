@@ -24,6 +24,9 @@ import ProfileUpdate from "./pages/UserAccount/ProfileUpdate";
 import NewsFeed from "./pages/CommunityForum/NewsFeed";
 import ForumTypes from "./pages/CommunityForum/Master/ForumTypes";
 import ForumTags from "./pages/CommunityForum/Master/ForumTags";
+import CreateNewThread from "./pages/CommunityForum/CreateNewThread";
+import MyThreads from "./pages/CommunityForum/MyThreads";
+import ThreadDetails from "./pages/CommunityForum/ThreadDetails";
 
 function App() {
   return (
@@ -46,6 +49,10 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/account" element={<ProfileUpdate />} />
             <Route path="community-forum" element={<NewsFeed />} />
+            <Route path="/community-forum" element={<NewsFeed />} />
+            <Route path="/community-forum/create-thread" element={<CreateNewThread />} />
+            <Route path="/community-forum/my-threads" element={<MyThreads />} />
+            <Route path="/community-forum/thread/:threadId" element={<ThreadDetails />} />
           </Route>
         </Route>
 

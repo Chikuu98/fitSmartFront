@@ -71,7 +71,12 @@ const Header = () => {
     },
     {
       title: "Community Forum",
-      link: "/community-forum",
+      dropdown: true,
+      dropdownItems: [
+        { label: "All Threads", to: "/community-forum" },
+        { label: "My Threads", to: "/community-forum/my-threads" },
+        { label: "Create Thread", to: "/community-forum/create-thread" },
+      ],
     },
   ];
 
@@ -88,6 +93,15 @@ const Header = () => {
       dropdownItems: [
         { label: "Create Slot", to: "/mentor/create-slot" },
         { label: "Available Slots", to: "/mentor/my-slots" },
+      ],
+    },
+    {
+      title: "Community Forum",
+      dropdown: true,
+      dropdownItems: [
+        { label: "All Threads", to: "/community-forum" },
+        { label: "My Threads", to: "/community-forum/my-threads" },
+        { label: "Create Thread", to: "/community-forum/create-thread" },
       ],
     },
   ];

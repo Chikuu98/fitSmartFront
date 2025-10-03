@@ -1,3 +1,5 @@
+import type { PaginatedResponse } from './pagination';
+
 export interface ForumTag {
   id: number;
   name: string;
@@ -5,7 +7,4 @@ export interface ForumTag {
   updated_at: string;
 }
 
-export interface ForumTagListResponse {
-  success: boolean;
-  data: ForumTag[];
-}
+export interface ForumTagListResponse extends PaginatedResponse<ForumTag> {}
