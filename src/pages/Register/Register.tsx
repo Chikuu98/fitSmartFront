@@ -228,6 +228,7 @@ const Register: React.FC = () => {
                     required
                     error={memberErrors.password}
                     rounded="xl"
+                    showPasswordToggle={true}
                   />
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
@@ -461,6 +462,7 @@ const Register: React.FC = () => {
                     required
                     error={mentorErrors.password}
                     rounded="xl"
+                    showPasswordToggle={true}
                   />
                   <FormInput
                     label="Expertise"

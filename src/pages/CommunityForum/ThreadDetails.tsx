@@ -8,7 +8,6 @@ import {
   User,
   Clock,
   Tag,
-  Edit3,
   Trash2,
   MoreVertical,
   AlertCircle,
@@ -308,16 +307,6 @@ const ThreadDetails: React.FC = () => {
               {showDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 z-10">
                   <div className="py-1">
-                    <button
-                      onClick={() => {
-                        navigate(`/community-forum/edit-thread/${thread.id}`);
-                        setShowDropdown(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center"
-                    >
-                      <Edit3 className="w-4 h-4 mr-2" />
-                      Edit Thread
-                    </button>
                     <button
                       onClick={() => {
                         setDeleteConfirm(true);

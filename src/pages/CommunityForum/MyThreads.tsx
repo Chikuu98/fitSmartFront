@@ -108,27 +108,29 @@ const MyThreads: React.FC = () => {
 
   return (
     <div className="min-h-screen transition-colors bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
+          <div className="w-full sm:w-auto">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
               My Threads
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               Manage your community discussions
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
+          <div className="flex flex-row w-full sm:w-auto gap-2">
             <Button
               variant="outline"
               onClick={() => navigate("/community-forum")}
+              className="flex-1 sm:flex-none text-sm sm:text-base"
             >
               All Threads
             </Button>
             <Button
               variant="orange"
               onClick={() => setShowCreateModal(true)}
+              className="flex-1 sm:flex-none text-sm sm:text-base"
             >
               New Thread
             </Button>
@@ -136,56 +138,42 @@ const MyThreads: React.FC = () => {
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 sm:p-4">
             <div className="flex items-center">
               <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                <MessageCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
               </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Threads</p>
-                <p className="text-lg font-semibold text-gray-900 dark:text-white">{threads.length}</p>
+              <div className="ml-2 sm:ml-3">
+                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Total Threads</p>
+                <p className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">{threads.length}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 sm:p-4">
             <div className="flex items-center">
               <div className="p-2 bg-red-100 dark:bg-red-900 rounded-lg">
-                <Heart className="w-5 h-5 text-red-600 dark:text-red-400" />
+                <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 dark:text-red-400" />
               </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Likes</p>
-                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+              <div className="ml-2 sm:ml-3">
+                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Total Likes</p>
+                <p className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
                   {threads.reduce((sum, thread) => sum + (thread.likeCount || 0), 0)}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 sm:p-4">
             <div className="flex items-center">
               <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
-                <MessageCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-400" />
               </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Replies</p>
-                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+              <div className="ml-2 sm:ml-3">
+                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Total Replies</p>
+                <p className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
                   {threads.reduce((sum, thread) => sum + (thread.replyCount || 0), 0)}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
-            <div className="flex items-center">
-              <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-                <Eye className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-              </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Threads</p>
-                <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {threads.filter(thread => (thread.replyCount || 0) > 0).length}
                 </p>
               </div>
             </div>
@@ -198,17 +186,18 @@ const MyThreads: React.FC = () => {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
           </div>
         ) : !Array.isArray(threads) || threads.length === 0 ? (
-          <div className="text-center py-12">
-            <MessageCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          <div className="text-center py-8 sm:py-12 px-4">
+            <MessageCircle className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-3 sm:mb-4" />
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-2">
               No threads yet
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4">
               Start engaging with the community by creating your first thread!
             </p>
             <Button
               variant="orange"
               onClick={() => setShowCreateModal(true)}
+              className="text-sm sm:text-base"
             >
               Create First Thread
             </Button>
@@ -222,25 +211,25 @@ const MyThreads: React.FC = () => {
               return (
                 <div
                   key={thread.id}
-                  className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
+                  className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow"
                 >
                   {/* Thread Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  <div className="flex items-start justify-between mb-3 sm:mb-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2 break-words">
                             {thread.title}
                           </h3>
-                          <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400 mb-2">
-                            <span className="flex items-center">
-                              <Clock className="w-4 h-4 mr-1" />
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            <span className="flex items-center whitespace-nowrap">
+                              <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                               {formatRelativeTime(thread.created_at)}
                             </span>
                             {thread.updated_at !== thread.created_at && (
-                              <span className="flex items-center">
-                                <Edit3 className="w-4 h-4 mr-1" />
-                                Updated {formatRelativeTime(thread.updated_at)}
+                              <span className="flex items-center whitespace-nowrap">
+                                <Edit3 className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                                <span className="hidden sm:inline">Updated </span>{formatRelativeTime(thread.updated_at)}
                               </span>
                             )}
                             {thread.forumType && (
@@ -252,13 +241,13 @@ const MyThreads: React.FC = () => {
                         </div>
                         
                         {/* Thread Actions Dropdown */}
-                        <div className="relative">
+                        <div className="relative flex-shrink-0">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               setActiveDropdown(activeDropdown === thread.id ? null : thread.id);
                             }}
-                            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                            className="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
                             disabled={isDeleting}
                           >
                             <MoreVertical className="w-4 h-4" />
@@ -280,16 +269,6 @@ const MyThreads: React.FC = () => {
                                 </button>
                                 <button
                                   onClick={() => {
-                                    navigate(`/community-forum/edit-thread/${thread.id}`);
-                                    setActiveDropdown(null);
-                                  }}
-                                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center"
-                                >
-                                  <Edit3 className="w-4 h-4 mr-2" />
-                                  Edit Thread
-                                </button>
-                                <button
-                                  onClick={() => {
                                     setDeleteConfirm(thread.id);
                                     setActiveDropdown(null);
                                   }}
@@ -307,15 +286,15 @@ const MyThreads: React.FC = () => {
                   </div>
 
                   {/* Thread Content Preview */}
-                  <div className="mb-4">
-                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <div className="mb-3 sm:mb-4">
+                    <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed break-words">
                       {truncateContent(thread.content)}
                     </p>
                   </div>
 
                   {/* Tags */}
                   {thread.tags && thread.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                       {thread.tags.map(tag => (
                         <span
                           key={tag.id}
@@ -329,14 +308,14 @@ const MyThreads: React.FC = () => {
                   )}
 
                   {/* Thread Stats */}
-                  <div className="flex items-center justify-between pt-4 border-t dark:border-gray-700">
-                    <div className="flex items-center space-x-6">
-                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                        <Heart className="w-4 h-4 mr-1" />
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 sm:pt-4 border-t dark:border-gray-700">
+                    <div className="flex items-center gap-4 sm:gap-6">
+                      <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                        <Heart className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                         <span>{stats.likes} likes</span>
                       </div>
-                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                        <MessageCircle className="w-4 h-4 mr-1" />
+                      <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                        <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                         <span>{stats.replies} replies</span>
                       </div>
                     </div>
@@ -347,6 +326,7 @@ const MyThreads: React.FC = () => {
                         setSelectedThreadId(thread.id);
                         setShowThreadModal(true);
                       }}
+                      className="w-full sm:w-auto text-sm"
                     >
                       View Details
                     </Button>
@@ -354,21 +334,22 @@ const MyThreads: React.FC = () => {
 
                   {/* Delete Confirmation */}
                   {deleteConfirm === thread.id && (
-                    <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                    <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
                       <div className="flex items-start">
-                        <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 mr-2 mt-0.5" />
-                        <div className="flex-1">
-                          <h4 className="text-sm font-medium text-red-800 dark:text-red-200 mb-2">
+                        <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 dark:text-red-400 mr-2 mt-0.5 flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-xs sm:text-sm font-medium text-red-800 dark:text-red-200 mb-2">
                             Delete Thread
                           </h4>
-                          <p className="text-sm text-red-700 dark:text-red-300 mb-3">
+                          <p className="text-xs sm:text-sm text-red-700 dark:text-red-300 mb-3">
                             Are you sure you want to delete this thread? This action cannot be undone.
                           </p>
-                          <div className="flex space-x-3">
+                          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                             <Button
                               variant="red"
                               onClick={() => handleDeleteThread(thread.id)}
                               disabled={isDeleting}
+                              className="text-sm w-full sm:w-auto"
                             >
                               {isDeleting ? (
                                 <>
@@ -383,6 +364,7 @@ const MyThreads: React.FC = () => {
                               variant="outline"
                               onClick={() => setDeleteConfirm(null)}
                               disabled={isDeleting}
+                              className="text-sm w-full sm:w-auto"
                             >
                               Cancel
                             </Button>
@@ -399,21 +381,24 @@ const MyThreads: React.FC = () => {
 
         {/* Pagination */}
         {!loading && threads.length > 0 && (
-          <div className="flex justify-center items-center space-x-4 mt-8">
+          <div className="flex justify-center items-center gap-2 sm:gap-4 mt-6 sm:mt-8">
             <Button
               variant="outline"
               onClick={handlePrevPage}
               disabled={!pagination.hasPrev}
+              className="text-sm px-3 sm:px-4"
             >
-              Previous
+              <span className="hidden sm:inline">Previous</span>
+              <span className="sm:hidden">Prev</span>
             </Button>
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
               Page {currentPage} of {pagination.totalPages}
             </span>
             <Button
               variant="outline"
               onClick={handleNextPage}
               disabled={!pagination.hasNext}
+              className="text-sm px-3 sm:px-4"
             >
               Next
             </Button>
@@ -448,6 +433,8 @@ const MyThreads: React.FC = () => {
         onClose={() => {
           setShowThreadModal(false);
           setSelectedThreadId(null);
+          // Refetch to ensure list is up to date
+          fetchMyThreads();
         }}
         size="xl"
       >
@@ -457,6 +444,8 @@ const MyThreads: React.FC = () => {
             onClose={() => {
               setShowThreadModal(false);
               setSelectedThreadId(null);
+              // Refetch threads to get updated data
+              fetchMyThreads();
             }}
             onThreadDeleted={(deletedThreadId) => {
               // Remove deleted thread from list

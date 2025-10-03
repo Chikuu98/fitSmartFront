@@ -10,13 +10,17 @@ import {
   Trash2,
   MoreVertical,
   AlertCircle,
+  X,
+  Check,
 } from "lucide-react";
 import { Button } from "./button";
+import { FormInput, TextAreaInput } from "./";
 import ReplyItem from "./ReplyItem";
 import ReplyForm from "./ReplyForm";
 import { 
   getForumThreadById, 
-  deleteForumThread 
+  deleteForumThread,
+  updateForumThread
 } from "../../api/endpoints/threads";
 import { getForumRepliesByThreadId } from "../../api/endpoints/forumReplies";
 import { toggleForumLike } from "../../api/endpoints/forumLikes";
@@ -51,6 +55,11 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [replyingTo, setReplyingTo] = useState<ForumReply | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
+  const [editContent, setEditContent] = useState("");
+  const [editLoading, setEditLoading] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
 
   const isOwner = user?.id === thread?.user_id;
 
@@ -119,6 +128,80 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
     } finally {
       setDeleting(false);
       setDeleteConfirm(false);
+    }
+  };
+
+  const handleEditClick = () => {
+    if (!thread) return;
+    setEditTitle(thread.title);
+    setEditContent(thread.content);
+    setIsEditing(true);
+    setShowDropdown(false);
+    setEditError(null);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditTitle("");
+    setEditContent("");
+    setEditError(null);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!thread) return;
+
+    // Validation
+    if (!editTitle.trim()) {
+      setEditError("Title is required");
+      return;
+    }
+    if (editTitle.length < 5) {
+      setEditError("Title must be at least 5 characters long");
+      return;
+    }
+    if (!editContent.trim()) {
+      setEditError("Content is required");
+      return;
+    }
+    if (editContent.length < 10) {
+      setEditError("Content must be at least 10 characters long");
+      return;
+    }
+
+    setEditLoading(true);
+    setEditError(null);
+    try {
+      const updatedThreadData = await updateForumThread(thread.id, {
+        title: editTitle.trim(),
+        content: editContent.trim(),
+      });
+      
+      console.log("Updated thread data from API:", updatedThreadData);
+      
+      // Preserve nested relationships (user, tags, forumType) from original thread
+      const updatedThread = {
+        ...thread,
+        ...updatedThreadData,
+        user: thread.user, // Preserve user object
+        tags: thread.tags, // Preserve tags array
+        forumType: thread.forumType, // Preserve forumType object
+        updated_at: new Date().toISOString(), // Update timestamp
+      };
+      
+      console.log("Merged thread object:", updatedThread);
+      
+      setThread(updatedThread);
+      onThreadUpdated(updatedThread);
+      setIsEditing(false);
+      
+      // Close the modal after successful update
+      onClose();
+    } catch (error: any) {
+      console.error("Error updating thread:", error);
+      console.error("Error response:", error.response);
+      setEditError(error.response?.data?.message || "Failed to update thread");
+    } finally {
+      setEditLoading(false);
     }
   };
 
@@ -309,7 +392,7 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
             <div className="flex-1 min-w-0">
               <div className="flex items-center space-x-2 mb-1">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white break-words">
-                  {thread.title}
+                  {isEditing ? editTitle || thread.title : thread.title}
                 </h2>
                 {thread.forumType && (
                   <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full">
@@ -344,10 +427,7 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 z-20">
                   <div className="py-1">
                     <button
-                      onClick={() => {
-                        // TODO: Implement edit functionality in modal
-                        setShowDropdown(false);
-                      }}
+                      onClick={handleEditClick}
                       className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center"
                     >
                       <Edit3 className="w-4 h-4 mr-2" />
@@ -371,11 +451,69 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
         </div>
 
         {/* Thread Content */}
-        <div className="mb-3">
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
-            {thread.content}
-          </p>
-        </div>
+        {isEditing ? (
+          <div className="space-y-3 mb-3">
+            {editError && (
+              <div className="p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded">
+                <p className="text-sm text-red-700 dark:text-red-300">{editError}</p>
+              </div>
+            )}
+            <FormInput
+              label="Title"
+              name="editTitle"
+              type="text"
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+              placeholder="Thread title..."
+              size="sm"
+              rounded="md"
+            />
+            <TextAreaInput
+              label="Content"
+              name="editContent"
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              placeholder="Thread content..."
+              rows={6}
+              size="sm"
+            />
+            <div className="flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={handleCancelEdit}
+                disabled={editLoading}
+                className="text-xs px-3 py-1 flex items-center"
+              >
+                <X className="w-3 h-3 mr-1" />
+                Cancel
+              </Button>
+              <Button
+                variant="orange"
+                onClick={handleSaveEdit}
+                disabled={editLoading}
+                className="text-xs px-3 py-1 flex items-center"
+              >
+                {editLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-1"></div>
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Check className="w-3 h-3 mr-1" />
+                    Save
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="mb-3">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+              {thread.content}
+            </p>
+          </div>
+        )}
 
         {/* Tags */}
         {thread.tags && thread.tags.length > 0 && (

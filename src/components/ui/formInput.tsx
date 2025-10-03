@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 interface FormInputProps {
   label: string;
@@ -15,6 +16,7 @@ interface FormInputProps {
   size?: "sm" | "md" | "lg";
   rounded?: "sm" | "md" | "lg" | "xl";
   step?: string;
+  showPasswordToggle?: boolean;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -32,7 +34,20 @@ const FormInput: React.FC<FormInputProps> = ({
   size = "sm",
   rounded = "sm",
   step,
+  showPasswordToggle = false,
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  // Determine the actual input type
+  const inputType = showPasswordToggle && type === "password" 
+    ? (showPassword ? "text" : "password")
+    : type;
+
   // Size classes
   const sizeClasses = {
     sm: "p-1 text-xs",
@@ -55,6 +70,13 @@ const FormInput: React.FC<FormInputProps> = ({
     lg: "text-base",
   };
 
+  // Icon size based on input size
+  const iconSize = {
+    sm: 14,
+    md: 16,
+    lg: 18,
+  };
+
   return (
     <div className={`mb-2 ${className}`}>
       <label
@@ -69,7 +91,7 @@ const FormInput: React.FC<FormInputProps> = ({
           </div>
         )}
         <input
-          type={type}
+          type={inputType}
           name={name}
           placeholder={placeholder}
           value={value}
@@ -81,8 +103,22 @@ const FormInput: React.FC<FormInputProps> = ({
             type === "url"
               ? "text-blue-700 dark:text-blue-300"
               : "text-gray-900 dark:text-gray-100"
-          } placeholder-gray-500 dark:placeholder-gray-400 focus:ring-1 focus:ring-orange-500 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${icon ? "pl-8" : ""}`}
+          } placeholder-gray-500 dark:placeholder-gray-400 focus:ring-1 focus:ring-orange-500 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${icon ? "pl-8" : ""} ${showPasswordToggle ? "pr-8" : ""}`}
         />
+        {showPasswordToggle && type === "password" && (
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none transition-colors"
+            tabIndex={-1}
+          >
+            {showPassword ? (
+              <EyeOff size={iconSize[size]} />
+            ) : (
+              <Eye size={iconSize[size]} />
+            )}
+          </button>
+        )}
       </div>
       {error && (
         <div

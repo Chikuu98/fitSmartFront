@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Heart, MessageSquare, User, Clock, MoreVertical, Edit3, Trash2 } from "lucide-react";
+import { Heart, MessageSquare, User, Clock, MoreVertical, Edit3, Trash2, X, Check } from "lucide-react";
 import { Button } from "../../components/ui/button";
+import { TextAreaInput } from "../../components/ui";
 import { toggleForumLike } from "../../api/endpoints/forumLikes";
-import { deleteForumReply } from "../../api/endpoints/forumReplies";
+import { deleteForumReply, updateForumReply } from "../../api/endpoints/forumReplies";
 import type { ForumReply, User as UserType } from "../../interfaces";
 import { formatRelativeTime } from "../../utils";
 
@@ -27,6 +28,10 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
   const [likeLoading, setLikeLoading] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState("");
+  const [editLoading, setEditLoading] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
 
   const isOwner = currentUser?.id === reply.user_id;
   const maxNestingLevel = 3;
@@ -64,6 +69,46 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
     } finally {
       setDeleting(false);
       setDeleteConfirm(false);
+    }
+  };
+
+  const handleEditClick = () => {
+    setEditContent(reply.content);
+    setIsEditing(true);
+    setShowDropdown(false);
+    setEditError(null);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditContent("");
+    setEditError(null);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editContent.trim()) {
+      setEditError("Content is required");
+      return;
+    }
+    if (editContent.length < 3) {
+      setEditError("Content must be at least 3 characters long");
+      return;
+    }
+
+    setEditLoading(true);
+    setEditError(null);
+    try {
+      const updatedReply = await updateForumReply(reply.id, {
+        content: editContent.trim(),
+      });
+      
+      onReplyUpdate(updatedReply);
+      setIsEditing(false);
+    } catch (error: any) {
+      console.error("Error updating reply:", error);
+      setEditError(error.response?.data?.message || "Failed to update reply");
+    } finally {
+      setEditLoading(false);
     }
   };
 
@@ -138,10 +183,7 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
                     {isOwner && (
                       <>
                         <button
-                          onClick={() => {
-                            // Handle edit functionality
-                            setShowDropdown(false);
-                          }}
+                          onClick={handleEditClick}
                           className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center"
                         >
                           <Edit3 className="w-3 h-3 mr-2" />
@@ -167,11 +209,59 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
         </div>
 
         {/* Reply Content */}
-        <div className="mb-3">
-          <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-            {reply.content}
-          </p>
-        </div>
+        {isEditing ? (
+          <div className="mb-3 space-y-2">
+            {editError && (
+              <div className="p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded">
+                <p className="text-xs text-red-700 dark:text-red-300">{editError}</p>
+              </div>
+            )}
+            <TextAreaInput
+              label=""
+              name="editContent"
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              placeholder="Reply content..."
+              rows={3}
+              size="sm"
+            />
+            <div className="flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={handleCancelEdit}
+                disabled={editLoading}
+                className="text-xs px-2 py-1 flex items-center"
+              >
+                <X className="w-3 h-3 mr-1" />
+                Cancel
+              </Button>
+              <Button
+                variant="orange"
+                onClick={handleSaveEdit}
+                disabled={editLoading}
+                className="text-xs px-2 py-1 flex items-center"
+              >
+                {editLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-1"></div>
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Check className="w-3 h-3 mr-1" />
+                    Save
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="mb-3">
+            <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+              {reply.content}
+            </p>
+          </div>
+        )}
 
         {/* Reply Actions */}
         <div className="flex items-center space-x-4">

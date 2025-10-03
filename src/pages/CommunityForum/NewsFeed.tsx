@@ -204,27 +204,29 @@ const NewsFeed: React.FC = () => {
 
   return (
     <div className="min-h-screen transition-colors bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
+          <div className="w-full sm:w-auto">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
               Community Forum
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               Connect, share, and learn from the fitness community
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
+          <div className="flex flex-row w-full sm:w-auto gap-2">
             <Button
               variant="outline"
               onClick={() => navigate("/community-forum/my-threads")}
+              className="flex-1 sm:flex-none text-sm sm:text-base"
             >
               My Threads
             </Button>
             <Button
               variant="orange"
               onClick={() => setShowCreateModal(true)}
+              className="flex-1 sm:flex-none text-sm sm:text-base"
             >
               New Thread
             </Button>
@@ -232,8 +234,8 @@ const NewsFeed: React.FC = () => {
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
-          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
+          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-4">
             <div className="flex-1">
               <FormInput
                 label=""
@@ -247,18 +249,20 @@ const NewsFeed: React.FC = () => {
                 className="mb-0"
               />
             </div>
-            <Button type="submit" variant="orange">
-              Search
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="flex items-center justify-center"
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              Filters
-              <ChevronDown className={`w-4 h-4 ml-2 transform transition-transform ${showFilters ? 'rotate-180' : ''}`} />
-            </Button>
+            <div className="flex gap-2">
+              <Button type="submit" variant="orange" className="flex-1 sm:flex-none text-sm sm:text-base">
+                Search
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="flex-1 sm:flex-none flex items-center justify-center text-sm sm:text-base"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                Filters
+                <ChevronDown className={`w-4 h-4 ml-2 transform transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+              </Button>
+            </div>
           </form>
 
           {/* Filters Panel */}
@@ -406,28 +410,28 @@ const NewsFeed: React.FC = () => {
             Array.isArray(threads) && threads.map(thread => (
               <div
                 key={thread.id}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow"
               >
                 {/* Thread Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-start space-x-3 flex-1">
+                <div className="flex items-start justify-between mb-3 sm:mb-4">
+                  <div className="flex items-start space-x-2 sm:space-x-3 flex-1">
                     <div className="flex-shrink-0">
                       {thread.user?.profile_pic ? (
                         <img
                           src={thread.user.profile_pic}
                           alt={thread.user.name}
-                          className="w-10 h-10 rounded-full object-cover"
+                          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
                         />
                       ) : (
-                        <div className="w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
-                          <User className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                          <User className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400" />
                         </div>
                       )}
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-1">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
                         <h3 
-                          className="text-lg font-semibold text-gray-900 dark:text-white hover:text-orange-600 dark:hover:text-orange-400 cursor-pointer transition-colors"
+                          className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white hover:text-orange-600 dark:hover:text-orange-400 cursor-pointer transition-colors break-words"
                           onClick={() => {
                             setSelectedThreadId(thread.id);
                             setShowThreadModal(true);
@@ -436,18 +440,18 @@ const NewsFeed: React.FC = () => {
                           {thread.title}
                         </h3>
                         {thread.forumType && (
-                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full">
+                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full inline-block w-fit">
                             {thread.forumType.title}
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                         <span className="flex items-center">
-                          <User className="w-4 h-4 mr-1" />
-                          {thread.user?.name || 'Anonymous'}
+                          <User className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                          <span className="truncate max-w-[120px] sm:max-w-none">{thread.user?.name || 'Anonymous'}</span>
                         </span>
                         <span className="flex items-center">
-                          <Clock className="w-4 h-4 mr-1" />
+                          <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                           {formatRelativeTime(thread.created_at)}
                         </span>
                       </div>
@@ -456,8 +460,8 @@ const NewsFeed: React.FC = () => {
                 </div>
 
                 {/* Thread Content */}
-                <div className="mb-4">
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                <div className="mb-3 sm:mb-4">
+                  <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed break-words">
                     {expandedThread === thread.id
                       ? thread.content
                       : truncateContent(thread.content)
@@ -468,7 +472,7 @@ const NewsFeed: React.FC = () => {
                       onClick={() => setExpandedThread(
                         expandedThread === thread.id ? null : thread.id
                       )}
-                      className="mt-2 text-orange-600 dark:text-orange-400 text-sm hover:underline"
+                      className="mt-2 text-orange-600 dark:text-orange-400 text-xs sm:text-sm hover:underline"
                     >
                       {expandedThread === thread.id ? 'Show less' : 'Read more'}
                     </button>
@@ -477,7 +481,7 @@ const NewsFeed: React.FC = () => {
 
                 {/* Tags */}
                 {thread.tags && thread.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                     {thread.tags.map(tag => (
                       <span
                         key={tag.id}
@@ -491,17 +495,17 @@ const NewsFeed: React.FC = () => {
                 )}
 
                 {/* Thread Actions */}
-                <div className="flex items-center justify-between pt-4 border-t dark:border-gray-700">
-                  <div className="flex items-center space-x-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 sm:pt-4 border-t dark:border-gray-700">
+                  <div className="flex items-center gap-2 sm:gap-4">
                     <button
                       onClick={() => handleLikeToggle(thread.id)}
-                      className={`flex items-center space-x-1 px-3 py-1 rounded-full text-sm transition-colors ${
+                      className={`flex items-center space-x-1 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm transition-colors ${
                         thread.isLikedByCurrentUser
                           ? 'bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400'
                           : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                       }`}
                     >
-                      <Heart className={`w-4 h-4 ${thread.isLikedByCurrentUser ? 'fill-current' : ''}`} />
+                      <Heart className={`w-3 h-3 sm:w-4 sm:h-4 ${thread.isLikedByCurrentUser ? 'fill-current' : ''}`} />
                       <span>{thread.likeCount || 0}</span>
                     </button>
                     <button
@@ -509,9 +513,9 @@ const NewsFeed: React.FC = () => {
                         setSelectedThreadId(thread.id);
                         setShowThreadModal(true);
                       }}
-                      className="flex items-center space-x-1 px-3 py-1 rounded-full text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      className="flex items-center space-x-1 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
-                      <MessageCircle className="w-4 h-4" />
+                      <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                       <span>{thread.replyCount || 0}</span>
                     </button>
                   </div>
@@ -521,6 +525,7 @@ const NewsFeed: React.FC = () => {
                       setSelectedThreadId(thread.id);
                       setShowThreadModal(true);
                     }}
+                    className="w-full sm:w-auto text-sm"
                   >
                     View Thread
                   </Button>
@@ -532,21 +537,24 @@ const NewsFeed: React.FC = () => {
 
         {/* Pagination */}
         {!loading && threads.length > 0 && (
-          <div className="flex justify-center items-center space-x-4 mt-8">
+          <div className="flex justify-center items-center gap-2 sm:gap-4 mt-6 sm:mt-8">
             <Button
               variant="outline"
               onClick={handlePrevPage}
               disabled={!pagination.hasPrev}
+              className="text-sm px-3 sm:px-4"
             >
-              Previous
+              <span className="hidden sm:inline">Previous</span>
+              <span className="sm:hidden">Prev</span>
             </Button>
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
               Page {currentPage} of {pagination.totalPages}
             </span>
             <Button
               variant="outline"
               onClick={handleNextPage}
               disabled={!pagination.hasNext}
+              className="text-sm px-3 sm:px-4"
             >
               Next
             </Button>
@@ -581,6 +589,8 @@ const NewsFeed: React.FC = () => {
         onClose={() => {
           setShowThreadModal(false);
           setSelectedThreadId(null);
+          // Refetch to ensure list is up to date
+          fetchThreads();
         }}
         size="xl"
       >
@@ -590,6 +600,8 @@ const NewsFeed: React.FC = () => {
             onClose={() => {
               setShowThreadModal(false);
               setSelectedThreadId(null);
+              // Refetch threads to get updated data
+              fetchThreads();
             }}
             onThreadDeleted={(deletedThreadId) => {
               // Remove deleted thread from list
