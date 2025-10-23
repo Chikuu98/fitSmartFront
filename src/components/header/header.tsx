@@ -78,6 +78,14 @@ const Header = () => {
         { label: "Create Thread", to: "/community-forum/create-thread" },
       ],
     },
+    {
+      title: "Fitness Plan",
+      dropdown: true,
+      dropdownItems: [
+        { label: "Generate Plan", to: "/member/generate-plan" },
+        { label: "My Plans", to: "/member/my-plans" },
+      ],
+    }
   ];
 
   const mentorNavItems: NavItem[] = [

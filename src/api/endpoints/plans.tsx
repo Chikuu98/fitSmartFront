@@ -1,0 +1,51 @@
+import { axiosInstance } from '../axiosInstance';
+import type { GeneratePlanDto, GeneratedPlan, AcceptPlanDto, AcceptedPlan, PlanType } from '../../interfaces/plan';
+
+export const generatePlan = async (data: GeneratePlanDto): Promise<GeneratedPlan> => {
+  const response = await axiosInstance.post('/plans/generate', data);
+  return response.data;
+};
+
+export const acceptPlan = async (planId: number, data: AcceptPlanDto) => {
+  const response = await axiosInstance.post(`/plans/${planId}/accept`, data);
+  return response.data;
+};
+
+export const getGeneratedPlans = async (limit?: number, offset?: number) => {
+  const response = await axiosInstance.get('/plans/generated', {
+    params: { limit, offset }
+  });
+  return response.data;
+};
+
+export const getAcceptedPlans = async (status?: string): Promise<AcceptedPlan[]> => {
+  const response = await axiosInstance.get('/plans/accepted', {
+    params: { status }
+  });
+  return response.data;
+};
+
+export const getGeneratedPlan = async (planId: number): Promise<GeneratedPlan> => {
+  const response = await axiosInstance.get(`/plans/generated/${planId}`);
+  return response.data;
+};
+
+export const getAcceptedPlan = async (planId: number) => {
+  const response = await axiosInstance.get(`/plans/accepted/${planId}`);
+  return response.data;
+};
+
+export const deleteGeneratedPlan = async (planId: number) => {
+  const response = await axiosInstance.delete(`/plans/generated/${planId}`);
+  return response.data;
+};
+
+export const cancelAcceptedPlan = async (planId: number) => {
+  const response = await axiosInstance.delete(`/plans/accepted/${planId}`);
+  return response.data;
+};
+
+export const getPlanTypes = async (): Promise<PlanType[]> => {
+  const response = await axiosInstance.get('/plans/types');
+  return response.data;
+};
