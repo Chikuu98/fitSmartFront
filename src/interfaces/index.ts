@@ -19,3 +19,13 @@ export type {
   ToggleForumLikeDto,
   ForumSearchFilters
 } from './forumThread';
+
+// Plan interfaces
+export type { 
+  GeneratedPlan, 
+  AcceptedPlan, 
+  GeneratePlanDto, 
+  AcceptPlanDto, 
+  PlanType 
+} from './plan';
+export { GenerationStatus, AcceptedPlanStatus } from './plan';

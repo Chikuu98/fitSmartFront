@@ -27,6 +27,10 @@ import ForumTags from "./pages/CommunityForum/Master/ForumTags";
 import CreateNewThread from "./pages/CommunityForum/CreateNewThread";
 import MyThreads from "./pages/CommunityForum/MyThreads";
 import ThreadDetails from "./pages/CommunityForum/ThreadDetails";
+import GeneratePlan from "./pages/Plans/GeneratePlan";
+import ViewGeneratedPlan from "./pages/Plans/ViewGeneratedPlan";
+import MyPlans from "./pages/Plans/MyPlans";
+import ViewAcceptedPlan from "./pages/Plans/ViewAcceptedPlan";
 
 function App() {
   return (
@@ -82,6 +86,10 @@ function App() {
               element={<CreateBooking />}
             />
             <Route path="/member/my-bookings" element={<MyBookings />} />
+            <Route path="/member/my-plans" element={<MyPlans />} />
+            <Route path="/member/generate-plan" element={<GeneratePlan />} />
+            <Route path="/member/plans/generated/:planId" element={<ViewGeneratedPlan />} />
+            <Route path="/member/plans/accepted/:planId" element={<ViewAcceptedPlan />} />
           </Route>
         </Route>
 

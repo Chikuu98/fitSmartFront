@@ -15,6 +15,9 @@ export const getCurrentUser = async (): Promise<User> => {
   return response.data;
 };
 
+// Alias for getCurrentUser
+export const getUserProfile = getCurrentUser;
+
 export const updateUser = async (userData: UpdateUserDto) => {
   const response = await axiosInstance.put("/users/me", userData);
   return response.data;
