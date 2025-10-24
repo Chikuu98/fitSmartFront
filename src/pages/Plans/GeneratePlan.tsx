@@ -8,7 +8,7 @@ import FormInput from '../../components/ui/formInput';
 import TextAreaInput from '../../components/ui/textAreaInput';
 import { Button } from '../../components/ui/button';
 import CustomSelect from '../../components/ui/customSelect';
-import { Target, Calendar, Weight, TrendingDown, Sparkles, User, Activity } from 'lucide-react';
+import { Target, Calendar, Weight, TrendingDown, Sparkles, User, Activity, Edit2 } from 'lucide-react';
 import type { GeneratePlanDto } from '../../interfaces/plan';
 import type { User as UserType } from '../../interfaces/user';
 
@@ -171,7 +171,18 @@ const GeneratePlan: React.FC = () => {
                                 <User className="text-white" size={24} />
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Your Profile</h3>
+                                <div className="flex items-center justify-between mb-3">
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Your Profile</h3>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={() => navigate('/account')}
+                                        className="flex items-center gap-2 text-sm px-3 py-1.5"
+                                    >
+                                        <Edit2 size={16} />
+                                        Update
+                                    </Button>
+                                </div>
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div>
                                         <p className="text-xs text-gray-600 dark:text-gray-400">Age</p>

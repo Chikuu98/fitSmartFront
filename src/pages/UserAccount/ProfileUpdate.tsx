@@ -60,7 +60,12 @@ const ProfileUpdate: React.FC = () => {
         });
 
         if (userData.memberDetail) {
-          setMemberDetails(userData.memberDetail);
+          setMemberDetails({
+            ...userData.memberDetail,
+            age: userData.memberDetail.age,
+            height: userData.memberDetail.height,
+            weight: userData.memberDetail.weight,
+          });
         }
 
         if (userData.mentorDetail) {
@@ -120,7 +125,14 @@ const ProfileUpdate: React.FC = () => {
       onConfirm: async (close) => {
         setUpdating(true);
         try {
-          await updateMemberDetails(memberDetails);
+          const payload: UpdateMemberDetailsDto = {
+            ...memberDetails,
+            age: memberDetails.age ? (typeof memberDetails.age === 'string' ? parseInt(memberDetails.age) : memberDetails.age) : undefined,
+            height: memberDetails.height ? (typeof memberDetails.height === 'string' ? parseFloat(memberDetails.height) : memberDetails.height) : undefined,
+            weight: memberDetails.weight ? (typeof memberDetails.weight === 'string' ? parseFloat(memberDetails.weight) : memberDetails.weight) : undefined,
+          };
+          
+          await updateMemberDetails(payload);
           await reloadUserData();
           close();
         } catch (error: any) {
