@@ -24,6 +24,11 @@ const MemberDetailsForm: React.FC<MemberDetailsFormProps> = ({
     { value: FitnessLevelEnum.ADVANCED, label: "Advanced" },
   ];
 
+  const dietaryPreferenceOptions = [
+    { value: "vegetarian", label: "Vegetarian" },
+    { value: "non-vegetarian", label: "Non-Vegetarian" },
+  ];
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit();
@@ -128,19 +133,20 @@ const MemberDetailsForm: React.FC<MemberDetailsFormProps> = ({
               rounded="xl"
             />
 
-            <FormInput
-              label="Dietary Preference"
+            <CustomSelect
               name="dietary_preference"
-              value={memberDetails.dietary_preference || ""}
-              onChange={(e) =>
+              label="Dietary Preference"
+              value={memberDetails.dietary_preference || null}
+              onChange={(option) =>
                 onMemberDetailsChange({
                   ...memberDetails,
-                  dietary_preference: e.target.value,
+                  dietary_preference: option?.value || "",
                 })
               }
-              placeholder="e.g., Vegetarian, Vegan"
-              size="md"
-              rounded="xl"
+              options={dietaryPreferenceOptions}
+              placeholder="Select dietary preference"
+              height="2.5rem"
+              fontSize="0.875rem"
             />
           </div>
 
