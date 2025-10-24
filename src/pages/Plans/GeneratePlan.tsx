@@ -8,7 +8,7 @@ import FormInput from '../../components/ui/formInput';
 import TextAreaInput from '../../components/ui/textAreaInput';
 import { Button } from '../../components/ui/button';
 import CustomSelect from '../../components/ui/customSelect';
-import { Target, Calendar, Weight, TrendingDown, Sparkles, User, Activity, Edit2 } from 'lucide-react';
+import { Target, Weight, TrendingDown, Sparkles, User, Activity, Edit2 } from 'lucide-react';
 import type { GeneratePlanDto } from '../../interfaces/plan';
 import type { User as UserType } from '../../interfaces/user';
 
@@ -233,7 +233,6 @@ const GeneratePlan: React.FC = () => {
                                 label="Plan Duration"
                                 placeholder="Select duration"
                                 required
-                                icon={<Calendar size={18} />}
                             />
                             {errors.duration_days && (
                                 <p className="text-xs text-red-600 dark:text-red-400 mt-1">{errors.duration_days}</p>
