@@ -3,12 +3,12 @@ import type { GeneratePlanDto, GeneratedPlan, AcceptPlanDto, AcceptedPlan, PlanT
 
 export const generatePlan = async (data: GeneratePlanDto): Promise<GeneratedPlan> => {
   const response = await axiosInstance.post('/plans/generate', data);
-  return response.data;
+  return response.data.data || response.data;
 };
 
 export const acceptPlan = async (planId: number, data: AcceptPlanDto) => {
   const response = await axiosInstance.post(`/plans/${planId}/accept`, data);
-  return response.data;
+  return response.data.data || response.data;
 };
 
 export const getGeneratedPlans = async (limit?: number, offset?: number) => {
