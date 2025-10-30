@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getAcceptedPlan } from '../../api/endpoints/plans';
+import { getAcceptedPlan, activatePlan, pausePlan, resumePlan } from '../../api/endpoints/plans';
 import { Button } from '../../components/ui/button';
-import { ArrowLeft, Calendar, Target, Dumbbell, UtensilsCrossed, TrendingUp, Award } from 'lucide-react';
+import { ArrowLeft, Calendar, Target, Dumbbell, UtensilsCrossed, TrendingUp, Award, Play, Pause } from 'lucide-react';
+import { AcceptedPlanStatus } from '../../interfaces/plan';
 
 const ViewAcceptedPlan: React.FC = () => {
     const { planId } = useParams<{ planId: string }>();
@@ -52,14 +53,45 @@ const ViewAcceptedPlan: React.FC = () => {
 
     const getStatusColor = (status: string) => {
         switch (status) {
+            case 'accepted':
+                return 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700';
             case 'active':
                 return 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 border-green-200 dark:border-green-700';
+            case 'paused':
+                return 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 border-yellow-200 dark:border-yellow-700';
             case 'completed':
-                return 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700';
+                return 'bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-700';
             case 'cancelled':
                 return 'bg-gray-100 dark:bg-gray-900/20 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700';
             default:
                 return 'bg-gray-100 dark:bg-gray-900/20 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700';
+        }
+    };
+
+    const handleActivate = async () => {
+        try {
+            await activatePlan(Number(planId));
+            fetchPlan();
+        } catch (error: any) {
+            console.log(error);
+        }
+    };
+
+    const handlePause = async () => {
+        try {
+            await pausePlan(Number(planId));
+            fetchPlan();
+        } catch (error: any) {
+            console.log(error);
+        }
+    };
+
+    const handleResume = async () => {
+        try {
+            await resumePlan(Number(planId));
+            fetchPlan();
+        } catch (error: any) {
+            console.log(error);
         }
     };
 
@@ -90,6 +122,40 @@ const ViewAcceptedPlan: React.FC = () => {
                             <p className="text-gray-600 dark:text-gray-400">
                                 View your complete workout and meal plan details
                             </p>
+                        </div>
+
+                        {/* Action Buttons based on status */}
+                        <div className="flex gap-2">
+                            {plan.status === AcceptedPlanStatus.ACCEPTED && (
+                                <Button
+                                    variant="orange"
+                                    onClick={handleActivate}
+                                    className="flex items-center gap-2"
+                                >
+                                    <Play size={16} />
+                                    Activate Plan
+                                </Button>
+                            )}
+                            {plan.status === AcceptedPlanStatus.ACTIVE && (
+                                <Button
+                                    variant="outline"
+                                    onClick={handlePause}
+                                    className="flex items-center gap-2"
+                                >
+                                    <Pause size={16} />
+                                    Pause Plan
+                                </Button>
+                            )}
+                            {plan.status === AcceptedPlanStatus.PAUSED && (
+                                <Button
+                                    variant="orange"
+                                    onClick={handleResume}
+                                    className="flex items-center gap-2"
+                                >
+                                    <Play size={16} />
+                                    Resume Plan
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>

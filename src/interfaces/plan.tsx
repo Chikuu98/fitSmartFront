@@ -7,8 +7,10 @@ export const GenerationStatus = {
 export type GenerationStatus = typeof GenerationStatus[keyof typeof GenerationStatus];
 
 export const AcceptedPlanStatus = {
+  ACCEPTED: 'accepted',
   ACTIVE: 'active',
   COMPLETED: 'completed',
+  PAUSED: 'paused',
   CANCELLED: 'cancelled',
 } as const;
 
