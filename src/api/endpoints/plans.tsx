@@ -45,6 +45,21 @@ export const cancelAcceptedPlan = async (planId: number) => {
   return response.data;
 };
 
+export const activatePlan = async (planId: number) => {
+  const response = await axiosInstance.post(`/plans/accepted/${planId}/activate`);
+  return response.data;
+};
+
+export const pausePlan = async (planId: number) => {
+  const response = await axiosInstance.post(`/plans/accepted/${planId}/pause`);
+  return response.data;
+};
+
+export const resumePlan = async (planId: number) => {
+  const response = await axiosInstance.post(`/plans/accepted/${planId}/resume`);
+  return response.data;
+};
+
 export const getPlanTypes = async (): Promise<PlanType[]> => {
   const response = await axiosInstance.get('/plans/types');
   return response.data;
