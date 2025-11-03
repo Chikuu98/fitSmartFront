@@ -180,24 +180,25 @@ const MyBookings: React.FC = () => {
 
   return (
     <div className="min-h-screen transition-colors">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1">
               My Bookings
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               Manage your mentoring sessions and track your progress
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" onClick={fetchBookings}>
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <Button variant="outline" onClick={fetchBookings} className="px-3">
               <RefreshCw className="w-4 h-4" />
             </Button>
             <Button
               variant="orange"
               onClick={() => navigate("/member/search-for-mentor")}
+              className="flex-1 sm:flex-none whitespace-nowrap"
             >
               Book New Session
             </Button>
@@ -205,57 +206,57 @@ const MyBookings: React.FC = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-            <div className="flex items-center gap-3">
-              <Calendar className="w-8 h-8 text-orange-600 dark:text-orange-400" />
-              <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600 dark:text-orange-400 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
                   {bookings.length}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
                   Total Bookings
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
-              <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600 dark:text-green-400 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
                   {bookings.filter((b) => b.status === "accepted").length}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
                   Confirmed
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-            <div className="flex items-center gap-3">
-              <Clock className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
-              <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-600 dark:text-yellow-400 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
                   {bookings.filter((b) => b.status === "pending").length}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
                   Pending
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-              <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
                   {bookings.filter((b) => b.status === "completed").length}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
                   Completed
                 </p>
               </div>
@@ -264,9 +265,9 @@ const MyBookings: React.FC = () => {
         </div>
 
         {/* Bookings List */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+          <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
               All Bookings ({bookings.length})
             </h2>
           </div>
@@ -293,125 +294,131 @@ const MyBookings: React.FC = () => {
               {bookings.map((booking) => (
                 <div
                   key={booking.id}
-                  className="p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                  className="p-4 sm:p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                 >
-                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                    {/* Left side - Booking info */}
-                    <div className="flex-1">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center">
-                          <User className="h-6 w-6 text-orange-600 dark:text-orange-400" />
-                        </div>
+                  <div className="flex flex-col gap-4">
+                    {/* Header Section - Mentor Info & Status */}
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      {/* Avatar */}
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User className="h-6 w-6 sm:h-7 sm:w-7 text-orange-600 dark:text-orange-400" />
+                      </div>
 
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between mb-2">
-                            <div>
-                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                {booking.mentorSlot?.mentor?.name ||
-                                  "Unknown Mentor"}
-                              </h3>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {booking.mentorSlot?.mentor?.mentorDetail
-                                  ?.expertise || "Fitness Expert"}
-                              </p>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                              {getStatusIcon(booking.status)}
-                              <span
-                                className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}
-                              >
-                                {booking.status.charAt(0).toUpperCase() +
-                                  booking.status.slice(1)}
-                              </span>
-                            </div>
+                      {/* Mentor Info & Status */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">
+                              {booking.mentorSlot?.mentor?.name ||
+                                "Unknown Mentor"}
+                            </h3>
+                            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
+                              {booking.mentorSlot?.mentor?.mentorDetail
+                                ?.expertise || "Fitness Expert"}
+                            </p>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600 dark:text-gray-400">
-                            <div className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4" />
-                              <span>
-                                {booking.mentorSlot?.date
-                                  ? formatDate(booking.mentorSlot.date)
-                                  : "Date TBD"}
-                              </span>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                              <Clock className="w-4 h-4" />
-                              <span>
-                                {booking.mentorSlot?.start_time &&
-                                booking.mentorSlot?.end_time
-                                  ? `${formatTime(booking.mentorSlot.start_time)} - ${formatTime(booking.mentorSlot.end_time)}`
-                                  : "Time TBD"}
-                              </span>
-                            </div>
-
-                            {booking.mentorSlot?.mentor?.country && (
-                              <div className="flex items-center gap-2">
-                                <MapPin className="w-4 h-4" />
-                                <span>{booking.mentorSlot.mentor.country}</span>
-                              </div>
-                            )}
-
-                            <div className="flex items-center gap-2">
-                              <CreditCard className="w-4 h-4" />
-                              <span
-                                className={getPaymentStatusColor(
-                                  booking.bookingPayment?.status || "unpaid",
-                                )}
-                              >
-                                Payment:{" "}
-                                {booking.bookingPayment?.status
-                                  ? booking.bookingPayment.status
-                                      .charAt(0)
-                                      .toUpperCase() +
-                                    booking.bookingPayment.status.slice(1)
-                                  : "Unpaid"}
-                              </span>
-                            </div>
+                          {/* Status Badge */}
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            {getStatusIcon(booking.status)}
+                            <span
+                              className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusColor(booking.status)}`}
+                            >
+                              {booking.status.charAt(0).toUpperCase() +
+                                booking.status.slice(1)}
+                            </span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Right side - Actions */}
-                    <div className="flex flex-col sm:flex-row gap-3 lg:flex-col lg:w-48">
-                      {booking.google_meet_link &&
-                        booking.status === "accepted" && (
+                    {/* Details Section */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-0 sm:pl-[4.5rem] text-sm">
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <Calendar className="w-4 h-4 flex-shrink-0" />
+                        <span className="truncate">
+                          {booking.mentorSlot?.date
+                            ? formatDate(booking.mentorSlot.date)
+                            : "Date TBD"}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <Clock className="w-4 h-4 flex-shrink-0" />
+                        <span className="truncate">
+                          {booking.mentorSlot?.start_time &&
+                          booking.mentorSlot?.end_time
+                            ? `${formatTime(booking.mentorSlot.start_time)} - ${formatTime(booking.mentorSlot.end_time)}`
+                            : "Time TBD"}
+                        </span>
+                      </div>
+
+                      {booking.mentorSlot?.mentor?.country && (
+                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                          <MapPin className="w-4 h-4 flex-shrink-0" />
+                          <span className="truncate">
+                            {booking.mentorSlot.mentor.country}
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <CreditCard className="w-4 h-4 flex-shrink-0" />
+                        <span
+                          className={`truncate ${getPaymentStatusColor(
+                            booking.bookingPayment?.status || "unpaid",
+                          )}`}
+                        >
+                          Payment:{" "}
+                          {booking.bookingPayment?.status
+                            ? booking.bookingPayment.status
+                                .charAt(0)
+                                .toUpperCase() +
+                              booking.bookingPayment.status.slice(1)
+                            : "Unpaid"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Actions Section */}
+                    {(booking.google_meet_link || booking.status === "pending") && (
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pl-0 sm:pl-[4.5rem] pt-2 border-t border-gray-100 dark:border-gray-700">
+                        {booking.google_meet_link &&
+                          booking.status === "accepted" && (
+                            <Button
+                              variant="blue"
+                              onClick={() =>
+                                handleJoinMeeting(booking.google_meet_link!)
+                              }
+                              className="flex items-center justify-center gap-2 w-full sm:w-auto"
+                            >
+                              <Video className="w-4 h-4" />
+                              Join Meeting
+                            </Button>
+                          )}
+
+                        {booking.status === "pending" && (
                           <Button
-                            variant="blue"
-                            onClick={() =>
-                              handleJoinMeeting(booking.google_meet_link!)
-                            }
-                            className="flex items-center justify-center gap-2"
+                            variant="outline"
+                            onClick={() => handleCancelBooking(booking)}
+                            disabled={cancellingId === booking.id}
+                            className="flex items-center justify-center gap-2 w-full sm:w-auto"
                           >
-                            <Video className="w-4 h-4" />
-                            Join Meeting
+                            {cancellingId === booking.id ? (
+                              <>
+                                <RefreshCw className="w-4 h-4 animate-spin" />
+                                Cancelling...
+                              </>
+                            ) : (
+                              <>
+                                <XCircle className="w-4 h-4" />
+                                Cancel
+                              </>
+                            )}
                           </Button>
                         )}
-
-                      {booking.status === "pending" && (
-                        <Button
-                          variant="outline"
-                          onClick={() => handleCancelBooking(booking)}
-                          disabled={cancellingId === booking.id}
-                          className="flex items-center justify-center gap-2"
-                        >
-                          {cancellingId === booking.id ? (
-                            <>
-                              <RefreshCw className="w-4 h-4 animate-spin" />
-                              Cancelling...
-                            </>
-                          ) : (
-                            <>
-                              <XCircle className="w-4 h-4" />
-                              Cancel
-                            </>
-                          )}
-                        </Button>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
