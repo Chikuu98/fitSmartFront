@@ -8,7 +8,7 @@ import FormInput from '../../components/ui/formInput';
 import TextAreaInput from '../../components/ui/textAreaInput';
 import { Button } from '../../components/ui/button';
 import CustomSelect from '../../components/ui/customSelect';
-import { Target, Weight, TrendingDown, Sparkles, User, Activity, Edit2 } from 'lucide-react';
+import { Target, Weight, TrendingDown, Sparkles, User, Edit2 } from 'lucide-react';
 import type { GeneratePlanDto } from '../../interfaces/plan';
 import type { User as UserType } from '../../interfaces/user';
 
@@ -275,10 +275,10 @@ const GeneratePlan: React.FC = () => {
 
                         {/* Advanced Options */}
                         <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                            {/* <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                                 <Activity size={20} className="text-orange-500" />
                                 Advanced Options
-                            </h3>
+                            </h3> */}
 
                             {/* Include History */}
                             <div className="flex items-start gap-3 mb-4">

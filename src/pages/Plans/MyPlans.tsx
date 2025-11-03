@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAcceptedPlans } from '../../api/endpoints/plans';
 import { Button } from '../../components/ui/button';
 import CustomSelect from '../../components/ui/customSelect';
-import { Calendar, Target, TrendingUp, Plus, Eye } from 'lucide-react';
+import { Calendar, Target, Plus, Eye } from 'lucide-react';
 import type { AcceptedPlan } from '../../interfaces/plan';
 import { AcceptedPlanStatus } from '../../interfaces/plan';
 import { formatRelativeTime } from '../../utils/dateUtils';
@@ -158,26 +158,6 @@ const MyPlans: React.FC = () => {
                                                     {plan.duration_days && ` (${plan.duration_days} days)`}
                                                 </span>
                                             </div>
-
-                                            {plan.completion_percentage !== undefined && (
-                                                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                                    <TrendingUp size={16} className="text-orange-500" />
-                                                    <span className="font-medium">Progress:</span>
-                                                    <div className="flex-1 max-w-xs">
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                                                <div
-                                                                    className="bg-orange-500 h-2 rounded-full transition-all"
-                                                                    style={{ width: `${plan.completion_percentage}%` }}
-                                                                />
-                                                            </div>
-                                                            <span className="text-xs font-medium">
-                                                                {plan.completion_percentage.toFixed(0)}%
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
 
                                             {plan.accepted_at && (
                                                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
