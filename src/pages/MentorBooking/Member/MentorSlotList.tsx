@@ -58,7 +58,6 @@ const MentorSlotList: React.FC = () => {
     try {
       setLoading(true);
       const data = await getMentorSlots(Number(mentor_id));
-      // Filter only available slots (not booked)
       const availableSlots = data.filter((slot) => !slot.is_booked);
       setSlots(availableSlots);
     } catch (err) {
@@ -75,7 +74,6 @@ const MentorSlotList: React.FC = () => {
   };
 
   const handleBookSlot = (slotId: number) => {
-    // Navigate to booking creation page with mentor and slot info
     navigate(`/member/create-booking/${mentor_id}/${slotId}`);
   };
 
@@ -136,7 +134,7 @@ const MentorSlotList: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header with Back Button */}
         <div className="flex items-center gap-4 mb-8">
-          <Button variant="outline" onClick={handleGoBack} className="p-2">
+          <Button variant="ghost" onClick={handleGoBack} className="p-2">
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
@@ -150,7 +148,6 @@ const MentorSlotList: React.FC = () => {
         </div>
 
         {/* Mentor Information Card */}
-        {/* can we also add certifications and social links in this card? */}
         {mentor && (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
             <div className="flex items-start gap-4">

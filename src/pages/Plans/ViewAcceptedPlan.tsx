@@ -4,6 +4,7 @@ import { getAcceptedPlan, activatePlan, pausePlan, resumePlan } from '../../api/
 import { Button } from '../../components/ui/button';
 import { ArrowLeft, Calendar, Target, Dumbbell, UtensilsCrossed, TrendingUp, Award, Play, Pause } from 'lucide-react';
 import { AcceptedPlanStatus } from '../../interfaces/plan';
+import { formatPlanDay } from '../../utils/dateUtils';
 
 const ViewAcceptedPlan: React.FC = () => {
     const { planId } = useParams<{ planId: string }>();
@@ -237,7 +238,7 @@ const ViewAcceptedPlan: React.FC = () => {
                             {plan.workoutPlan?.map((day: any, index: number) => (
                                 <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                                     <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                                        Day {day.day_number}: {day.day_name || `Day ${day.day_number}`}
+                                        {formatPlanDay(plan.start_date, day.day_number, day.day_name)}
                                     </h3>
                                     {day.exercises && day.exercises.length > 0 ? (
                                         <>
@@ -291,7 +292,7 @@ const ViewAcceptedPlan: React.FC = () => {
                             {plan.mealPlan?.map((day: any, index: number) => (
                                 <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                                     <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                                        Day {day.day_number}: {day.day_name || `Day ${day.day_number}`}
+                                        {formatPlanDay(plan.start_date, day.day_number, day.day_name)}
                                     </h3>
                                     
                                     {day.meals && day.meals.length > 0 && (

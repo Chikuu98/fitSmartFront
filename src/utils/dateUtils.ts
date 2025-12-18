@@ -120,3 +120,53 @@ export const getDateDifference = (dateString: string): {
     years: Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 365))
   };
 };
+
+export const getPlanDayDate = (startDateString: string, dayNumber: number): Date => {
+  const startDate = new Date(startDateString);
+  const dayDate = new Date(startDate);
+  dayDate.setDate(startDate.getDate() + (dayNumber - 1));
+  return dayDate;
+};
+
+export const formatPlanDay = (
+  startDateString: string, 
+  dayNumber: number, 
+  fallbackName?: string
+): string => {
+  try {
+    const dayDate = getPlanDayDate(startDateString, dayNumber);
+    
+    if (isNaN(dayDate.getTime())) {
+      return fallbackName || `Day ${dayNumber}`;
+    }
+
+    const weekday = dayDate.toLocaleDateString('en-US', { weekday: 'short' });
+    const date = dayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    
+    return `Day ${dayNumber} (${weekday}, ${date})`;
+  } catch (error) {
+    console.warn('Error formatting plan day:', error);
+    return fallbackName || `Day ${dayNumber}`;
+  }
+};
+
+export const formatPlanDayWithWeekday = (
+  startDateString: string, 
+  dayNumber: number,
+  includeDay: boolean = true
+): string => {
+  try {
+    const dayDate = getPlanDayDate(startDateString, dayNumber);
+    
+    if (isNaN(dayDate.getTime())) {
+      return `Day ${dayNumber}`;
+    }
+
+    const weekday = dayDate.toLocaleDateString('en-US', { weekday: 'long' });
+    
+    return includeDay ? `Day ${dayNumber}: ${weekday}` : weekday;
+  } catch (error) {
+    console.warn('Error formatting plan day with weekday:', error);
+    return `Day ${dayNumber}`;
+  }
+};
