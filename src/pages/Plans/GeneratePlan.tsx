@@ -29,7 +29,6 @@ const GeneratePlan: React.FC = () => {
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    // Fetch user profile on mount
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
@@ -37,7 +36,6 @@ const GeneratePlan: React.FC = () => {
                 const profile = await getUserProfile();
                 setUserProfile(profile);
                 
-                // Pre-populate goal if available
                 if (profile.memberDetail?.goal) {
                     setFormData(prev => ({ ...prev, goal: profile.memberDetail!.goal! }));
                 }
