@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getGeneratedPlan, acceptPlan } from '../../api/endpoints/plans';
+import { getGeneratedPlan, acceptPlan, generatePlan } from '../../api/endpoints/plans';
 import { Button } from '../../components/ui/button';
 import FormInput from '../../components/ui/formInput';
 import { DateInput } from '../../components/ui/dateInput';
 import Modal from '../../components/ui/Modal';
-import { CheckCircle, Target, Dumbbell, UtensilsCrossed, ArrowLeft } from 'lucide-react';
+import { ConfirmationDialog } from '../../components/ui/confirmationDialog';
+import { CheckCircle, Target, Dumbbell, UtensilsCrossed, ArrowLeft, RefreshCw } from 'lucide-react';
 import type { GeneratedPlan, AcceptPlanDto } from '../../interfaces/plan';
 import { GenerationStatus } from '../../interfaces/plan';
 
@@ -16,6 +17,8 @@ const ViewGeneratedPlan: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [showAcceptModal, setShowAcceptModal] = useState(false);
     const [accepting, setAccepting] = useState(false);
+    const [regenerating, setRegenerating] = useState(false);
+    const [showRegenerateDialog, setShowRegenerateDialog] = useState(false);
 
     const [acceptFormData, setAcceptFormData] = useState<AcceptPlanDto>({
         plan_name: '',
@@ -60,6 +63,28 @@ const ViewGeneratedPlan: React.FC = () => {
             console.error('Failed to accept plan:', error);
         } finally {
             setAccepting(false);
+        }
+    };
+
+    const handleRegeneratePlan = async () => {
+        try {
+            setRegenerating(true);
+            
+            const generateParams = {
+                duration_days: plan?.duration_days || 7,
+                goal: plan?.prompt_data?.goal || 'Improve overall fitness',
+                target_weight: plan?.prompt_data?.target_weight,
+                include_history: true,
+            };
+            
+            const newPlan = await generatePlan(generateParams);
+            setShowRegenerateDialog(false);
+            
+            navigate(`/member/plans/generated/${newPlan.id}`);
+        } catch (error) {
+            console.error('Failed to regenerate plan:', error);
+        } finally {
+            setRegenerating(false);
         }
     };
 
@@ -115,14 +140,25 @@ const ViewGeneratedPlan: React.FC = () => {
                         </div>
 
                         {!plan.is_accepted && plan.status === GenerationStatus.COMPLETED && (
-                            <Button
-                                variant="orange"
-                                onClick={() => setShowAcceptModal(true)}
-                                className="flex items-center gap-2"
-                            >
-                                <CheckCircle size={18} />
-                                Accept Plan
-                            </Button>
+                            <div className="flex gap-3">
+                                <Button
+                                    variant="outline"
+                                    onClick={() => setShowRegenerateDialog(true)}
+                                    disabled={regenerating}
+                                    className="flex items-center gap-2"
+                                >
+                                    <RefreshCw size={18} className={regenerating ? 'animate-spin' : ''} />
+                                    {regenerating ? 'Regenerating...' : 'Re-generate'}
+                                </Button>
+                                <Button
+                                    variant="orange"
+                                    onClick={() => setShowAcceptModal(true)}
+                                    className="flex items-center gap-2"
+                                >
+                                    <CheckCircle size={18} />
+                                    Accept Plan
+                                </Button>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -338,6 +374,19 @@ const ViewGeneratedPlan: React.FC = () => {
                     </div>
                 </div>
             </Modal>
+
+            {/* Regenerate Confirmation Dialog */}
+            <ConfirmationDialog
+                isOpen={showRegenerateDialog}
+                onClose={() => setShowRegenerateDialog(false)}
+                onConfirm={handleRegeneratePlan}
+                title="Regenerate Plan?"
+                message="A new plan will be created with the same parameters. You will be redirected to view the newly generated plan."
+                confirmText="Regenerate"
+                cancelText="Cancel"
+                variant="info"
+                loading={regenerating}
+            />
         </div>
     );
 };
