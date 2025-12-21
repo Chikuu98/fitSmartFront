@@ -50,6 +50,12 @@ const Header = () => {
 
   const adminNavItems: NavItem[] = [
     { title: "Dashboard", link: "/admin-dashboard" },
+    { title: "User Management",
+      dropdown: true,
+      dropdownItems: [
+        { label: "Mentor Approvals", to: "/admin/pending-mentor-approvals" },
+      ],
+    },
     { title: "Community Master",
       dropdown: true,
       dropdownItems: [

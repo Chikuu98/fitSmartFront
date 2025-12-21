@@ -8,7 +8,9 @@ import type {
   UpdateCertificationDto,
   CreateSocialLinkDto,
   UpdateSocialLinkDto,
+  UpdateUserStatusDto,
 } from "../../interfaces/user";
+import { UserAccountStatus } from "../../enums/userDetailEnums";
 
 export const getCurrentUser = async (): Promise<User> => {
   const response = await axiosInstance.get("/users/me");
@@ -77,6 +79,29 @@ export const updateSocialLink = async (
   const response = await axiosInstance.put(
     `/users/mentor/social-links/${id}`,
     linkData,
+  );
+  return response.data;
+};
+
+// Admin endpoints
+export const getPendingMentors = async () => {
+  const response = await axiosInstance.get("/users/admin/pending-mentors");
+  return response.data;
+};
+
+export const getAllMentors = async (status?: UserAccountStatus) => {
+  const params = status ? { status } : {};
+  const response = await axiosInstance.get("/users/admin/mentors", { params });
+  return response.data;
+};
+
+export const updateUserStatus = async (
+  userId: number,
+  statusData: UpdateUserStatusDto,
+) => {
+  const response = await axiosInstance.put(
+    `/users/admin/users/${userId}/status`,
+    statusData,
   );
   return response.data;
 };
