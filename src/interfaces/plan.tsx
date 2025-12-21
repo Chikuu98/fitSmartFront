@@ -38,6 +38,9 @@ export interface AcceptedPlan {
   duration_days?: number;
   accepted_at?: string;
   completed_at?: string;
+  paused_at?: string;
+  resumed_at?: string;
+  total_paused_days?: number;
 }
 
 export interface GeneratePlanDto {

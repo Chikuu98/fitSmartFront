@@ -1,6 +1,3 @@
-/**
- * Date formatting utilities for consistent date display across the application
- */
 
 export const formatRelativeTime = (dateString: string): string => {
   const date = new Date(dateString);
@@ -10,13 +7,11 @@ export const formatRelativeTime = (dateString: string): string => {
   const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
-  // Handle invalid dates
   if (isNaN(date.getTime())) {
     console.warn('Invalid date string provided:', dateString);
     return 'Unknown date';
   }
 
-  // Handle future dates (shouldn't happen but good to be safe)
   if (diffInMs < 0) {
     return 'Just now';
   }
@@ -27,7 +22,6 @@ export const formatRelativeTime = (dateString: string): string => {
   if (diffInDays === 1) return "Yesterday";
   if (diffInDays < 7) return `${diffInDays}d ago`;
   
-  // For older dates, show the actual date
   return date.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -128,13 +122,70 @@ export const getPlanDayDate = (startDateString: string, dayNumber: number): Date
   return dayDate;
 };
 
+export const calculateCurrentDayNumber = (
+  startDateString: string,
+  totalPausedDays: number = 0,
+  pausedAt?: string | null
+): number => {
+  const startDate = new Date(startDateString);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  startDate.setHours(0, 0, 0, 0);
+  
+  const totalElapsedDays = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+  
+  let currentPausedDays = totalPausedDays;
+  if (pausedAt) {
+    const pauseDate = new Date(pausedAt);
+    pauseDate.setHours(0, 0, 0, 0);
+    const daysPausedCurrent = Math.floor((today.getTime() - pauseDate.getTime()) / (1000 * 60 * 60 * 24));
+    currentPausedDays = totalPausedDays + daysPausedCurrent;
+  }
+  
+  const activeDays = totalElapsedDays - currentPausedDays;
+  
+  return Math.max(1, activeDays + 1);
+};
+
+export const getAdjustedPlanDayDate = (
+  startDateString: string,
+  dayNumber: number,
+  totalPausedDays: number = 0,
+  pausedAt?: string | null,
+  status?: string
+): Date => {
+  const startDate = new Date(startDateString);
+  startDate.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const currentDay = calculateCurrentDayNumber(startDateString, totalPausedDays, status === 'paused' ? pausedAt : null);
+  
+  if (dayNumber <= currentDay) {
+    const dayDate = new Date(startDate);
+    dayDate.setDate(startDate.getDate() + (dayNumber - 1));
+    return dayDate;
+  }
+  
+  const daysFromNow = dayNumber - currentDay;
+  const futureDate = new Date(today);
+  futureDate.setDate(today.getDate() + daysFromNow);
+  
+  return futureDate;
+};
+
 export const formatPlanDay = (
   startDateString: string, 
   dayNumber: number, 
-  fallbackName?: string
+  fallbackName?: string,
+  totalPausedDays?: number,
+  pausedAt?: string | null,
+  status?: string
 ): string => {
   try {
-    const dayDate = getPlanDayDate(startDateString, dayNumber);
+    const dayDate = (totalPausedDays && totalPausedDays > 0) 
+      ? getAdjustedPlanDayDate(startDateString, dayNumber, totalPausedDays, pausedAt, status)
+      : getPlanDayDate(startDateString, dayNumber);
     
     if (isNaN(dayDate.getTime())) {
       return fallbackName || `Day ${dayNumber}`;
@@ -153,10 +204,15 @@ export const formatPlanDay = (
 export const formatPlanDayWithWeekday = (
   startDateString: string, 
   dayNumber: number,
-  includeDay: boolean = true
+  includeDay: boolean = true,
+  totalPausedDays?: number,
+  pausedAt?: string | null,
+  status?: string
 ): string => {
   try {
-    const dayDate = getPlanDayDate(startDateString, dayNumber);
+    const dayDate = (totalPausedDays && totalPausedDays > 0)
+      ? getAdjustedPlanDayDate(startDateString, dayNumber, totalPausedDays, pausedAt, status)
+      : getPlanDayDate(startDateString, dayNumber);
     
     if (isNaN(dayDate.getTime())) {
       return `Day ${dayNumber}`;
