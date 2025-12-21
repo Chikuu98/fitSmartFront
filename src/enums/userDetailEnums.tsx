@@ -22,3 +22,13 @@ export const UserRole = {
 } as const;
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole];
+
+export const UserAccountStatus = {
+  ACTIVE: "active",
+  PENDING_REVIEW: "pending_review",
+  SUSPENDED: "suspended",
+  BANNED: "banned",
+} as const;
+
+export type UserAccountStatus =
+  (typeof UserAccountStatus)[keyof typeof UserAccountStatus];

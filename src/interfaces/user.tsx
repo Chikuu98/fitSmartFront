@@ -1,4 +1,4 @@
-import { Gender, UserRole, FitnessLevelEnum } from "../enums/userDetailEnums";
+import { Gender, UserRole, FitnessLevelEnum, UserAccountStatus } from "../enums/userDetailEnums";
 
 export interface User {
   id: number;
@@ -8,6 +8,7 @@ export interface User {
   gender: Gender;
   country: string;
   language: string;
+  status: UserAccountStatus;
   profile_pic?: string; // Optional profile picture URL
   created_at: string;
   updated_at: string;
@@ -90,4 +91,9 @@ export interface CreateSocialLinkDto {
 export interface UpdateSocialLinkDto {
   platform?: string;
   url?: string;
+}
+
+export interface UpdateUserStatusDto {
+  status: UserAccountStatus;
+  reason?: string;
 }

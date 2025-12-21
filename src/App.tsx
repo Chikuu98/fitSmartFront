@@ -24,6 +24,7 @@ import ProfileUpdate from "./pages/UserAccount/ProfileUpdate";
 import NewsFeed from "./pages/CommunityForum/NewsFeed";
 import ForumTypes from "./pages/CommunityForum/Master/ForumTypes";
 import ForumTags from "./pages/CommunityForum/Master/ForumTags";
+import PendingMentorApprovals from "./pages/Admin/PendingMentorApprovals";
 import CreateNewThread from "./pages/CommunityForum/CreateNewThread";
 import MyThreads from "./pages/CommunityForum/MyThreads";
 import ThreadDetails from "./pages/CommunityForum/ThreadDetails";
@@ -64,6 +65,7 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={[UserRole.ADMIN]} />}>
           <Route element={<MainLayout />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/pending-mentor-approvals" element={<PendingMentorApprovals />} />
             <Route path="/admin/manage-forum-types" element={<ForumTypes />} />
             <Route path="/admin/manage-forum-tags" element={<ForumTags />} />
           </Route>
