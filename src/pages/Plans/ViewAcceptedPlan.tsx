@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAcceptedPlan, activatePlan, pausePlan, resumePlan } from '../../api/endpoints/plans';
 import { Button } from '../../components/ui/button';
-import { ArrowLeft, Calendar, Target, Dumbbell, UtensilsCrossed, TrendingUp, Award, Play, Pause } from 'lucide-react';
+import { ArrowLeft, Calendar, Target, Dumbbell, UtensilsCrossed, TrendingUp, Award, Play, Pause, Clock } from 'lucide-react';
 import { AcceptedPlanStatus } from '../../interfaces/plan';
-import { formatPlanDay } from '../../utils/dateUtils';
+import { formatPlanDay, formatDateTime, calculateCurrentDayNumber } from '../../utils/dateUtils';
 
 const ViewAcceptedPlan: React.FC = () => {
     const { planId } = useParams<{ planId: string }>();
@@ -94,6 +94,16 @@ const ViewAcceptedPlan: React.FC = () => {
         } catch (error: any) {
             console.log(error);
         }
+    };
+
+    const isDayShifted = (dayNumber: number): boolean => {
+        if (!plan.total_paused_days || plan.total_paused_days === 0) return false;
+        const currentDay = calculateCurrentDayNumber(
+            plan.start_date, 
+            plan.total_paused_days, 
+            plan.status === AcceptedPlanStatus.PAUSED ? plan.paused_at : null
+        );
+        return dayNumber > currentDay;
     };
 
     return (
@@ -225,6 +235,41 @@ const ViewAcceptedPlan: React.FC = () => {
                     </div>
                 )}
 
+                {/* Pause Info */}
+                {plan.total_paused_days > 0 && (
+                    <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 rounded-xl p-4 mb-6 border border-yellow-200 dark:border-yellow-700">
+                        <div className="flex items-start gap-3">
+                            <Clock className="text-yellow-600 dark:text-yellow-400 mt-0.5" size={20} />
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className="text-sm font-medium text-gray-900 dark:text-white">Plan Pause Information</span>
+                                </div>
+                                <div className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
+                                    <p>
+                                        <span className="text-gray-500 dark:text-gray-400">Total paused days:</span>{' '}
+                                        <span className="font-semibold">{plan.total_paused_days} day{plan.total_paused_days !== 1 ? 's' : ''}</span>
+                                    </p>
+                                    {plan.paused_at && plan.status === AcceptedPlanStatus.PAUSED && (
+                                        <p>
+                                            <span className="text-gray-500 dark:text-gray-400">Paused since:</span>{' '}
+                                            {formatDateTime(plan.paused_at)}
+                                        </p>
+                                    )}
+                                    {plan.resumed_at && (
+                                        <p>
+                                            <span className="text-gray-500 dark:text-gray-400">Last resumed:</span>{' '}
+                                            {formatDateTime(plan.resumed_at)}
+                                        </p>
+                                    )}
+                                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 italic">
+                                        Your plan end date has been automatically extended by {plan.total_paused_days} day{plan.total_paused_days !== 1 ? 's' : ''} to account for the pause period.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Plans Content */}
                 <div className="grid lg:grid-cols-2 gap-6">
                     {/* Workout Plan */}
@@ -237,9 +282,24 @@ const ViewAcceptedPlan: React.FC = () => {
                         <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
                             {plan.workoutPlan?.map((day: any, index: number) => (
                                 <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-                                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                                        {formatPlanDay(plan.start_date, day.day_number, day.day_name)}
-                                    </h3>
+                                    <div className="flex items-start justify-between gap-2 mb-2">
+                                        <h3 className="font-semibold text-gray-900 dark:text-white flex-1">
+                                            {formatPlanDay(
+                                                plan.start_date, 
+                                                day.day_number, 
+                                                day.day_name,
+                                                plan.total_paused_days,
+                                                plan.paused_at,
+                                                plan.status
+                                            )}
+                                        </h3>
+                                        {isDayShifted(day.day_number) && plan.total_paused_days > 0 && (
+                                            <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full flex items-center gap-1" title={`Date adjusted by ${plan.total_paused_days} day(s) due to pause`}>
+                                                <Clock size={12} />
+                                                Adjusted
+                                            </span>
+                                        )}
+                                    </div>
                                     {day.exercises && day.exercises.length > 0 ? (
                                         <>
                                             <ul className="space-y-2 mb-2">
@@ -291,9 +351,24 @@ const ViewAcceptedPlan: React.FC = () => {
                         <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
                             {plan.mealPlan?.map((day: any, index: number) => (
                                 <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-                                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                                        {formatPlanDay(plan.start_date, day.day_number, day.day_name)}
-                                    </h3>
+                                    <div className="flex items-start justify-between gap-2 mb-2">
+                                        <h3 className="font-semibold text-gray-900 dark:text-white flex-1">
+                                            {formatPlanDay(
+                                                plan.start_date, 
+                                                day.day_number, 
+                                                day.day_name,
+                                                plan.total_paused_days,
+                                                plan.paused_at,
+                                                plan.status
+                                            )}
+                                        </h3>
+                                        {isDayShifted(day.day_number) && plan.total_paused_days > 0 && (
+                                            <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full flex items-center gap-1" title={`Date adjusted by ${plan.total_paused_days} day(s) due to pause`}>
+                                                <Clock size={12} />
+                                                Adjusted
+                                            </span>
+                                        )}
+                                    </div>
                                     
                                     {day.meals && day.meals.length > 0 && (
                                         <div className="space-y-3">
