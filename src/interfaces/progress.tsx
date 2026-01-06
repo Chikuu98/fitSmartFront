@@ -157,6 +157,7 @@ export interface TodaysPlanDetails {
   workout: WorkoutPlan | null;
   meal: MealPlan | null;
   dailyProgress: DailyProgress | null;
+  isFullyTracked?: boolean;
 }
 
 export interface CreateDailyProgressDto {

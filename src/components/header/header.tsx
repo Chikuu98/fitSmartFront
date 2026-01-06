@@ -300,15 +300,14 @@ const Header = () => {
                 >
                   <User className="w-4 h-4 mr-2" /> Account
                 </button>
-                <button
+                {/* <button
                   className="flex items-center w-full px-4 py-2 hover:bg-orange-100 dark:hover:bg-orange-800 text-sm transition-colors text-blue-900 dark:text-orange-200"
                   onClick={() => {
-                    setIsUserOpen(false);
-                    // Settings click handler
+                    setIsUserOpen(false); 
                   }}
                 >
                   <Settings className="w-4 h-4 mr-2" /> Settings
-                </button>
+                </button> */}
                 <button
                   className="flex items-center w-full px-4 py-2 hover:bg-orange-100 dark:hover:bg-orange-800 text-sm transition-colors text-blue-900 dark:text-orange-200"
                   onClick={() => {
