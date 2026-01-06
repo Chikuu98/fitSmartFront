@@ -32,6 +32,8 @@ import GeneratePlan from "./pages/Plans/GeneratePlan";
 import ViewGeneratedPlan from "./pages/Plans/ViewGeneratedPlan";
 import MyPlans from "./pages/Plans/MyPlans";
 import ViewAcceptedPlan from "./pages/Plans/ViewAcceptedPlan";
+import DailyProgressTracker from "./pages/Plans/DailyProgressTracker";
+import ProgressHistory from "./pages/Plans/ProgressHistory";
 
 function App() {
   return (
@@ -92,6 +94,8 @@ function App() {
             <Route path="/member/generate-plan" element={<GeneratePlan />} />
             <Route path="/member/plans/generated/:planId" element={<ViewGeneratedPlan />} />
             <Route path="/member/plans/accepted/:planId" element={<ViewAcceptedPlan />} />
+            <Route path="/member/plans/:planId/track-progress" element={<DailyProgressTracker />} />
+            <Route path="/member/plans/:planId/progress-history" element={<ProgressHistory />} />
           </Route>
         </Route>
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAcceptedPlan, activatePlan, pausePlan, resumePlan } from '../../api/endpoints/plans';
 import { Button } from '../../components/ui/button';
-import { ArrowLeft, Calendar, Target, Dumbbell, UtensilsCrossed, TrendingUp, Award, Play, Pause, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, Target, Dumbbell, UtensilsCrossed, TrendingUp, Award, Play, Pause, Clock, CheckSquare, BarChart3 } from 'lucide-react';
 import { AcceptedPlanStatus } from '../../interfaces/plan';
 import { formatPlanDay, formatDateTime, calculateCurrentDayNumber } from '../../utils/dateUtils';
 
@@ -135,7 +135,7 @@ const ViewAcceptedPlan: React.FC = () => {
                             </p>
                         </div>
 
-                        {/* Action Buttons based on status */}
+                        {/* Action Buttons */}
                         <div className="flex gap-2">
                             {plan.status === AcceptedPlanStatus.ACCEPTED && (
                                 <Button
@@ -148,14 +148,24 @@ const ViewAcceptedPlan: React.FC = () => {
                                 </Button>
                             )}
                             {plan.status === AcceptedPlanStatus.ACTIVE && (
-                                <Button
-                                    variant="outline"
-                                    onClick={handlePause}
-                                    className="flex items-center gap-2"
-                                >
-                                    <Pause size={16} />
-                                    Pause Plan
-                                </Button>
+                                <>
+                                    <Button
+                                        variant="orange"
+                                        onClick={() => navigate(`/member/plans/${planId}/track-progress`)}
+                                        className="flex items-center gap-2"
+                                    >
+                                        <CheckSquare size={16} />
+                                        Track Today's Progress
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        onClick={handlePause}
+                                        className="flex items-center gap-2"
+                                    >
+                                        <Pause size={16} />
+                                        Pause
+                                    </Button>
+                                </>
                             )}
                             {plan.status === AcceptedPlanStatus.PAUSED && (
                                 <Button
@@ -165,6 +175,16 @@ const ViewAcceptedPlan: React.FC = () => {
                                 >
                                     <Play size={16} />
                                     Resume Plan
+                                </Button>
+                            )}
+                            {(plan.status === AcceptedPlanStatus.ACTIVE || plan.status === AcceptedPlanStatus.COMPLETED) && (
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => navigate(`/member/plans/${planId}/progress-history`)}
+                                    className="flex items-center gap-2"
+                                >
+                                    <BarChart3 size={16} />
+                                    View History
                                 </Button>
                             )}
                         </div>
