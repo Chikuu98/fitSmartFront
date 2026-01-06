@@ -179,6 +179,49 @@ const DailyProgressTracker: React.FC = () => {
     );
   }
 
+  // Check if today's progress is already fully tracked
+  if (planDetails?.isFullyTracked) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+        <div className="max-w-2xl w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
+          <div className="mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full mb-4">
+              <CheckCircle2 className="text-green-600 dark:text-green-400" size={32} />
+            </div>
+          </div>
+          
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+            Today's Progress Already Tracked
+          </h2>
+          
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            You have already submitted your progress for today. Come back tomorrow to track your next day!
+          </p>
+
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+            <p className="text-sm text-blue-800 dark:text-blue-200">
+              <strong>Progress Date:</strong> {new Date(planDetails.progressDate).toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </p>
+          </div>
+          
+          <div className="flex gap-3 justify-center">
+            <Button onClick={() => navigate(`/member/plans/accepted/${planId}`)} variant="orange">
+              Back to Plan Details
+            </Button>
+            <Button onClick={() => navigate(`/member/plans/${planId}/progress-history`)} variant="outline">
+              View Progress History
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!planDetails || !planDetails.canTrackProgress) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">

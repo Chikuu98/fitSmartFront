@@ -359,16 +359,36 @@ const Register: React.FC = () => {
                     error={memberErrors.goal}
                     rounded="xl"
                   />
-                  <FormInput
-                    label="Dietary Preference (optional)"
-                    name="dietary_preference"
-                    type="text"
-                    placeholder="Dietary Preference"
-                    value={memberData.dietary_preference}
-                    onChange={handleMemberChange}
-                    error={memberErrors.dietary_preference}
-                    rounded="xl"
-                  />
+                  <div className="mb-2">
+                    <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
+                      Dietary Preference{" "}
+                      <span className="text-gray-400 dark:text-gray-500">
+                        (optional)
+                      </span>
+                    </label>
+                    <CustomSelect
+                      name="dietary_preference"
+                      value={memberData.dietary_preference}
+                      onChange={(option) =>
+                        setMemberData({
+                          ...memberData,
+                          dietary_preference: option ? option.value : "",
+                        })
+                      }
+                      options={[
+                        { value: "vegetarian", label: "Vegetarian" },
+                        { value: "non-vegetarian", label: "Non-Vegetarian" },
+                      ]}
+                      placeholder="Select Dietary Preference"
+                      height="1.75rem"
+                      fontSize="0.75rem"
+                    />
+                    {memberErrors.dietary_preference && (
+                      <div className="text-xs text-red-600 dark:text-red-400">
+                        {memberErrors.dietary_preference}
+                      </div>
+                    )}
+                  </div>
                   <div className="mb-2">
                     <label className="block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300">
                       Fitness Level{" "}
