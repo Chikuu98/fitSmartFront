@@ -6,7 +6,6 @@ import {
   Clock,
   User,
   BookOpen,
-  Video,
   ChevronRight,
   Plus,
   Users,
@@ -21,14 +20,15 @@ import {
   Activity,
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
-import { getBookingsByMemberId } from "../../api/endpoints/bookings";
-import type { Booking } from "../../interfaces/booking";
+import { getMemberDashboard, type MemberDashboardData } from "../../api/endpoints/dashboard";
 import type { RootState } from "../../store/store";
+import { formatRelativeTime } from "../../utils/dateUtils";
 
 const MemberDashboard: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [dashboardData, setDashboardData] = useState<MemberDashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user?.role !== "member") {
@@ -37,19 +37,19 @@ const MemberDashboard: React.FC = () => {
     }
 
     if (user?.id) {
-      fetchBookings();
+      fetchDashboardData();
     }
   }, [user, navigate]);
 
-  const fetchBookings = async () => {
-    if (!user?.id) return;
-
+  const fetchDashboardData = async () => {
+    setLoading(true);
     try {
-      const data = await getBookingsByMemberId(user.id);
-      setBookings(data);
-    } catch (err) {
-      console.error("Error fetching bookings:", err);
-      setBookings([]);
+      const data = await getMemberDashboard();
+      setDashboardData(data);
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,141 +69,48 @@ const MemberDashboard: React.FC = () => {
     });
   };
 
-  const upcomingBookings = bookings
-    .filter(
-      (booking) =>
-        booking.status === "accepted" &&
-        new Date(booking.mentorSlot?.date || "") >= new Date(),
-    )
-    .sort(
-      (a, b) =>
-        new Date(a.mentorSlot?.date || "").getTime() -
-        new Date(b.mentorSlot?.date || "").getTime(),
-    )
-    .slice(0, 3);
-
-  const recentBookings = bookings
-    .filter((booking) => booking.status === "completed")
-    .sort(
-      (a, b) =>
-        new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
-    )
-    .slice(0, 2);
-
-  const stats = {
-    totalSessions: bookings.filter((b) => b.status === "completed").length,
-    upcomingSessions: bookings.filter(
-      (b) =>
-        b.status === "accepted" &&
-        new Date(b.mentorSlot?.date || "") >= new Date(),
-    ).length,
-    pendingBookings: bookings.filter((b) => b.status === "pending").length,
-    totalBookings: bookings.length,
+  // Extract data from dashboardData or use defaults
+  const stats = dashboardData?.sessionStats || {
+    totalSessions: 0,
+    upcomingSessions: 0,
+    pendingBookings: 0,
+    totalBookings: 0,
   };
 
-  // Hardcoded Forum Stats
-  const forumStats = {
-    threadsCreated: 12,
-    repliesMade: 45,
-    likesReceived: 89,
-    helpfulVotes: 34,
+  const forumStats = dashboardData?.forumStats || {
+    threadsCreated: 0,
+    repliesMade: 0,
+    likesReceived: 0,
+    helpfulVotes: 0,
   };
 
-  // Hardcoded Plan Stats
-  const planStats = {
-    activeWorkoutPlan: true,
-    activeMealPlan: true,
-    workoutCompletionRate: 78,
-    mealPlanAdherence: 85,
-    totalWorkoutsCompleted: 156,
-    currentStreak: 7,
+  const planStats = dashboardData?.planStats || {
+    activeWorkoutPlan: false,
+    activeMealPlan: false,
+    workoutCompletionRate: 0,
+    mealPlanAdherence: 0,
+    totalWorkoutsCompleted: 0,
+    currentStreak: 0,
   };
 
-  // Hardcoded Recent Forum Threads
-  const recentForumThreads = [
-    {
-      id: 1,
-      title: "Best protein powder for muscle gain?",
-      type: "Nutrition",
-      replies: 23,
-      likes: 45,
-      createdAt: "2026-01-01T10:30:00",
-      author: "You",
-    },
-    {
-      id: 2,
-      title: "How to improve squat form?",
-      type: "Training",
-      replies: 15,
-      likes: 32,
-      createdAt: "2025-12-28T14:20:00",
-      author: "You",
-    },
-    {
-      id: 3,
-      title: "Recovery techniques after intense workouts",
-      type: "Recovery",
-      replies: 18,
-      likes: 28,
-      createdAt: "2025-12-25T09:15:00",
-      author: "You",
-    },
-  ];
-
-  // Hardcoded Active Plans
-  const activePlans = [
-    {
-      id: 1,
-      type: "Workout",
-      name: "Strength Building Program",
-      progress: 78,
-      daysCompleted: 23,
-      totalDays: 30,
-      nextWorkout: "Upper Body Strength",
-      scheduledFor: "2026-01-03T06:00:00",
-    },
-    {
-      id: 2,
-      type: "Meal",
-      name: "High Protein Meal Plan",
-      progress: 85,
-      daysCompleted: 25,
-      totalDays: 30,
-      nextMeal: "Grilled Chicken & Quinoa",
-      scheduledFor: "2026-01-02T12:00:00",
-    },
-  ];
-
-  // Hardcoded Recent Workout Activities
-  const recentActivities = [
-    {
-      id: 1,
-      type: "workout",
-      title: "Full Body Strength",
-      completedAt: "2026-01-02T07:30:00",
-      duration: "45 min",
-      calories: 320,
-    },
-    {
-      id: 2,
-      type: "workout",
-      title: "Cardio HIIT Session",
-      completedAt: "2026-01-01T18:00:00",
-      duration: "30 min",
-      calories: 280,
-    },
-    {
-      id: 3,
-      type: "meal",
-      title: "Meal Plan Day 25 Completed",
-      completedAt: "2026-01-01T20:00:00",
-      calories: 2200,
-    },
-  ];
+  const recentForumThreads = dashboardData?.recentForumThreads || [];
+  const activePlansData = dashboardData?.activePlans || [];
+  const recentActivities = dashboardData?.recentActivities || [];
+  const upcomingBookings = dashboardData?.upcomingBookings || [];
+  const recentBookings = dashboardData?.recentBookings || [];
 
   return (
     <div className="min-h-screen transition-colors">
       <div className="container mx-auto px-4 py-8">
+        {loading ? (
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+              <p className="text-gray-600 dark:text-gray-400">Loading your dashboard...</p>
+            </div>
+          </div>
+        ) : (
+          <>
         {/* Welcome Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -214,73 +121,73 @@ const MemberDashboard: React.FC = () => {
           </p>
         </div>
 
-        {/* Stats Cards - Sessions */}
-        <div className="mb-6">
+        {/* Stats Cards - Plans */}
+        <div className="mb-8">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-            <Calendar className="w-5 h-5" />
-            Session Statistics
+            <Target className="w-5 h-5" />
+            Fitness Progress
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Total Sessions
+                    Workout Progress
                   </p>
                   <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.totalSessions}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Upcoming
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.upcomingSessions}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                  <Calendar className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Pending
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.pendingBookings}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Total Bookings
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.totalBookings}
+                    {planStats.workoutCompletionRate}%
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
-                  <BookOpen className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                  <Dumbbell className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Meal Adherence
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {planStats.mealPlanAdherence}%
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                  <UtensilsCrossed className="w-6 h-6 text-green-600 dark:text-green-400" />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Total Workouts
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {planStats.totalWorkoutsCompleted}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                  <Activity className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Current Streak
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {planStats.currentStreak} days
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
+                  <Award className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
                 </div>
               </div>
             </div>
@@ -354,6 +261,79 @@ const MemberDashboard: React.FC = () => {
                 </div>
                 <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900 rounded-lg flex items-center justify-center">
                   <Award className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Cards - Sessions */}
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <Calendar className="w-5 h-5" />
+            Session Statistics
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Total Sessions
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {stats.totalSessions}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Upcoming
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {stats.upcomingSessions}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                  <Calendar className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Pending
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {stats.pendingBookings}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
+                  <Clock className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Total Bookings
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {stats.totalBookings}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
+                  <BookOpen className="w-6 h-6 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </div>
@@ -546,28 +526,13 @@ const MemberDashboard: React.FC = () => {
                         </div>
                         <div>
                           <p className="font-medium text-gray-900 dark:text-white">
-                            {booking.mentorSlot?.mentor?.name ||
-                              "Unknown Mentor"}
+                            {booking.mentorName}
                           </p>
                           <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {booking.mentorSlot?.date &&
-                            booking.mentorSlot?.start_time
-                              ? `${formatDate(booking.mentorSlot.date)} at ${formatTime(booking.mentorSlot.start_time)}`
-                              : "Date & Time TBD"}
+                            {formatDate(booking.date)} at {formatTime(booking.time)}
                           </p>
                         </div>
                       </div>
-                      {booking.google_meet_link && (
-                        <Button
-                          variant="blue"
-                          onClick={() =>
-                            window.open(booking.google_meet_link, "_blank")
-                          }
-                        >
-                          <Video className="w-4 h-4 mr-2" />
-                          Join
-                        </Button>
-                      )}
                     </div>
                   ))}
                 </div>
@@ -596,14 +561,10 @@ const MemberDashboard: React.FC = () => {
                     </div>
                     <div className="flex-1">
                       <p className="font-medium text-gray-900 dark:text-white">
-                        Session with{" "}
-                        {booking.mentorSlot?.mentor?.name || "Unknown Mentor"}
+                        Session with {booking.mentorName}
                       </p>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Completed on{" "}
-                        {booking.mentorSlot?.date
-                          ? formatDate(booking.mentorSlot.date)
-                          : "Unknown date"}
+                        Completed on {formatDate(booking.date)}
                       </p>
                     </div>
                     <div className="text-right">
@@ -637,23 +598,23 @@ const MemberDashboard: React.FC = () => {
               </div>
             </div>
             <div className="p-6">
-              {activePlans[0] && (
+              {activePlansData[0] ? (
                 <div>
                   <div className="mb-4">
                     <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                      {activePlans[0].name}
+                      {activePlansData[0].name}
                     </h3>
                     <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
                       <span>
-                        Day {activePlans[0].daysCompleted} of{" "}
-                        {activePlans[0].totalDays}
+                        Day {activePlansData[0].daysCompleted} of{" "}
+                        {activePlansData[0].totalDays}
                       </span>
-                      <span>{activePlans[0].progress}% Complete</span>
+                      <span>{Math.round(activePlansData[0].progress)}% Complete</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
                       <div
                         className="bg-orange-500 h-2.5 rounded-full"
-                        style={{ width: `${activePlans[0].progress}%` }}
+                        style={{ width: `${Math.round(activePlansData[0].progress)}%` }}
                       ></div>
                     </div>
                   </div>
@@ -662,17 +623,16 @@ const MemberDashboard: React.FC = () => {
                       Next Workout
                     </p>
                     <p className="text-gray-700 dark:text-gray-300">
-                      {activePlans[0].nextWorkout}
+                      {activePlansData[0].daysCompleted} of {activePlansData[0].totalDays} days completed
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      Scheduled:{" "}
-                      {new Date(
-                        activePlans[0].scheduledFor,
-                      ).toLocaleDateString("en-US", {
+                      {new Date(activePlansData[0].planStartDate).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
+                      })}{" "}-{" "}
+                      {new Date(activePlansData[0].planEndDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
                       })}
                     </p>
                   </div>
@@ -691,6 +651,19 @@ const MemberDashboard: React.FC = () => {
                       View Plan
                     </Button>
                   </div>
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Dumbbell className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    No active workout plan
+                  </p>
+                  <Button
+                    variant="orange"
+                    onClick={() => navigate("/member/my-plans")}
+                  >
+                    Create Workout Plan
+                  </Button>
                 </div>
               )}
             </div>
@@ -713,23 +686,23 @@ const MemberDashboard: React.FC = () => {
               </div>
             </div>
             <div className="p-6">
-              {activePlans[1] && (
+              {activePlansData[1] ? (
                 <div>
                   <div className="mb-4">
                     <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                      {activePlans[1].name}
+                      {activePlansData[1].name}
                     </h3>
                     <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
                       <span>
-                        Day {activePlans[1].daysCompleted} of{" "}
-                        {activePlans[1].totalDays}
+                        Day {activePlansData[1].daysCompleted} of{" "}
+                        {activePlansData[1].totalDays}
                       </span>
-                      <span>{activePlans[1].progress}% Complete</span>
+                      <span>{Math.round(activePlansData[1].progress)}% Complete</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
                       <div
                         className="bg-green-500 h-2.5 rounded-full"
-                        style={{ width: `${activePlans[1].progress}%` }}
+                        style={{ width: `${Math.round(activePlansData[1].progress)}%` }}
                       ></div>
                     </div>
                   </div>
@@ -738,17 +711,16 @@ const MemberDashboard: React.FC = () => {
                       Next Meal
                     </p>
                     <p className="text-gray-700 dark:text-gray-300">
-                      {activePlans[1].nextMeal}
+                      {activePlansData[1].daysCompleted} of {activePlansData[1].totalDays} days completed
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      Scheduled:{" "}
-                      {new Date(
-                        activePlans[1].scheduledFor,
-                      ).toLocaleDateString("en-US", {
+                      {new Date(activePlansData[1].planStartDate).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
+                      })}{" "}-{" "}
+                      {new Date(activePlansData[1].planEndDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
                       })}
                     </p>
                   </div>
@@ -767,6 +739,19 @@ const MemberDashboard: React.FC = () => {
                       View Plan
                     </Button>
                   </div>
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <UtensilsCrossed className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    No active meal plan
+                  </p>
+                  <Button
+                    variant="orange"
+                    onClick={() => navigate("/member/my-plans")}
+                  >
+                    Create Meal Plan
+                  </Button>
                 </div>
               )}
             </div>
@@ -791,40 +776,52 @@ const MemberDashboard: React.FC = () => {
               </div>
             </div>
             <div className="p-6">
-              <div className="space-y-4">
-                {recentForumThreads.map((thread) => (
-                  <div
-                    key={thread.id}
-                    className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer transition-colors"
+              {recentForumThreads.length > 0 ? (
+                <div className="space-y-4">
+                  {recentForumThreads.map((thread) => (
+                    <div
+                      key={thread.id}
+                      className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer transition-colors"
+                      onClick={() => navigate("/community-forum")}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-medium text-gray-900 dark:text-white flex-1">
+                          {thread.title}
+                        </h3>
+                        <span className="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-2 py-1 rounded-full ml-2">
+                          {thread.type}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <MessageSquare className="w-4 h-4" />
+                          {thread.replies} replies
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Heart className="w-4 h-4" />
+                          {thread.likes} likes
+                        </span>
+                        <span>
+                          {formatRelativeTime(thread.createdAt)}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <MessageSquare className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    You haven't created any forum threads yet
+                  </p>
+                  <Button
+                    variant="orange"
                     onClick={() => navigate("/community-forum")}
                   >
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-medium text-gray-900 dark:text-white flex-1">
-                        {thread.title}
-                      </h3>
-                      <span className="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-2 py-1 rounded-full ml-2">
-                        {thread.type}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-                      <span className="flex items-center gap-1">
-                        <MessageSquare className="w-4 h-4" />
-                        {thread.replies} replies
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Heart className="w-4 h-4" />
-                        {thread.likes} likes
-                      </span>
-                      <span>
-                        {new Date(thread.createdAt).toLocaleDateString(
-                          "en-US",
-                          { month: "short", day: "numeric" },
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                    Create Thread
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -836,60 +833,65 @@ const MemberDashboard: React.FC = () => {
               </h2>
             </div>
             <div className="p-6">
-              <div className="space-y-4">
-                {recentActivities.map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
-                  >
+              {recentActivities.length > 0 ? (
+                <div className="space-y-4">
+                  {recentActivities.map((activity) => (
                     <div
-                      className={`w-10 h-10 ${
-                        activity.type === "workout"
-                          ? "bg-orange-100 dark:bg-orange-900"
-                          : "bg-green-100 dark:bg-green-900"
-                      } rounded-full flex items-center justify-center`}
+                      key={activity.id}
+                      className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
                     >
-                      {activity.type === "workout" ? (
-                        <Dumbbell
-                          className={`w-5 h-5 ${
-                            activity.type === "workout"
-                              ? "text-orange-600 dark:text-orange-400"
-                              : "text-green-600 dark:text-green-400"
-                          }`}
-                        />
-                      ) : (
-                        <UtensilsCrossed className="w-5 h-5 text-green-600 dark:text-green-400" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900 dark:text-white">
-                        {activity.title}
-                      </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {activity.type === "workout"
-                          ? `${activity.duration} • ${activity.calories} cal`
-                          : `${activity.calories} cal`}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {new Date(activity.completedAt).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          },
+                      <div
+                        className={`w-10 h-10 ${
+                          activity.type === "workout"
+                            ? "bg-orange-100 dark:bg-orange-900"
+                            : "bg-green-100 dark:bg-green-900"
+                        } rounded-full flex items-center justify-center`}
+                      >
+                        {activity.type === "workout" ? (
+                          <Dumbbell
+                            className={`w-5 h-5 ${
+                              activity.type === "workout"
+                                ? "text-orange-600 dark:text-orange-400"
+                                : "text-green-600 dark:text-green-400"
+                            }`}
+                          />
+                        ) : (
+                          <UtensilsCrossed className="w-5 h-5 text-green-600 dark:text-green-400" />
                         )}
-                      </p>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-900 dark:text-white">
+                          {activity.title}
+                        </p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          {formatRelativeTime(activity.completedAt)}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Activity className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    No recent activities
+                  </p>
+                  <Button
+                    variant="orange"
+                    onClick={() => navigate("/member/my-plans")}
+                  >
+                    Start Your Journey
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
+        </>
+        )}
       </div>
     </div>
   );
