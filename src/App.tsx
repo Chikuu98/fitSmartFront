@@ -34,6 +34,8 @@ import MyPlans from "./pages/Plans/MyPlans";
 import ViewAcceptedPlan from "./pages/Plans/ViewAcceptedPlan";
 import DailyProgressTracker from "./pages/Plans/DailyProgressTracker";
 import ProgressHistory from "./pages/Plans/ProgressHistory";
+import GenerateReport from "./pages/Reports/GenerateReport";
+import ViewReport from "./pages/Reports/ViewReport";
 
 function App() {
   return (
@@ -96,6 +98,8 @@ function App() {
             <Route path="/member/plans/accepted/:planId" element={<ViewAcceptedPlan />} />
             <Route path="/member/plans/:planId/track-progress" element={<DailyProgressTracker />} />
             <Route path="/member/plans/:planId/progress-history" element={<ProgressHistory />} />
+            <Route path="/member/reports/generate" element={<GenerateReport />} />
+            <Route path="/member/reports/view" element={<ViewReport />} />
           </Route>
         </Route>
 

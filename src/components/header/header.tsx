@@ -91,6 +91,13 @@ const Header = () => {
         { label: "Generate Plan", to: "/member/generate-plan" },
         { label: "My Plans", to: "/member/my-plans" },
       ],
+    },
+    {
+      title: "Progress Reports",
+      dropdown: true,
+      dropdownItems: [
+        { label: "Generate Report", to: "/member/reports/generate" },
+      ],
     }
   ];
 
