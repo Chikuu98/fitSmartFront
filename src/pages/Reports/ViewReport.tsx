@@ -140,11 +140,11 @@ const ViewReport: React.FC = () => {
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           {/* Action Buttons - Hidden on print */}
           <div className="mb-6 flex gap-4 no-print">
-            <Button variant="ghost" onClick={() => navigate('/member/reports/generate')}>
+            <Button variant="ghost" onClick={() => navigate('/member/reports/generate')} className='flex items-center justify-center'>
               <ArrowLeft size={18} className="mr-2" />
               Back
             </Button>
-            <Button variant="orange" onClick={handlePrint}>
+            <Button variant="orange" onClick={handlePrint} className='flex items-center justify-center'>
               <Printer size={18} className="mr-2" />
               Print Report
             </Button>

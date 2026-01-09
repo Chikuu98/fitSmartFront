@@ -165,7 +165,7 @@ const GenerateReport: React.FC = () => {
                 type="submit"
                 variant="orange"
                 disabled={loading}
-                className="flex-1"
+                className="flex-1 flex items-center justify-center"
               >
                 {loading ? (
                   <>
