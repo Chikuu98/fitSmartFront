@@ -81,11 +81,33 @@ export const updateBookingMeetLink = async (
   return response.data;
 };
 
+export const processPayment = async (
+  booking_id: number,
+  paymentData: {
+    cardNumber: string;
+    expiryDate: string;
+    cvv: string;
+    cardholderName: string;
+  },
+) => {
+  const response = await axiosInstance.post(
+    withApiUrl(`bookings/${booking_id}/process-payment`),
+    paymentData,
+  );
+  return response.data;
+};
+
+export const completeBooking = async (booking_id: number) => {
+  const response = await axiosInstance.patch(
+    withApiUrl(`bookings/${booking_id}/complete`),
+  );
+  return response.data;
+};
+
 export const updateBookingMeetLinkSilent = async (
   booking_id: number,
   googleMeetLink: string,
 ) => {
-  // Use regular axios instead of axiosInstance to avoid automatic toast
   const response = await axios.patch(
     withApiUrl(`bookings/${booking_id}`),
     {

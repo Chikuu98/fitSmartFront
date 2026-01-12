@@ -12,6 +12,7 @@ import {
   MapPin,
   CreditCard,
   RefreshCw,
+  DollarSign,
 } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
@@ -84,6 +85,10 @@ const MyBookings: React.FC = () => {
 
   const handleJoinMeeting = (meetingLink: string) => {
     window.open(meetingLink, "_blank", "noopener,noreferrer");
+  };
+
+  const handlePayment = (bookingId: number) => {
+    navigate(`/member/bookings/${bookingId}/payment`);
   };
 
   const formatDate = (dateString: string) => {
@@ -381,10 +386,14 @@ const MyBookings: React.FC = () => {
                     </div>
 
                     {/* Actions Section */}
-                    {(booking.google_meet_link || booking.status === "pending") && (
+                    {(booking.google_meet_link || 
+                      booking.status === "pending" || 
+                      (booking.status === "accepted" && booking.bookingPayment?.status === "unpaid")) && (
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pl-0 sm:pl-[4.5rem] pt-2 border-t border-gray-100 dark:border-gray-700">
+                        {/* Join Meeting Button */}
                         {booking.google_meet_link &&
-                          booking.status === "accepted" && (
+                          booking.status === "accepted" &&
+                          booking.bookingPayment?.status === "paid" && (
                             <Button
                               variant="blue"
                               onClick={() =>
@@ -397,6 +406,20 @@ const MyBookings: React.FC = () => {
                             </Button>
                           )}
 
+                        {/* Payment Button */}
+                        {booking.status === "accepted" && 
+                         booking.bookingPayment?.status === "unpaid" && (
+                            <Button
+                              variant="orange"
+                              onClick={() => handlePayment(booking.id)}
+                              className="flex items-center justify-center gap-2 w-full sm:w-auto"
+                            >
+                              <DollarSign className="w-4 h-4" />
+                              Pay Now
+                            </Button>
+                          )}
+
+                        {/* Cancel Button */}
                         {booking.status === "pending" && (
                           <Button
                             variant="outline"

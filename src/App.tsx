@@ -20,6 +20,7 @@ import CreateBooking from "./pages/MentorBooking/Member/CreateBooking";
 import Unauthorized from "./pages/Unauthorized/Unauthorizred";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import MyBookings from "./pages/MentorBooking/Member/MyBookings";
+import { PaymentPage } from "./pages/MentorBooking/Member/PaymentPage/PaymentPage";
 import ProfileUpdate from "./pages/UserAccount/ProfileUpdate";
 import NewsFeed from "./pages/CommunityForum/NewsFeed";
 import ForumTypes from "./pages/CommunityForum/Master/ForumTypes";
@@ -92,6 +93,7 @@ function App() {
               element={<CreateBooking />}
             />
             <Route path="/member/my-bookings" element={<MyBookings />} />
+            <Route path="/member/bookings/:booking_id/payment" element={<PaymentPage />} />
             <Route path="/member/my-plans" element={<MyPlans />} />
             <Route path="/member/generate-plan" element={<GeneratePlan />} />
             <Route path="/member/plans/generated/:planId" element={<ViewGeneratedPlan />} />

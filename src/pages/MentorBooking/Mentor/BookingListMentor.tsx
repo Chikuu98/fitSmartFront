@@ -11,13 +11,14 @@ import {
   CreditCard,
   AlertCircle,
   Edit,
+  CheckCircle2,
 } from "lucide-react";
 import type { Booking } from "../../../interfaces/booking";
 import { getBookingsByMentorId } from "../../../api/endpoints/bookings";
 import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
 import type { RootState } from "../../../store/store";
 import { useCreateGoogleMeeting } from "../../../hooks/useCreateGoogleMeeting";
-import { acceptBooking, cancelBooking } from "../../../api/endpoints/bookings";
+import { acceptBooking, cancelBooking, completeBooking } from "../../../api/endpoints/bookings";
 import { toast } from "react-toastify";
 import { Button } from "../../../components/ui";
 
@@ -102,6 +103,27 @@ const BookingListMentor: React.FC = () => {
           await cancelBooking(booking.id);
           refetchBookings();
         } catch (err) {
+        } finally {
+          setLoadingId(null);
+        }
+      },
+    });
+  };
+
+  const handleComplete = async (booking: Booking) => {
+    openDialog({
+      title: "Complete Session",
+      message: `Are you sure you want to mark the session with ${booking.member?.name} as completed?`,
+      confirmText: "Mark Complete",
+      variant: "info",
+      onConfirm: async (close) => {
+        close();
+        setLoadingId(booking.id);
+        try {
+          await completeBooking(booking.id);
+          refetchBookings();
+        } catch (error: any) {
+          console.error(error);
         } finally {
           setLoadingId(null);
         }
@@ -218,7 +240,7 @@ const BookingListMentor: React.FC = () => {
                             : "Create Meeting"}
                       </Button>
                       <Button
-                        variant="true"
+                        variant="green"
                         className="shadow-sm group-hover:scale-105 transition"
                         disabled={loadingId === booking.id}
                         onClick={() => handleAccept(booking)}
@@ -232,6 +254,20 @@ const BookingListMentor: React.FC = () => {
                         onClick={() => handleCancel(booking)}
                       >
                         Cancel
+                      </Button>
+                    </div>
+                  )}
+
+                  {booking.status === "accepted" && booking.bookingPayment?.status === "paid" && (
+                    <div className="flex gap-3">
+                      <Button
+                        variant="green"
+                        className="shadow-sm group-hover:scale-105 transition"
+                        disabled={loadingId === booking.id}
+                        onClick={() => handleComplete(booking)}
+                      >
+                        <CheckCircle2 className="w-4 h-4 mr-1" />
+                        Mark Complete
                       </Button>
                     </div>
                   )}
