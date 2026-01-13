@@ -31,6 +31,8 @@ export interface Mentor {
   created_at: string;
   updated_at: string;
   mentorDetail?: MentorDetail;
+  averageRating?: number;
+  totalRatings?: number;
 }
 
 export interface MentorListResponse {
