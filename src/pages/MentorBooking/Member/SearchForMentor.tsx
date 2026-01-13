@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import CustomSelect from "../../../components/ui/customSelect";
 import { Button } from "../../../components/ui/button";
+import StarRating from "../../../components/ui/starRating";
 import { getMentorList } from "../../../api/endpoints/mentors";
 import { languageOptions } from "../../../utils/languageOptions";
 import { countryOptions } from "../../../utils/countryOptions";
@@ -257,10 +258,17 @@ const SearchForMentor: React.FC = () => {
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center text-yellow-500">
-                        <Star className="h-4 w-4 fill-current" />
-                        <span className="text-sm ml-1">4.8</span>
-                      </div>
+                      {mentor.averageRating !== undefined && mentor.averageRating > 0 && (
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 fill-orange-500 text-orange-500" />
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">
+                            {mentor.averageRating.toFixed(1)}
+                          </span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            ({mentor.totalRatings})
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Location and Language */}

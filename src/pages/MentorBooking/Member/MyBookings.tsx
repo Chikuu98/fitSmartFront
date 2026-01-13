@@ -13,16 +13,19 @@ import {
   CreditCard,
   RefreshCw,
   DollarSign,
+  Star,
 } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
+import { RatingForm, RatingCard } from "../../../components/ui";
 import {
   getBookingsByMemberId,
   cancelBooking,
 } from "../../../api/endpoints/bookings";
+import { createRating, updateRating, getRatingByBooking } from "../../../api/endpoints/ratings";
 import type { Booking } from "../../../interfaces/booking";
+import type { CreateRatingDto, Rating } from "../../../interfaces/rating";
 import type { RootState } from "../../../store/store";
-import { toast } from "react-toastify";
 
 const MyBookings: React.FC = () => {
   const navigate = useNavigate();
@@ -33,6 +36,12 @@ const MyBookings: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [ratingFormData, setRatingFormData] = useState<{
+    bookingId: number;
+    mentorName: string;
+  } | null>(null);
+  const [editingRating, setEditingRating] = useState<Rating | null>(null);
+  const [bookingRatings, setBookingRatings] = useState<Record<number, Rating>>({});
 
   useEffect(() => {
     if (user?.id) {
@@ -48,10 +57,28 @@ const MyBookings: React.FC = () => {
       setError(null);
       const data = await getBookingsByMemberId(user.id);
       setBookings(data);
+      
+      // Fetch ratings for completed bookings
+      const completedBookings = data.filter((b: Booking) => b.status === "completed");
+      const ratingsMap: Record<number, Rating> = {};
+      
+      await Promise.all(
+        completedBookings.map(async (booking: Booking) => {
+          try {
+            const rating = await getRatingByBooking(booking.id);
+            if (rating) {
+              ratingsMap[booking.id] = rating;
+            }
+          } catch (err) {
+            // Rating doesn't exist yet, which is fine
+          }
+        })
+      );
+      
+      setBookingRatings(ratingsMap);
     } catch (err) {
       console.error("Error fetching bookings:", err);
       setError("Failed to load your bookings");
-      toast.error("Failed to load your bookings");
     } finally {
       setLoading(false);
     }
@@ -71,11 +98,9 @@ const MyBookings: React.FC = () => {
 
         try {
           await cancelBooking(booking.id);
-          toast.success("Booking cancelled successfully");
           fetchBookings();
         } catch (err) {
           console.error("Error cancelling booking:", err);
-          toast.error("Failed to cancel booking");
         } finally {
           setCancellingId(null);
         }
@@ -89,6 +114,45 @@ const MyBookings: React.FC = () => {
 
   const handlePayment = (bookingId: number) => {
     navigate(`/member/bookings/${bookingId}/payment`);
+  };
+
+  const handleOpenRatingForm = (bookingId: number, mentorName: string) => {
+    setRatingFormData({ bookingId, mentorName });
+    setEditingRating(null); // Clear for new rating
+  };
+
+  const handleEditRating = (rating: Rating, mentorName: string) => {
+    setRatingFormData({ bookingId: rating.booking.id, mentorName });
+    setEditingRating(rating);
+  };
+
+  const handleCloseRatingForm = () => {
+    setRatingFormData(null);
+    setEditingRating(null);
+  };
+
+  const handleSubmitRating = async (data: CreateRatingDto) => {
+    try {
+      let response: { success: boolean; message: string; data: Rating };
+      
+      if (editingRating) {
+        // Update existing rating
+        response = await updateRating(editingRating.id, data);
+      } else {
+        // Create new rating
+        response = await createRating(data);
+      }
+      
+      // Update the bookingRatings state
+      setBookingRatings(prev => ({
+        ...prev,
+        [data.bookingId]: response.data
+      }));
+      
+      handleCloseRatingForm();
+    } catch (err: any) {
+      throw err; // Let RatingForm handle the error display
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -388,6 +452,7 @@ const MyBookings: React.FC = () => {
                     {/* Actions Section */}
                     {(booking.google_meet_link || 
                       booking.status === "pending" || 
+                      booking.status === "completed" ||
                       (booking.status === "accepted" && booking.bookingPayment?.status === "unpaid")) && (
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pl-0 sm:pl-[4.5rem] pt-2 border-t border-gray-100 dark:border-gray-700">
                         {/* Join Meeting Button */}
@@ -419,6 +484,23 @@ const MyBookings: React.FC = () => {
                             </Button>
                           )}
 
+                        {/* Rate Session Button/Display */}
+                        {booking.status === "completed" && (
+                          !bookingRatings[booking.id] ? (
+                            <Button
+                              variant="orange"
+                              onClick={() => handleOpenRatingForm(
+                                booking.id,
+                                booking.mentorSlot?.mentor?.name || "this mentor"
+                              )}
+                              className="flex items-center justify-center gap-2 w-full sm:w-auto"
+                            >
+                              <Star className="w-4 h-4" />
+                              Rate Session
+                            </Button>
+                          ) : null
+                        )}
+
                         {/* Cancel Button */}
                         {booking.status === "pending" && (
                           <Button
@@ -442,6 +524,22 @@ const MyBookings: React.FC = () => {
                         )}
                       </div>
                     )}
+
+                    {/* Rating Display Section */}
+                    {booking.status === "completed" && bookingRatings[booking.id] && (
+                      <div className="pl-0 sm:pl-[4.5rem] pt-3 border-t border-gray-100 dark:border-gray-700">
+                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Your Review
+                        </h4>
+                        <RatingCard
+                          rating={bookingRatings[booking.id]}
+                          onEdit={() => handleEditRating(
+                            bookingRatings[booking.id],
+                            booking.mentorSlot?.mentor?.name || "this mentor"
+                          )}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -451,6 +549,17 @@ const MyBookings: React.FC = () => {
 
         {/* Confirmation Dialog */}
         <ConfirmDialog />
+
+        {/* Rating Form Modal */}
+        {ratingFormData && (
+          <RatingForm
+            bookingId={ratingFormData.bookingId}
+            mentorName={ratingFormData.mentorName}
+            onSubmit={handleSubmitRating}
+            onCancel={handleCloseRatingForm}
+            initialRating={editingRating}
+          />
+        )}
       </div>
     </div>
   );

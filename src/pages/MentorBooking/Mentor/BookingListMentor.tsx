@@ -12,20 +12,24 @@ import {
   AlertCircle,
   Edit,
   CheckCircle2,
+  Star,
 } from "lucide-react";
 import type { Booking } from "../../../interfaces/booking";
+import type { Rating } from "../../../interfaces/rating";
 import { getBookingsByMentorId } from "../../../api/endpoints/bookings";
+import { getRatingByBooking } from "../../../api/endpoints/ratings";
 import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
 import type { RootState } from "../../../store/store";
 import { useCreateGoogleMeeting } from "../../../hooks/useCreateGoogleMeeting";
 import { acceptBooking, cancelBooking, completeBooking } from "../../../api/endpoints/bookings";
 import { toast } from "react-toastify";
-import { Button } from "../../../components/ui";
+import { Button, RatingCard } from "../../../components/ui";
 
 const BookingListMentor: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [loadingId, setLoadingId] = useState<number | null>(null);
+  const [bookingRatings, setBookingRatings] = useState<Record<number, Rating>>({});
   const mentor_id = useSelector((state: RootState) => state.auth.user?.id);
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
   const navigate = useNavigate();
@@ -36,6 +40,25 @@ const BookingListMentor: React.FC = () => {
       try {
         const data = await getBookingsByMentorId(mentor_id);
         setBookings(data);
+        
+        // Fetch ratings for completed bookings
+        const completedBookings = data.filter((b: Booking) => b.status === "completed");
+        const ratingsMap: Record<number, Rating> = {};
+        
+        await Promise.all(
+          completedBookings.map(async (booking: Booking) => {
+            try {
+              const rating = await getRatingByBooking(booking.id);
+              if (rating) {
+                ratingsMap[booking.id] = rating;
+              }
+            } catch (err) {
+              // Rating doesn't exist yet
+            }
+          })
+        );
+        
+        setBookingRatings(ratingsMap);
       } catch (error) {
         console.error("Failed to load bookings", error);
       }
@@ -56,6 +79,25 @@ const BookingListMentor: React.FC = () => {
     try {
       const data = await getBookingsByMentorId(mentor_id);
       setBookings(data);
+      
+      // Fetch ratings for completed bookings
+      const completedBookings = data.filter((b: Booking) => b.status === "completed");
+      const ratingsMap: Record<number, Rating> = {};
+      
+      await Promise.all(
+        completedBookings.map(async (booking: Booking) => {
+          try {
+            const rating = await getRatingByBooking(booking.id);
+            if (rating) {
+              ratingsMap[booking.id] = rating;
+            }
+          } catch (err) {
+            // Rating doesn't exist yet
+          }
+        })
+      );
+      
+      setBookingRatings(ratingsMap);
     } catch (error) {
       toast.error("Failed to reload bookings");
     }
@@ -272,6 +314,28 @@ const BookingListMentor: React.FC = () => {
                     </div>
                   )}
                 </div>
+
+                {/* Rating Display Section */}
+                {booking.status === "completed" && (
+                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                    {bookingRatings[booking.id] ? (
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                          <Star className="w-4 h-4 fill-orange-500 text-orange-500" />
+                          Member's Review
+                        </h4>
+                        <RatingCard
+                          rating={bookingRatings[booking.id]}
+                          showMemberInfo={false}
+                        />
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+                        No rating received yet
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             ))
           )}

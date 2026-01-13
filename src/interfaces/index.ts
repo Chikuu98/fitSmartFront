@@ -29,3 +29,12 @@ export type {
   PlanType 
 } from './plan';
 export { GenerationStatus, AcceptedPlanStatus } from './plan';
+
+// Rating interfaces
+export type { 
+  Rating, 
+  CreateRatingDto, 
+  UpdateRatingDto, 
+  RatingResponse, 
+  MentorRatingStats 
+} from './rating';
