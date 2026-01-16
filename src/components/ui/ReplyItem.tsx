@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Heart, MessageSquare, User, Clock, MoreVertical, Edit3, Trash2, X, Check } from "lucide-react";
+import { Heart, MessageSquare, User, Clock, MoreVertical, Edit3, Trash2, X, Check, Flag } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { TextAreaInput } from "../../components/ui";
+import { ReportModal } from "../../components/ui/ReportModal";
 import { toggleForumLike } from "../../api/endpoints/forumLikes";
 import { deleteForumReply, updateForumReply } from "../../api/endpoints/forumReplies";
 import type { ForumReply, User as UserType } from "../../interfaces";
@@ -32,6 +33,7 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
   const [editContent, setEditContent] = useState("");
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState<string | null>(null);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const isOwner = currentUser?.id === reply.user_id;
   const maxNestingLevel = 3;
@@ -201,6 +203,18 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
                         </button>
                       </>
                     )}
+                    {!isOwner && currentUser && (
+                      <button
+                        onClick={() => {
+                          setShowReportModal(true);
+                          setShowDropdown(false);
+                        }}
+                        className="w-full text-left px-3 py-2 text-sm text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 flex items-center"
+                      >
+                        <Flag className="w-3 h-3 mr-2" />
+                        Report
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
@@ -340,6 +354,17 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
             />
           ))}
         </div>
+      )}
+
+      {/* Report Modal */}
+      {showReportModal && (
+        <ReportModal
+          isOpen={showReportModal}
+          onClose={() => setShowReportModal(false)}
+          contentType={'forum_reply'}
+          contentId={reply.id}
+          contentAuthor={reply.user?.name || 'Anonymous'}
+        />
       )}
     </div>
   );

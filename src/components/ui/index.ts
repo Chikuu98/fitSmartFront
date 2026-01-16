@@ -14,5 +14,6 @@ export { default as StarRating } from "./starRating";
 export { default as RatingForm } from "./ratingForm";
 export { default as RatingCard } from "./ratingCard";
 export { default as RatingStars } from "./RatingStars";
+export { ReportModal } from "./ReportModal";
 
 export type { Column, DataTableProps } from "./dataTable";

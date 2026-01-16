@@ -28,6 +28,19 @@ export type {
   AcceptPlanDto, 
   PlanType 
 } from './plan';
+
+// User Report interfaces
+export type { 
+  IUserReport, 
+  IUserPunishment,
+  CreateUserReportPayload,
+  ReviewUserReportPayload,
+  ApplyPunishmentPayload,
+  ReportType,
+  ReportStatus,
+  ReportedContentType,
+  PunishmentType
+} from './userReport';
 export { GenerationStatus, AcceptedPlanStatus } from './plan';
 
 // Rating interfaces

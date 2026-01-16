@@ -12,11 +12,13 @@ import {
   AlertCircle,
   X,
   Check,
+  Flag,
 } from "lucide-react";
 import { Button } from "./button";
 import { FormInput, TextAreaInput } from "./";
 import ReplyItem from "./ReplyItem";
 import ReplyForm from "./ReplyForm";
+import { ReportModal } from "./ReportModal";
 import { 
   getForumThreadById, 
   deleteForumThread,
@@ -60,6 +62,7 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
   const [editContent, setEditContent] = useState("");
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState<string | null>(null);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const isOwner = user?.id === thread?.user_id;
 
@@ -413,7 +416,7 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
             </div>
           </div>
           
-          {isOwner && (
+          {(isOwner || user) && (
             <div className="relative ml-2">
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
@@ -426,23 +429,39 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
               {showDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 z-20">
                   <div className="py-1">
-                    <button
-                      onClick={handleEditClick}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center"
-                    >
-                      <Edit3 className="w-4 h-4 mr-2" />
-                      Edit Thread
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDeleteConfirm(true);
-                        setShowDropdown(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center"
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Delete Thread
-                    </button>
+                    {isOwner && (
+                      <>
+                        <button
+                          onClick={handleEditClick}
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center"
+                        >
+                          <Edit3 className="w-4 h-4 mr-2" />
+                          Edit Thread
+                        </button>
+                        <button
+                          onClick={() => {
+                            setDeleteConfirm(true);
+                            setShowDropdown(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center"
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Delete Thread
+                        </button>
+                      </>
+                    )}
+                    {!isOwner && user && (
+                      <button
+                        onClick={() => {
+                          setShowReportModal(true);
+                          setShowDropdown(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 flex items-center"
+                      >
+                        <Flag className="w-4 h-4 mr-2" />
+                        Report Thread
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
@@ -637,6 +656,17 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
           </div>
         )}
       </div>
+
+      {/* Report Modal */}
+      {showReportModal && thread && (
+        <ReportModal
+          isOpen={showReportModal}
+          onClose={() => setShowReportModal(false)}
+          contentType={'forum_thread'}
+          contentId={thread.id}
+          contentAuthor={thread.user?.name || 'Anonymous'}
+        />
+      )}
     </div>
   );
 };
