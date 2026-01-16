@@ -62,8 +62,18 @@ axiosInstance.interceptors.response.use(
 
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 401) {
+        // Extract the actual error message from the response
+        if (error.response?.data) {
+          const responseData = error.response.data;
+          if (typeof responseData.message === "string") {
+            errorMessage = responseData.message;
+          } else if (Array.isArray(responseData.errors) && responseData.errors.length > 0) {
+            errorMessage = responseData.errors[0];
+          }
+        }
+
         toast.update(toastId, {
-          render: "Unauthorized Access",
+          render: errorMessage,
           type: "error",
           isLoading: false,
           autoClose: 3000,

@@ -54,6 +54,7 @@ const Header = () => {
       dropdown: true,
       dropdownItems: [
         { label: "Mentor Approvals", to: "/admin/pending-mentor-approvals" },
+        { label: "User Reports", to: "/admin/user-reports" },
       ],
     },
     { title: "Community Master",
