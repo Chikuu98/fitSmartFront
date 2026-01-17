@@ -18,6 +18,7 @@ import { logout } from "../../store/authSlice";
 import logoLight from "../../assets/logolight.png";
 import logoDark from "../../assets/logodark.png";
 import { UserRole } from "../../enums/userDetailEnums";
+import NotificationDropdown from "../ui/NotificationDropdown";
 
 interface NavDropdownItem {
   label: string;
@@ -286,6 +287,9 @@ const Header = () => {
             )}
           </nav>
 
+          {/* Notifications */}
+          <NotificationDropdown />
+
           {/* Desktop User Dropdown */}
           <div className="relative" ref={userDropdownRef}>
             <button
@@ -350,6 +354,9 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <div className="ml-auto flex md:hidden items-center gap-3">
+          {/* Notifications for Mobile */}
+          <NotificationDropdown />
+
           {/* Theme Toggle for Mobile */}
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}

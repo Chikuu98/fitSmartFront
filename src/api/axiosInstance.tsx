@@ -19,7 +19,8 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${access_token}`;
     }
 
-    if (["post", "put", "delete", "patch"].includes(config.method || "")) {
+    // Skip loading toast if skipToast is set in config
+    if (["post", "put", "delete", "patch"].includes(config.method || "") && !(config as any).skipToast) {
       toastId = toast.loading("Please wait...");
     }
 
