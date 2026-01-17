@@ -39,6 +39,7 @@ import DailyProgressTracker from "./pages/Plans/DailyProgressTracker";
 import ProgressHistory from "./pages/Plans/ProgressHistory";
 import GenerateReport from "./pages/Reports/GenerateReport";
 import ViewReport from "./pages/Reports/ViewReport";
+import NotificationsPage from "./pages/Notifications/NotificationsPage";
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
         >
           <Route element={<MainLayout />}>
             <Route path="/account" element={<ProfileUpdate />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="community-forum" element={<NewsFeed />} />
             <Route path="/community-forum" element={<NewsFeed />} />
             <Route path="/community-forum/create-thread" element={<CreateNewThread />} />
