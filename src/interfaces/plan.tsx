@@ -49,6 +49,7 @@ export interface GeneratePlanDto {
   target_weight?: number;
   include_history?: boolean;
   custom_prompt?: string;
+  prefer_local_meals?: boolean;
 }
 
 export interface AcceptPlanDto {

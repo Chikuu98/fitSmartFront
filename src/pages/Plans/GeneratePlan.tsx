@@ -11,6 +11,7 @@ import CustomSelect from '../../components/ui/customSelect';
 import { Target, Weight, TrendingDown, Sparkles, User, Edit2 } from 'lucide-react';
 import type { GeneratePlanDto } from '../../interfaces/plan';
 import type { User as UserType } from '../../interfaces/user';
+import { getCountryNameByCode } from '../../utils/countryOptions';
 
 const GeneratePlan: React.FC = () => {
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ const GeneratePlan: React.FC = () => {
         target_weight: undefined,
         include_history: true,
         custom_prompt: '',
+        prefer_local_meals: false,
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -117,6 +119,11 @@ const GeneratePlan: React.FC = () => {
 
             if (formData.custom_prompt && formData.custom_prompt.trim()) {
                 payload.custom_prompt = formData.custom_prompt;
+            }
+
+            // Include location-based meal preference if enabled and user has country set
+            if (formData.prefer_local_meals && userProfile?.country) {
+                payload.prefer_local_meals = true;
             }
 
             const generatedPlan = await generatePlan(payload);
@@ -297,6 +304,28 @@ const GeneratePlan: React.FC = () => {
                                     </p>
                                 </div>
                             </div>
+
+                            {/* Location-Based Meals - Only show if user has country set */}
+                            {userProfile?.country && (
+                                <div className="flex items-start gap-3 mb-4">
+                                    <input
+                                        type="checkbox"
+                                        id="prefer_local_meals"
+                                        name="prefer_local_meals"
+                                        checked={formData.prefer_local_meals || false}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, prefer_local_meals: e.target.checked }))}
+                                        className="mt-1 h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500 dark:border-gray-600 dark:bg-gray-700"
+                                    />
+                                    <div className="flex-1">
+                                        <label htmlFor="prefer_local_meals" className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">
+                                            Include {getCountryNameByCode(userProfile.country)} Cuisine in Meal Plans
+                                        </label>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                            Generate meals with traditional dishes and locally available ingredients from {getCountryNameByCode(userProfile.country)}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Custom Prompt */}
                             <div>
