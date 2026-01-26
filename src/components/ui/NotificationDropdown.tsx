@@ -19,7 +19,6 @@ const NotificationDropdown: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  // Fetch unread count periodically
   const fetchUnreadCount = useCallback(async () => {
     try {
       const response = await getUnreadCount();
@@ -29,7 +28,6 @@ const NotificationDropdown: React.FC = () => {
     }
   }, []);
 
-  // Fetch notifications
   const fetchNotifications = useCallback(async () => {
     setLoading(true);
     try {
@@ -42,21 +40,18 @@ const NotificationDropdown: React.FC = () => {
     }
   }, []);
 
-  // Initial fetch and polling for unread count
   useEffect(() => {
     fetchUnreadCount();
-    const interval = setInterval(fetchUnreadCount, 30000); // Poll every 30 seconds
+    const interval = setInterval(fetchUnreadCount, 60000); // Poll every 60 seconds
     return () => clearInterval(interval);
   }, [fetchUnreadCount]);
 
-  // Fetch notifications when dropdown opens
   useEffect(() => {
     if (isOpen) {
       fetchNotifications();
     }
   }, [isOpen, fetchNotifications]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -71,7 +66,6 @@ const NotificationDropdown: React.FC = () => {
   }, []);
 
   const handleNotificationClick = async (notification: Notification) => {
-    // Mark as read if not already
     if (!notification.is_read) {
       await markNotificationAsRead(notification.id);
       setNotifications((prev) =>
@@ -82,7 +76,6 @@ const NotificationDropdown: React.FC = () => {
       setUnreadCount((prev) => Math.max(0, prev - 1));
     }
 
-    // Navigate if action URL exists
     if (notification.action_url) {
       setIsOpen(false);
       navigate(notification.action_url);

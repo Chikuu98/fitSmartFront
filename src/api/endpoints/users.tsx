@@ -17,7 +17,6 @@ export const getCurrentUser = async (): Promise<User> => {
   return response.data;
 };
 
-// Alias for getCurrentUser
 export const getUserProfile = getCurrentUser;
 
 export const updateUser = async (userData: UpdateUserDto) => {
@@ -83,7 +82,6 @@ export const updateSocialLink = async (
   return response.data;
 };
 
-// Admin endpoints
 export const getPendingMentors = async () => {
   const response = await axiosInstance.get("/users/admin/pending-mentors");
   return response.data;

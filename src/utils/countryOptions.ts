@@ -16,9 +16,7 @@ export const getCountryOptions = (): CountryOption[] => {
 
 export const countryOptions = getCountryOptions();
 
-/**
- * Convert a country code (e.g., "LK") to full country name (e.g., "Sri Lanka")
- */
+
 export const getCountryNameByCode = (code: string): string => {
   if (!code) return '';
   const country = countryOptions.find(

@@ -69,7 +69,6 @@ const MemberDashboard: React.FC = () => {
     });
   };
 
-  // Extract data from dashboardData or use defaults
   const stats = dashboardData?.sessionStats || {
     totalSessions: 0,
     upcomingSessions: 0,

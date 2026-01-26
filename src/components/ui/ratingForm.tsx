@@ -25,7 +25,6 @@ const RatingForm: React.FC<RatingFormProps> = ({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // Update form when initialRating changes
   useEffect(() => {
     setRating(initialRating?.rating || 0);
     setReview(initialRating?.review || '');
@@ -61,7 +60,6 @@ const RatingForm: React.FC<RatingFormProps> = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
-          {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
               {isEditMode ? 'Edit Your Rating' : 'Rate Your Session'}
@@ -74,13 +72,11 @@ const RatingForm: React.FC<RatingFormProps> = ({
             </button>
           </div>
 
-          {/* Mentor Name */}
           <p className="text-gray-600 dark:text-gray-400 mb-6">
             {isEditMode ? 'Update your rating for' : 'How was your session with'} <span className="font-semibold text-gray-900 dark:text-white">{mentorName}</span>?
           </p>
 
           <form onSubmit={handleSubmit}>
-            {/* Star Rating */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 Your Rating *
@@ -97,7 +93,6 @@ const RatingForm: React.FC<RatingFormProps> = ({
               )}
             </div>
 
-            {/* Review Text */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Your Review (Optional)
@@ -112,14 +107,12 @@ const RatingForm: React.FC<RatingFormProps> = ({
               />
             </div>
 
-            {/* Error Message */}
             {error && rating > 0 && (
               <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
                 <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
               </div>
             )}
 
-            {/* Action Buttons */}
             <div className="flex gap-3">
               <Button
                 type="button"

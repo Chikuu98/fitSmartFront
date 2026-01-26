@@ -58,7 +58,6 @@ const MyBookings: React.FC = () => {
       const data = await getBookingsByMemberId(user.id);
       setBookings(data);
       
-      // Fetch ratings for completed bookings
       const completedBookings = data.filter((b: Booking) => b.status === "completed");
       const ratingsMap: Record<number, Rating> = {};
       
@@ -70,7 +69,6 @@ const MyBookings: React.FC = () => {
               ratingsMap[booking.id] = rating;
             }
           } catch (err) {
-            // Rating doesn't exist yet, which is fine
           }
         })
       );
@@ -118,7 +116,7 @@ const MyBookings: React.FC = () => {
 
   const handleOpenRatingForm = (bookingId: number, mentorName: string) => {
     setRatingFormData({ bookingId, mentorName });
-    setEditingRating(null); // Clear for new rating
+    setEditingRating(null);
   };
 
   const handleEditRating = (rating: Rating, mentorName: string) => {
@@ -136,14 +134,11 @@ const MyBookings: React.FC = () => {
       let response: { success: boolean; message: string; data: Rating };
       
       if (editingRating) {
-        // Update existing rating
         response = await updateRating(editingRating.id, data);
       } else {
-        // Create new rating
         response = await createRating(data);
       }
       
-      // Update the bookingRatings state
       setBookingRatings(prev => ({
         ...prev,
         [data.bookingId]: response.data
@@ -151,7 +146,7 @@ const MyBookings: React.FC = () => {
       
       handleCloseRatingForm();
     } catch (err: any) {
-      throw err; // Let RatingForm handle the error display
+      throw err;
     }
   };
 
@@ -547,10 +542,8 @@ const MyBookings: React.FC = () => {
           )}
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog />
 
-        {/* Rating Form Modal */}
         {ratingFormData && (
           <RatingForm
             bookingId={ratingFormData.bookingId}

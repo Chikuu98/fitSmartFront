@@ -24,7 +24,6 @@ export const getForumRepliesByThreadId = async (threadId: number, page?: number,
 
 export const createForumReply = async (threadId: number, replyData: Omit<CreateForumReplyDto, 'thread_id'>): Promise<ForumReply> => {
   try {
-    // Include threadId in the request body
     const requestData: CreateForumReplyDto = {
       ...replyData,
       thread_id: threadId

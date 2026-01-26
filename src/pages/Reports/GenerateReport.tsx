@@ -28,7 +28,6 @@ const GenerateReport: React.FC = () => {
     try {
       setLoading(true);
       
-      // Build payload - only include dates if both are provided
       const payload: GenerateReportRequest = {
         period: formData.period,
       };
@@ -44,7 +43,6 @@ const GenerateReport: React.FC = () => {
       
       const report = await generateMemberReport(payload);
       
-      // Navigate to report view with data
       navigate('/member/reports/view', { state: { report } });
     } catch (error: any) {
       console.error('Failed to generate report:', error);

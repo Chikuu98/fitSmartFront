@@ -2,7 +2,6 @@ import axios from "axios";
 import { axiosInstance } from "../axiosInstance";
 import { appConfig } from "../../config/appConfig";
 
-// Helper to ensure single slash between base and path
 function withApiUrl(path: string) {
   return `${appConfig.apiUrl.replace(/\/?$/, "/")}${path.replace(/^\//, "")}`;
 }

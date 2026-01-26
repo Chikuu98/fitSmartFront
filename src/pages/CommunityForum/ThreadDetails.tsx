@@ -62,7 +62,6 @@ const ThreadDetails: React.FC = () => {
       ]);
       setThread(threadData);
       
-      // Handle nested response structure
       if (repliesData && Array.isArray(repliesData.data)) {
         setReplies(repliesData.data);
       } else if (repliesData && repliesData.data && Array.isArray(repliesData.data.data)) {
@@ -73,7 +72,6 @@ const ThreadDetails: React.FC = () => {
       }
     } catch (error) {
       console.error("Error fetching thread details:", error);
-      // Handle 404 or other errors
       navigate("/community-forum");
     } finally {
       setLoading(false);
@@ -122,7 +120,6 @@ const ThreadDetails: React.FC = () => {
       try {
         const repliesData = await getForumRepliesByThreadId(Number(threadId));
         
-        // Handle nested response structure
         if (repliesData && Array.isArray(repliesData.data)) {
           setReplies(repliesData.data);
         } else if (repliesData && repliesData.data && Array.isArray(repliesData.data.data)) {
@@ -130,7 +127,6 @@ const ThreadDetails: React.FC = () => {
         }
       } catch (error) {
         console.error("Error refetching replies:", error);
-        // Fallback to manual addition if refetch fails
         setReplies(prev => {
           const addToParent = (replies: ForumReply[]): ForumReply[] => {
             return replies.map(reply => {
@@ -152,13 +148,11 @@ const ThreadDetails: React.FC = () => {
         });
       }
     } else {
-      // For top-level replies, just add to the beginning
       setReplies(prev => [newReply, ...prev]);
     }
     
     setReplyingTo(null);
     
-    // Update thread reply count
     setThread(prev => prev ? {
       ...prev,
       replyCount: (prev.replyCount || 0) + 1
@@ -166,7 +160,6 @@ const ThreadDetails: React.FC = () => {
   };
 
   const handleReplyUpdate = (updatedReply: ForumReply) => {
-    // Function to recursively find and update the reply
     const updateReply = (replies: ForumReply[]): ForumReply[] => {
       return replies.map(reply => {
         if (reply.id === updatedReply.id) {
@@ -185,7 +178,6 @@ const ThreadDetails: React.FC = () => {
   };
 
   const handleReplyDelete = (replyId: number) => {
-    // Function to recursively find and remove the reply
     const removeReply = (replies: ForumReply[]): ForumReply[] => {
       return replies.filter(reply => reply.id !== replyId).map(reply => {
         if (reply.children && reply.children.length > 0) {
@@ -200,25 +192,19 @@ const ThreadDetails: React.FC = () => {
     
     setReplies(prev => removeReply(prev));
     
-    // Update thread reply count
     setThread(prev => prev ? {
       ...prev,
       replyCount: Math.max((prev.replyCount || 1) - 1, 0)
     } : null);
   };
 
-
-
-  // Process already nested replies from API
   const processNestedReplies = (replies: ForumReply[]): ForumReply[] => {
     
-    // Safety check: ensure replies is an array
     if (!Array.isArray(replies)) {
       console.error("processNestedReplies: replies is not an array:", replies);
       return [];
     }
     
-    // Filter out any null/undefined replies and ensure they have required properties
     const validReplies = replies.filter(reply => {
       const isValid = reply && 
         typeof reply === 'object' && 
@@ -236,8 +222,6 @@ const ThreadDetails: React.FC = () => {
       return [];
     }
     
-    // The replies are already nested with children arrays from the API
-    // Just ensure children arrays exist and are properly formatted
     const processReply = (reply: ForumReply): ForumReply => {
       const processedReply = {
         ...reply,

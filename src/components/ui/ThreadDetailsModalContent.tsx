@@ -79,7 +79,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
       ]);
       setThread(threadData);
       
-      // Handle nested response structure
       if (repliesData && Array.isArray(repliesData.data)) {
         setReplies(repliesData.data);
       } else if (repliesData && repliesData.data && Array.isArray(repliesData.data.data)) {
@@ -153,7 +152,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
   const handleSaveEdit = async () => {
     if (!thread) return;
 
-    // Validation
     if (!editTitle.trim()) {
       setEditError("Title is required");
       return;
@@ -181,14 +179,13 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
       
       console.log("Updated thread data from API:", updatedThreadData);
       
-      // Preserve nested relationships (user, tags, forumType) from original thread
       const updatedThread = {
         ...thread,
         ...updatedThreadData,
-        user: thread.user, // Preserve user object
-        tags: thread.tags, // Preserve tags array
-        forumType: thread.forumType, // Preserve forumType object
-        updated_at: new Date().toISOString(), // Update timestamp
+        user: thread.user,
+        tags: thread.tags,
+        forumType: thread.forumType,
+        updated_at: new Date().toISOString(),
       };
       
       console.log("Merged thread object:", updatedThread);
@@ -197,7 +194,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
       onThreadUpdated(updatedThread);
       setIsEditing(false);
       
-      // Close the modal after successful update
       onClose();
     } catch (error: any) {
       console.error("Error updating thread:", error);
@@ -213,7 +209,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
       try {
         const repliesData = await getForumRepliesByThreadId(threadId);
         
-        // Handle nested response structure
         if (repliesData && Array.isArray(repliesData.data)) {
           setReplies(repliesData.data);
         } else if (repliesData && repliesData.data && Array.isArray(repliesData.data.data)) {
@@ -221,7 +216,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
         }
       } catch (error) {
         console.error("Error refetching replies:", error);
-        // Fallback to manual addition if refetch fails
         setReplies(prev => {
           const addToParent = (replies: ForumReply[]): ForumReply[] => {
             return replies.map(reply => {
@@ -243,13 +237,11 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
         });
       }
     } else {
-      // For top-level replies, just add to the beginning
       setReplies(prev => [newReply, ...prev]);
     }
     
     setReplyingTo(null);
     
-    // Update thread reply count
     if (thread) {
       const updatedThread = {
         ...thread,
@@ -261,7 +253,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
   };
 
   const handleReplyUpdate = (updatedReply: ForumReply) => {
-    // Function to recursively find and update the reply
     const updateReply = (replies: ForumReply[]): ForumReply[] => {
       return replies.map(reply => {
         if (reply.id === updatedReply.id) {
@@ -280,7 +271,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
   };
 
   const handleReplyDelete = (replyId: number) => {
-    // Function to recursively find and remove the reply
     const removeReply = (replies: ForumReply[]): ForumReply[] => {
       return replies.filter(reply => reply.id !== replyId).map(reply => {
         if (reply.children && reply.children.length > 0) {
@@ -295,7 +285,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
     
     setReplies(prev => removeReply(prev));
     
-    // Update thread reply count
     if (thread) {
       const updatedThread = {
         ...thread,
@@ -306,15 +295,12 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
     }
   };
 
-  // Process already nested replies from API
   const processNestedReplies = (replies: ForumReply[]): ForumReply[] => {
-    // Safety check: ensure replies is an array
     if (!Array.isArray(replies)) {
       console.error("processNestedReplies: replies is not an array:", replies);
       return [];
     }
     
-    // Filter out any null/undefined replies and ensure they have required properties
     const validReplies = replies.filter(reply => {
       const isValid = reply && 
         typeof reply === 'object' && 
@@ -332,8 +318,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
       return [];
     }
     
-    // The replies are already nested with children arrays from the API
-    // Just ensure children arrays exist and are properly formatted
     const processReply = (reply: ForumReply): ForumReply => {
       const processedReply = {
         ...reply,
@@ -374,9 +358,7 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* Thread Content */}
       <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-        {/* Thread Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-start space-x-3 flex-1">
             <div className="flex-shrink-0">
@@ -469,7 +451,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
           )}
         </div>
 
-        {/* Thread Content */}
         {isEditing ? (
           <div className="space-y-3 mb-3">
             {editError && (
@@ -534,7 +515,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
           </div>
         )}
 
-        {/* Tags */}
         {thread.tags && thread.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
             {thread.tags.map(tag => (
@@ -549,7 +529,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
           </div>
         )}
 
-        {/* Thread Actions */}
         <div className="flex items-center space-x-4 pt-3 border-t border-gray-200 dark:border-gray-600">
           <button
             onClick={handleLikeToggle}
@@ -570,7 +549,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
           </div>
         </div>
 
-        {/* Delete Confirmation */}
         {deleteConfirm && (
           <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
             <div className="flex items-start">
@@ -613,7 +591,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
         )}
       </div>
 
-      {/* Reply Form */}
       {user && (
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
           <ReplyForm
@@ -626,7 +603,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
         </div>
       )}
 
-      {/* Replies Section */}
       <div>
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-base font-medium text-gray-900 dark:text-white">
@@ -657,7 +633,6 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
         )}
       </div>
 
-      {/* Report Modal */}
       {showReportModal && thread && (
         <ReportModal
           isOpen={showReportModal}

@@ -70,14 +70,12 @@ export function ConfirmationDialog({
       onClick={handleBackdropClick}
     >
       <div className="relative bg-white dark:bg-[#18181c] border border-gray-200 dark:border-orange-800 shadow-2xl rounded-2xl p-6 w-full max-w-md mx-4 transform transition-all duration-300 scale-100">
-        {/* Icon Top Center */}
         <div className="flex flex-col items-center justify-center mb-4">
           <div className={`p-3 rounded-full ${iconBg} mb-2`}>{icon}</div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-orange-100 text-center">
             {title}
           </h2>
         </div>
-        {/* Close Button Top Right */}
         <button
           onClick={onClose}
           disabled={loading}
@@ -85,13 +83,11 @@ export function ConfirmationDialog({
         >
           <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
         </button>
-        {/* Message */}
         <div className="mb-6 mt-2">
           <p className="text-gray-600 dark:text-orange-200 leading-relaxed text-center">
             {message}
           </p>
         </div>
-        {/* Actions */}
         <div className="flex gap-3 justify-center">
           <Button
             variant="outline"

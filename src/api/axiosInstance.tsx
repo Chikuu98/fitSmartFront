@@ -63,7 +63,6 @@ axiosInstance.interceptors.response.use(
 
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 401) {
-        // Extract the actual error message from the response
         if (error.response?.data) {
           const responseData = error.response.data;
           if (typeof responseData.message === "string") {

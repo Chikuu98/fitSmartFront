@@ -52,15 +52,12 @@ const MyThreads: React.FC = () => {
     setLoading(true);
     try {
       const response = await getMyForumThreads(currentPage, 10);
-      // Handle the nested response structure from backend
       if (response && response.data && Array.isArray(response.data.data)) {
         setThreads(response.data.data);
       } else {
         console.error("Invalid response format - expected nested array in data.data field:", response);
         setThreads([]);
       }
-      // Update pagination with response meta if available
-      // Note: pagination state is managed by the usePagination hook
     } catch (error) {
       console.error("Error fetching my threads:", error);
       setThreads([]);
@@ -75,10 +72,8 @@ const MyThreads: React.FC = () => {
       await deleteForumThread(threadId);
       setThreads(prev => prev.filter(thread => thread.id !== threadId));
       setDeleteConfirm(null);
-      // Show success message
     } catch (error) {
       console.error("Error deleting thread:", error);
-      // Show error message
     } finally {
       setDeleting(null);
     }
@@ -95,11 +90,10 @@ const MyThreads: React.FC = () => {
     return {
       likes: thread.likeCount || 0,
       replies: thread.replyCount || 0,
-      views: 0 // This would need to be implemented in the backend
+      views: 0
     };
   };
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = () => setActiveDropdown(null);
     document.addEventListener('click', handleClickOutside);
@@ -416,9 +410,7 @@ const MyThreads: React.FC = () => {
         <CreateThreadModalContent
           onClose={() => setShowCreateModal(false)}
           onThreadCreated={(newThread) => {
-            // Add the new thread to the beginning of the list
             setThreads(prev => [newThread, ...prev]);
-            // Update pagination total count
             setPagination({
               ...pagination,
               total: pagination.total + 1
@@ -433,7 +425,6 @@ const MyThreads: React.FC = () => {
         onClose={() => {
           setShowThreadModal(false);
           setSelectedThreadId(null);
-          // Refetch to ensure list is up to date
           fetchMyThreads();
         }}
         size="xl"
@@ -444,20 +435,16 @@ const MyThreads: React.FC = () => {
             onClose={() => {
               setShowThreadModal(false);
               setSelectedThreadId(null);
-              // Refetch threads to get updated data
               fetchMyThreads();
             }}
             onThreadDeleted={(deletedThreadId) => {
-              // Remove deleted thread from list
               setThreads(prev => prev.filter(t => t.id !== deletedThreadId));
-              // Update pagination total count
               setPagination({
                 ...pagination,
                 total: Math.max(pagination.total - 1, 0)
               });
             }}
             onThreadUpdated={(updatedThread) => {
-              // Update thread in list (for like counts, etc.)
               setThreads(prev => prev.map(t => 
                 t.id === updatedThread.id ? updatedThread : t
               ));

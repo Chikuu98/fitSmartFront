@@ -119,7 +119,6 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
   return (
     <div className={`${level > 0 ? 'ml-8 border-l-2 border-gray-200 dark:border-gray-700 pl-4' : ''}`}>
       <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
-        {/* Reply Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center space-x-3">
             <div className="flex-shrink-0">
@@ -156,7 +155,6 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
             </div>
           </div>
 
-          {/* Reply Actions */}
           {(isOwner || currentUser) && (
             <div className="relative">
               <button
@@ -222,7 +220,6 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
           )}
         </div>
 
-        {/* Reply Content */}
         {isEditing ? (
           <div className="mb-3 space-y-2">
             {editError && (
@@ -277,7 +274,6 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
           </div>
         )}
 
-        {/* Reply Actions */}
         <div className="flex items-center space-x-4">
           <button
             onClick={handleLikeToggle}
@@ -292,7 +288,6 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
             <span>{reply.likeCount || 0}</span>
           </button>
           
-          {/* Show reply count if this reply has children */}
           {reply.children && reply.children.length > 0 && (
             <div className="flex items-center space-x-1 px-2 py-1 text-xs text-gray-600 dark:text-gray-400">
               <MessageSquare className="w-3 h-3" />
@@ -311,7 +306,6 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
           )}
         </div>
 
-        {/* Delete Confirmation */}
         {deleteConfirm && (
           <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded">
             <p className="text-sm text-red-700 dark:text-red-300 mb-2">
@@ -339,7 +333,6 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
         )}
       </div>
 
-      {/* Nested Replies */}
       {reply.children && reply.children.length > 0 && (
         <div className="mt-2 space-y-2">
           {reply.children.map(childReply => (
@@ -356,7 +349,6 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
         </div>
       )}
 
-      {/* Report Modal */}
       {showReportModal && (
         <ReportModal
           isOpen={showReportModal}

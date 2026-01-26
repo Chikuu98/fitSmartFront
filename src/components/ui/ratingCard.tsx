@@ -16,7 +16,6 @@ const RatingCard: React.FC<RatingCardProps> = ({
 }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700">
-      {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
@@ -56,7 +55,6 @@ const RatingCard: React.FC<RatingCardProps> = ({
         </div>
       </div>
 
-      {/* Review Text */}
       {rating.review && (
         <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
           {rating.review}

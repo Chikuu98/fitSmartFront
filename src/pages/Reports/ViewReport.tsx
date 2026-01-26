@@ -53,7 +53,6 @@ const ViewReport: React.FC = () => {
       .join(' ');
   };
 
-  // Prepare chart data
   const weightChartData = {
     labels: report.dailyBreakdown.map((d) =>
       new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -294,7 +293,7 @@ const ViewReport: React.FC = () => {
                   report.weightProgress.weightChange !== null
                     ? {
                         value: Math.abs(report.weightProgress.weightChange),
-                        isPositive: report.weightProgress.weightChange < 0, // Assuming weight loss is positive
+                        isPositive: report.weightProgress.weightChange < 0,
                       }
                     : undefined
                 }

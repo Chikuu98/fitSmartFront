@@ -41,28 +41,23 @@ export const Pagination: React.FC<PaginationProps> = ({
   const startItem = ((currentPage - 1) * itemsPerPage) + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
-  // Generate page numbers to display
   const getPageNumbers = (): number[] => {
     const pages: number[] = [];
     const maxPages = Math.min(maxPageNumbers, totalPages);
     
     if (totalPages <= maxPages) {
-      // Show all pages if total pages is less than or equal to maxPages
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else if (currentPage <= Math.ceil(maxPages / 2)) {
-      // Show first pages
       for (let i = 1; i <= maxPages; i++) {
         pages.push(i);
       }
     } else if (currentPage >= totalPages - Math.floor(maxPages / 2)) {
-      // Show last pages
       for (let i = totalPages - maxPages + 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      // Show pages around current page
       const start = currentPage - Math.floor(maxPages / 2);
       for (let i = start; i < start + maxPages; i++) {
         pages.push(i);
@@ -75,16 +70,13 @@ export const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 ${className}`}>
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        {/* Results info */}
         {showResultsInfo && (
           <div className="text-sm text-gray-600 dark:text-gray-400">
             Showing {startItem} to {endItem} of {totalItems} results
           </div>
         )}
 
-        {/* Pagination controls */}
         <div className="flex items-center gap-2">
-          {/* Items per page selector */}
           {showItemsPerPage && (
             <div className="flex items-center gap-2 mr-4">
               <span className="text-sm text-gray-600 dark:text-gray-400">Show:</span>
@@ -102,7 +94,6 @@ export const Pagination: React.FC<PaginationProps> = ({
             </div>
           )}
 
-          {/* Page navigation */}
           <div className="flex items-center">
             <button
               onClick={onPrevPage}
@@ -113,7 +104,6 @@ export const Pagination: React.FC<PaginationProps> = ({
               <ChevronLeft className="w-4 h-4" />
             </button>
 
-            {/* Page numbers */}
             {getPageNumbers().map((pageNum) => (
               <button
                 key={pageNum}

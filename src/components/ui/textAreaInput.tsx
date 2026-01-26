@@ -27,7 +27,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
   rows = 3,
   size = "xs",
 }) => {
-  // Size classes for text and padding
+
   const sizeClasses = {
     xs: "p-1 text-xs",
     sm: "p-2 text-sm", 
@@ -35,7 +35,6 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
     lg: "p-3 text-base",
   };
 
-  // Label size classes
   const labelSizeClasses = {
     xs: "text-xs",
     sm: "text-sm",

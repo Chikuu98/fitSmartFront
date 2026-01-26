@@ -8,7 +8,6 @@ import type {
   ReportStatus,
 } from '../../interfaces';
 
-// Create a user report
 export const createUserReport = async (
   payload: CreateUserReportPayload
 ): Promise<{ success: boolean; message: string; data: IUserReport }> => {
@@ -16,7 +15,6 @@ export const createUserReport = async (
   return response.data;
 };
 
-// Get all reports (admin only)
 export const getUserReports = async (
   page: number = 1,
   limit: number = 10,
@@ -39,7 +37,6 @@ export const getUserReports = async (
   return response.data;
 };
 
-// Get report statistics (admin only)
 export const getReportStats = async (): Promise<{
   success: boolean;
   message: string;
@@ -55,7 +52,6 @@ export const getReportStats = async (): Promise<{
   return response.data;
 };
 
-// Get single report (admin only)
 export const getUserReport = async (
   id: number
 ): Promise<{ success: boolean; message: string; data: IUserReport }> => {
@@ -63,7 +59,6 @@ export const getUserReport = async (
   return response.data;
 };
 
-// Review a report (admin only)
 export const reviewUserReport = async (
   id: number,
   payload: ReviewUserReportPayload
@@ -72,7 +67,6 @@ export const reviewUserReport = async (
   return response.data;
 };
 
-// Apply punishment (admin only)
 export const applyPunishment = async (
   reportId: number,
   payload: ApplyPunishmentPayload
@@ -88,7 +82,6 @@ export const applyPunishment = async (
   return response.data;
 };
 
-// Delete a report (admin only)
 export const deleteUserReport = async (
   id: number
 ): Promise<{ success: boolean; message: string; data: null }> => {
@@ -96,7 +89,6 @@ export const deleteUserReport = async (
   return response.data;
 };
 
-// Get user punishments (admin only)
 export const getUserPunishments = async (
   userId: number
 ): Promise<{ success: boolean; message: string; data: IUserPunishment[] }> => {
@@ -104,7 +96,6 @@ export const getUserPunishments = async (
   return response.data;
 };
 
-// Lift a punishment (admin only)
 export const liftPunishment = async (
   punishmentId: number
 ): Promise<{ success: boolean; message: string; data: IUserPunishment }> => {

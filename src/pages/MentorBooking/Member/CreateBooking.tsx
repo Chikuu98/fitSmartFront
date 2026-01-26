@@ -47,7 +47,6 @@ const CreateBooking: React.FC = () => {
     try {
       setLoading(true);
 
-      // Fetch mentor data
       const mentors = await getMentorList();
       const mentorData = mentors.find((m) => m.id === Number(mentor_id));
 
@@ -58,7 +57,6 @@ const CreateBooking: React.FC = () => {
 
       setMentor(mentorData);
 
-      // Fetch slot data
       const slotData = await getSlotById(Number(slotId));
 
       if (!slotData) {
@@ -424,7 +422,6 @@ const CreateBooking: React.FC = () => {
           </div>
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog />
       </div>
     </div>

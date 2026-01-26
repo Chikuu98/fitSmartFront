@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
 
-/**
- * Custom hook for managing theme state across the application
- * Ensures theme consistency between pages and components
- */
 export const useTheme = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== "undefined") {
@@ -13,7 +9,6 @@ export const useTheme = () => {
   });
 
   useEffect(() => {
-    // Apply theme to document
     document.documentElement.classList.toggle("dark", isDarkMode);
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
     document.documentElement.setAttribute(
@@ -33,10 +28,6 @@ export const useTheme = () => {
   };
 };
 
-/**
- * Utility function to initialize theme on page load
- * Ensures theme is applied immediately without flash
- */
 export const initializeTheme = () => {
   if (typeof window !== "undefined") {
     const savedTheme = localStorage.getItem("theme");

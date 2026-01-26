@@ -42,21 +42,18 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
     fetchInitialData();
   }, []);
 
-  // Debounced tag search effect
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (tagSearchTerm.trim()) {
         searchTagsFromServer(tagSearchTerm.trim());
       } else {
-        // Show initial tags when search is empty
         setAvailableTags(tags);
       }
-    }, 300); // 300ms debounce
+    }, 300);
 
     return () => clearTimeout(timeoutId);
   }, [tagSearchTerm, tags]);
 
-  // Initialize available tags
   useEffect(() => {
     setAvailableTags(tags);
   }, [tags]);
@@ -64,7 +61,7 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
   const fetchInitialData = async () => {
     try {
       const [tagsData, typesData] = await Promise.all([
-        getForumTags(1, 6), // Load initial 6 most common tags
+        getForumTags(1, 6),
         getForumTypes(),
       ]);
       setTags(tagsData.data);
@@ -77,11 +74,10 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
   const searchTagsFromServer = async (searchTerm: string) => {
     setTagSearchLoading(true);
     try {
-      const searchResults = await searchForumTags(searchTerm, 100); // Search up to 100 tags
+      const searchResults = await searchForumTags(searchTerm, 100);
       setAvailableTags(searchResults.data);
     } catch (error) {
       console.error("Error searching tags:", error);
-      // Fallback to client-side search if server search fails
       const filteredTags = tags.filter(tag => 
         tag.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
@@ -138,7 +134,6 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
     } catch (error: any) {
       console.error("Error creating thread:", error);
       
-      // Handle validation errors from the server
       if (error.response?.data?.message) {
         if (typeof error.response.data.message === 'object') {
           setErrors(error.response.data.message);
@@ -176,7 +171,6 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* General Error */}
       {errors.general && (
         <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
           <div className="flex items-center">
@@ -186,7 +180,6 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
         </div>
       )}
 
-      {/* Title */}
       <div>
         <FormInput
           label="Thread Title *"
@@ -205,7 +198,6 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
         </p>
       </div>
 
-      {/* Content */}
       <div>
         <TextAreaInput
           label="Content *"
@@ -219,7 +211,6 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
         />
       </div>
 
-      {/* Forum Type */}
       <div>
         <CustomSelect
           label="Forum Category"
@@ -238,14 +229,12 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
         />
       </div>
 
-      {/* Tags Selection */}
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           <Tag className="w-4 h-4 inline mr-1" />
           Tags (optional) - {selectedTags.length}/5
         </label>
         
-        {/* Selected Tags */}
         {selectedTags.length > 0 && (
           <div className="mb-3">
             <div className="flex flex-wrap gap-2">
@@ -271,7 +260,6 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
           </div>
         )}
 
-        {/* Tag Search */}
         <div className="mb-3">
           <FormInput
             label=""
@@ -286,7 +274,6 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
           />
         </div>
 
-        {/* Available Tags */}
         <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-4 max-h-48 overflow-y-auto">
           {tagSearchLoading ? (
             <div className="flex justify-center py-4">
@@ -345,7 +332,6 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
         )}
       </div>
 
-      {/* Form Actions */}
       <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700">
         <Button
           type="button"

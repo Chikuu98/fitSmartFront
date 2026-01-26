@@ -9,7 +9,7 @@ export interface User {
   country: string;
   language: string;
   status: UserAccountStatus;
-  profile_pic?: string; // Optional profile picture URL
+  profile_pic?: string;
   created_at: string;
   updated_at: string;
   memberDetail?: MemberDetail;

@@ -1,10 +1,7 @@
-// Pagination interfaces
 export type { PaginationMeta, PaginatedResponse } from './pagination';
 
-// User interfaces
 export type { User, MemberDetail, MentorDetail } from './user';
 
-// Forum interfaces
 export type { ForumTag, ForumTagListResponse } from './forumTag';
 export type { ForumType, ForumTypeListResponse } from './forumType';
 export type { 
@@ -20,7 +17,6 @@ export type {
   ForumSearchFilters
 } from './forumThread';
 
-// Plan interfaces
 export type { 
   GeneratedPlan, 
   AcceptedPlan, 
@@ -29,7 +25,6 @@ export type {
   PlanType 
 } from './plan';
 
-// User Report interfaces
 export type { 
   IUserReport, 
   IUserPunishment,
@@ -43,7 +38,6 @@ export type {
 } from './userReport';
 export { GenerationStatus, AcceptedPlanStatus } from './plan';
 
-// Rating interfaces
 export type { 
   Rating, 
   CreateRatingDto, 

@@ -48,7 +48,6 @@ export const createGoogleMeeting = async (token: string, booking: Booking) => {
 
     await updateBookingMeetLinkSilent(booking.id, meetLink);
 
-    // Update the loading toast to success
     toast.update(loadingToastId, {
       render: "Google Meet link created and saved successfully!",
       type: "success",
@@ -58,7 +57,6 @@ export const createGoogleMeeting = async (token: string, booking: Booking) => {
 
     return meetLink;
   } catch (err) {
-    // Update the loading toast to error if something failed
     if (loadingToastId) {
       toast.update(loadingToastId, {
         render: "Failed to create Google Meet link",

@@ -215,7 +215,6 @@ export function EditTimeSlot() {
           </form>
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog />
       </div>
     </div>

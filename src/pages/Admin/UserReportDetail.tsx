@@ -39,12 +39,10 @@ const UserReportDetail: React.FC = () => {
   const [report, setReport] = useState<IUserReport | null>(null);
   const [loading, setLoading] = useState(true);
   
-  // Review form
   const [reviewStatus, setReviewStatus] = useState<ReportStatus | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');
   const [reviewing, setReviewing] = useState(false);
   
-  // Punishment form
   const [showPunishmentForm, setShowPunishmentForm] = useState(false);
   const [punishmentType, setPunishmentType] = useState<PunishmentType | null>(null);
   const [punishmentReason, setPunishmentReason] = useState('');
