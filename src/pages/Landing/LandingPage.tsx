@@ -17,7 +17,6 @@ import logoDark from "../../assets/logodark.png";
 import { useTheme } from "../../hooks/useTheme";
 
 const LandingPage: React.FC = () => {
-  // Use the custom theme hook for consistent theme management
   const { isDarkMode, toggleTheme } = useTheme();
 
   const features = [

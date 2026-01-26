@@ -30,7 +30,6 @@ const ForumTags: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({ name: "" });
   const [formErrors, setFormErrors] = useState<Partial<FormData>>({});
   
-  // Pagination hook
   const {
     currentPage,
     itemsPerPage,
@@ -92,7 +91,6 @@ const ForumTags: React.FC = () => {
         close();
         try {
           await deleteForumTag(tag.id);
-          // If we're on the last page and delete the last item, go back a page
           if (forumTags.length === 1 && currentPage > 1) {
             resetToFirstPage();
           } else {
@@ -116,7 +114,6 @@ const ForumTags: React.FC = () => {
       errors.name = "Tag name must be less than 50 characters";
     }
 
-    // Check for duplicate names (case-insensitive)
     const existingTag = forumTags.find(
       (tag) => 
         tag.name.toLowerCase() === formData.name.trim().toLowerCase() &&
@@ -165,7 +162,6 @@ const ForumTags: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     
-    // Clear error when user starts typing
     if (formErrors[name as keyof FormData]) {
       setFormErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -271,7 +267,6 @@ const ForumTags: React.FC = () => {
           </div>
         </div>
 
-        {/* Data Table */}
         <DataTable
           data={forumTags}
           columns={columns}
@@ -289,7 +284,6 @@ const ForumTags: React.FC = () => {
           keyField="id"
         />
 
-        {/* Pagination Controls */}
         <Pagination
           currentPage={currentPage}
           totalPages={pagination.totalPages}
@@ -304,7 +298,6 @@ const ForumTags: React.FC = () => {
           className="mt-4"
         />
 
-        {/* Form Modal */}
         <FormModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -328,7 +321,6 @@ const ForumTags: React.FC = () => {
           </div>
         </FormModal>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog />
       </div>
     </div>

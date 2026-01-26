@@ -32,7 +32,6 @@ const PendingMentorApprovals: React.FC = () => {
 
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
 
-  // Pagination hook
   const {
     currentPage,
     itemsPerPage,
@@ -308,7 +307,6 @@ const PendingMentorApprovals: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-6 md:py-8">
-      {/* Header */}
       <div className="mb-6 md:mb-8">
         <div className="flex items-center gap-3 md:gap-4 mb-2">
           <div className="w-12 h-12 md:w-14 md:h-14 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -325,7 +323,6 @@ const PendingMentorApprovals: React.FC = () => {
         </div>
       </div>
 
-      {/* Stats Card */}
       <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 md:p-5 mb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
           <div className="flex items-center gap-3 md:gap-4">
@@ -347,7 +344,6 @@ const PendingMentorApprovals: React.FC = () => {
         </div>
       </div>
 
-      {/* Data Table */}
       <div className="overflow-x-auto">
         <DataTable
           data={mentors}
@@ -363,7 +359,6 @@ const PendingMentorApprovals: React.FC = () => {
         />
       </div>
 
-      {/* Pagination */}
       {!loading && !error && pagination.totalPages > 1 && (
         <div className="mt-6">
           <Pagination
@@ -382,7 +377,6 @@ const PendingMentorApprovals: React.FC = () => {
         </div>
       )}
 
-      {/* Confirmation Dialog */}
       <ConfirmDialog />
     </div>
   );

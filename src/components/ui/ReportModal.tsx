@@ -56,7 +56,6 @@ export const ReportModal: React.FC<ReportModalProps> = ({
 
       await createUserReport(payload);
       
-      // Reset form
       setReportType(null);
       setReason('');
       setEvidence('');

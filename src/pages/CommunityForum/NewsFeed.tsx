@@ -63,21 +63,18 @@ const NewsFeed: React.FC = () => {
     fetchThreads();
   }, [currentPage, selectedForumType, selectedTags, searchTerm]);
 
-  // Debounced tag search effect
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (tagSearchTerm.trim()) {
         searchTagsFromServer(tagSearchTerm.trim());
       } else {
-        // Show initial tags when search is empty
         setAvailableTags(tags);
       }
-    }, 300); // 300ms debounce
+    }, 300);
 
     return () => clearTimeout(timeoutId);
   }, [tagSearchTerm, tags]);
 
-  // Initialize available tags
   useEffect(() => {
     setAvailableTags(tags);
   }, [tags]);
@@ -85,7 +82,7 @@ const NewsFeed: React.FC = () => {
   const fetchInitialData = async () => {
     try {
       const [tagsData, typesData] = await Promise.all([
-        getForumTags(1, 6), // Load initial 6 most common tags
+        getForumTags(1, 6),
         getForumTypes(),
       ]);
       setTags(tagsData.data);
@@ -98,11 +95,10 @@ const NewsFeed: React.FC = () => {
   const searchTagsFromServer = async (searchTerm: string) => {
     setTagSearchLoading(true);
     try {
-      const searchResults = await searchForumTags(searchTerm, 100); // Search up to 100 tags
+      const searchResults = await searchForumTags(searchTerm, 100);
       setAvailableTags(searchResults.data);
     } catch (error) {
       console.error("Error searching tags:", error);
-      // Fallback to client-side search if server search fails
       const filteredTags = tags.filter(tag => 
         tag.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
@@ -125,11 +121,9 @@ const NewsFeed: React.FC = () => {
 
       const response = await getForumThreads(filters);
       
-      // Handle the nested response structure from backend
       if (response && response.data && Array.isArray(response.data.data)) {
         setThreads(response.data.data);
         
-        // Create pagination object from response data
         const paginationData = {
           total: response.data.total,
           page: response.data.page,
@@ -145,9 +139,7 @@ const NewsFeed: React.FC = () => {
       }
     } catch (error) {
       console.error("Error fetching threads:", error);
-      // Ensure threads is always an array on error
       setThreads([]);
-      // You might want to show a toast notification here
     } finally {
       setLoading(false);
     }
@@ -159,7 +151,6 @@ const NewsFeed: React.FC = () => {
     try {
       const response = await toggleForumLike({ thread_id: threadId });
       
-      // Update the thread's like status and count
       setThreads(prevThreads =>
         prevThreads.map(thread =>
           thread.id === threadId
@@ -572,9 +563,7 @@ const NewsFeed: React.FC = () => {
         <CreateThreadModalContent
           onClose={() => setShowCreateModal(false)}
           onThreadCreated={(newThread) => {
-            // Add the new thread to the beginning of the list
             setThreads(prev => [newThread, ...prev]);
-            // Update pagination total count
             setPagination({
               ...pagination,
               total: pagination.total + 1
@@ -589,7 +578,6 @@ const NewsFeed: React.FC = () => {
         onClose={() => {
           setShowThreadModal(false);
           setSelectedThreadId(null);
-          // Refetch to ensure list is up to date
           fetchThreads();
         }}
         size="xl"
@@ -600,20 +588,16 @@ const NewsFeed: React.FC = () => {
             onClose={() => {
               setShowThreadModal(false);
               setSelectedThreadId(null);
-              // Refetch threads to get updated data
               fetchThreads();
             }}
             onThreadDeleted={(deletedThreadId) => {
-              // Remove deleted thread from list
               setThreads(prev => prev.filter(t => t.id !== deletedThreadId));
-              // Update pagination total count
               setPagination({
                 ...pagination,
                 total: Math.max(pagination.total - 1, 0)
               });
             }}
             onThreadUpdated={(updatedThread) => {
-              // Update thread in list (for like counts, etc.)
               setThreads(prev => prev.map(t => 
                 t.id === updatedThread.id ? updatedThread : t
               ));

@@ -61,7 +61,6 @@ const GeneratePlan: React.FC = () => {
                 ? (value ? parseFloat(value) : undefined)
                 : value
         }));
-        // Clear error when user starts typing
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
@@ -106,7 +105,6 @@ const GeneratePlan: React.FC = () => {
         try {
             setLoading(true);
             
-            // Filter out undefined values
             const payload: GeneratePlanDto = {
                 duration_days: formData.duration_days || 7,
                 goal: formData.goal,
@@ -121,14 +119,12 @@ const GeneratePlan: React.FC = () => {
                 payload.custom_prompt = formData.custom_prompt;
             }
 
-            // Include location-based meal preference if enabled and user has country set
             if (formData.prefer_local_meals && userProfile?.country) {
                 payload.prefer_local_meals = true;
             }
 
             const generatedPlan = await generatePlan(payload);
             
-            // Navigate to plan details or acceptance page
             navigate(`/member/plans/generated/${generatedPlan.id}`);
         } catch (error) {
             console.error('Failed to generate plan:', error);
@@ -305,7 +301,6 @@ const GeneratePlan: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Location-Based Meals - Only show if user has country set */}
                             {userProfile?.country && (
                                 <div className="flex items-start gap-3 mb-4">
                                     <input
@@ -327,7 +322,6 @@ const GeneratePlan: React.FC = () => {
                                 </div>
                             )}
 
-                            {/* Custom Prompt */}
                             <div>
                                 <TextAreaInput
                                     label="Additional Instructions (Optional)"

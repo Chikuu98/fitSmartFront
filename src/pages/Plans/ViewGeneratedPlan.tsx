@@ -38,7 +38,6 @@ const ViewGeneratedPlan: React.FC = () => {
             const data = await getGeneratedPlan(Number(planId));
             setPlan(data);
             
-            // Pre-populate accept form
             if (data.ai_response) {
                 setAcceptFormData(prev => ({
                     ...prev,
@@ -375,7 +374,6 @@ const ViewGeneratedPlan: React.FC = () => {
                 </div>
             </Modal>
 
-            {/* Regenerate Confirmation Dialog */}
             <ConfirmationDialog
                 isOpen={showRegenerateDialog}
                 onClose={() => setShowRegenerateDialog(false)}

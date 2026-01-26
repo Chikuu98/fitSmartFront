@@ -18,7 +18,7 @@ const Modal: React.FC<ModalProps> = ({
   size = "md",
   className = "",
 }) => {
-  // Handle escape key press
+  
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {

@@ -44,21 +44,18 @@ const CreateNewThread: React.FC = () => {
     fetchInitialData();
   }, [user, navigate]);
 
-  // Debounced tag search effect
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (tagSearchTerm.trim()) {
         searchTagsFromServer(tagSearchTerm.trim());
       } else {
-        // Show initial tags when search is empty
         setAvailableTags(tags);
       }
-    }, 300); // 300ms debounce
+    }, 300);
 
     return () => clearTimeout(timeoutId);
   }, [tagSearchTerm, tags]);
 
-  // Initialize available tags
   useEffect(() => {
     setAvailableTags(tags);
   }, [tags]);
@@ -66,7 +63,7 @@ const CreateNewThread: React.FC = () => {
   const fetchInitialData = async () => {
     try {
       const [tagsData, typesData] = await Promise.all([
-        getForumTags(1, 6), // Load initial 6 most common tags
+        getForumTags(1, 6),
         getForumTypes(),
       ]);
       setTags(tagsData.data);
@@ -79,11 +76,10 @@ const CreateNewThread: React.FC = () => {
   const searchTagsFromServer = async (searchTerm: string) => {
     setTagSearchLoading(true);
     try {
-      const searchResults = await searchForumTags(searchTerm, 100); // Search up to 100 tags
+      const searchResults = await searchForumTags(searchTerm, 100);
       setAvailableTags(searchResults.data);
     } catch (error) {
       console.error("Error searching tags:", error);
-      // Fallback to client-side search if server search fails
       const filteredTags = tags.filter(tag => 
         tag.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
@@ -136,13 +132,11 @@ const CreateNewThread: React.FC = () => {
 
       const newThread = await createForumThread(threadData);
       
-      // Navigate to the new thread or back to news feed
       if (newThread && newThread.id) {
         navigate(`/community-forum/thread/${newThread.id}`, {
           state: { message: "Thread created successfully!" }
         });
       } else {
-        // Fallback: navigate to news feed if we don't have thread ID
         console.warn("Thread created but no ID returned, navigating to news feed");
         navigate("/community-forum", {
           state: { message: "Thread created successfully!" }
@@ -153,8 +147,7 @@ const CreateNewThread: React.FC = () => {
       console.error("Error response:", error.response);
       console.error("Error status:", error.response?.status);
       console.error("Error data:", error.response?.data);
-      
-      // Handle validation errors from the server
+
       if (error.response?.data?.message) {
         if (typeof error.response.data.message === 'object') {
           setErrors(error.response.data.message);
@@ -217,7 +210,6 @@ const CreateNewThread: React.FC = () => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-            {/* General Error */}
             {errors.general && (
               <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
                 <div className="flex items-center">

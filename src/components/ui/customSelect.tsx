@@ -18,8 +18,8 @@ interface CustomSelectProps {
   required?: boolean;
   isClearable?: boolean;
   isSearchable?: boolean;
-  height?: string; // default '2rem', '32px'
-  fontSize?: string; // default '0.75rem', '12px'
+  height?: string;
+  fontSize?: string;
   icon?: React.ReactNode;
   showIcon?: boolean;
 }
@@ -32,12 +32,12 @@ const customStyles = (
   return {
     control: (provided, state) => ({
       ...provided,
-      backgroundColor: isDark ? "#374151" : "#ffffff", // Use consistent gray-700 for dark mode
+      backgroundColor: isDark ? "#374151" : "#ffffff",
       borderColor: state.isFocused ? "#fb923c" : isDark ? "#4b5563" : "#d1d5db",
       boxShadow: state.isFocused ? "0 0 0 2px #fb923c33" : "none",
       minHeight: height || "2.5rem",
       height: height || "2.5rem",
-      color: isDark ? "#f3f4f6" : "#1f2937", // Use consistent text colors
+      color: isDark ? "#f3f4f6" : "#1f2937",
       fontSize: fontSize || "0.95rem",
       transition: "all 0.2s",
       "&:hover": {
@@ -46,7 +46,7 @@ const customStyles = (
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: isDark ? "#374151" : "#ffffff", // Consistent with control
+      backgroundColor: isDark ? "#374151" : "#ffffff",
       zIndex: 50,
       marginTop: 2,
       borderRadius: "0.75rem",
@@ -80,7 +80,7 @@ const customStyles = (
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: isDark ? "#f3f4f6" : "#1f2937", // Consistent with control text color
+      color: isDark ? "#f3f4f6" : "#1f2937",
       fontSize: fontSize || "0.95rem",
       padding: height && height === "1.75rem" ? "1px 1px 6px 1px" : "0 8px",
     }),
@@ -134,7 +134,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   showIcon = true,
 }) => {
   const [isDark, setIsDark] = useState(() => {
-    // More reliable initial state detection
     if (typeof window !== "undefined") {
       return (
         document.documentElement.classList.contains("dark") ||
@@ -147,13 +146,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   });
 
   useEffect(() => {
-    // Initial check after component mounts
     const checkDarkMode = () => {
       const newIsDark = document.documentElement.classList.contains("dark");
       setIsDark(newIsDark);
     };
 
-    // Check immediately
     checkDarkMode();
 
     const observer = new MutationObserver((mutations) => {
@@ -172,10 +169,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     return () => observer.disconnect();
   }, []);
 
-  // Find the selected option object
   const selectedOption = options.find((opt) => opt.value === value) || null;
 
-  // Memoize styles to avoid recreating on every render
   const memoizedStyles = useMemo(
     () => customStyles(height, fontSize, isDark),
     [height, fontSize, isDark]

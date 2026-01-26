@@ -150,7 +150,6 @@ const Register: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-white dark:bg-gray-900 transition-colors duration-300">
-      {/* Left Side Cover - always fills left half, no white space */}
       <div className="hidden md:block md:w-1/2 h-screen bg-gradient-to-br from-blue-800 to-orange-600 text-white">
         <div className="flex flex-col items-center justify-center h-full w-full">
           <img src={logodark} alt="FitSmart Logo" className="h-20 mb-4" />
@@ -161,7 +160,6 @@ const Register: React.FC = () => {
           </p>
         </div>
       </div>
-      {/* Right Side Form */}
       <div className="w-full min-h-screen md:min-h-0 md:w-1/2 flex flex-col justify-center items-center px-2 py-4 md:px-6 md:py-8 bg-gray-50 dark:bg-gray-900">
         <div className="flex mb-4 w-full max-w-md">
           <button

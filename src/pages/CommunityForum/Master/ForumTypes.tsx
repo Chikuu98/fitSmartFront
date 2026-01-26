@@ -99,7 +99,6 @@ const ForumTypes: React.FC = () => {
       errors.description = "Description must be less than 500 characters";
     }
 
-    // Check for duplicate titles (case-insensitive)
     const existingType = forumTypes.find(
       (type) => 
         type.title.toLowerCase() === formData.title.trim().toLowerCase() &&
@@ -148,7 +147,6 @@ const ForumTypes: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     
-    // Clear error when user starts typing
     if (formErrors[name as keyof FormData]) {
       setFormErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -270,7 +268,6 @@ const ForumTypes: React.FC = () => {
           </div>
         </div>
 
-        {/* Data Table */}
         <DataTable
           data={forumTypes}
           columns={columns}
@@ -288,7 +285,6 @@ const ForumTypes: React.FC = () => {
           keyField="id"
         />
 
-        {/* Form Modal */}
         <FormModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -326,7 +322,6 @@ const ForumTypes: React.FC = () => {
           </div>
         </FormModal>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog />
       </div>
     </div>

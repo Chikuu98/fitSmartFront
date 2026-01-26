@@ -60,9 +60,8 @@ export function MyMentorSlotList() {
         setDeleteLoading(slotId);
         try {
           await deleteMentorSlot(slotId);
-          fetchSlots(); // Refresh the list
+          fetchSlots();
         } catch (error: any) {
-          // Error handling is done by axios interceptor
         } finally {
           setDeleteLoading(null);
         }
@@ -201,7 +200,6 @@ export function MyMentorSlotList() {
           )}
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog />
       </div>
     </div>

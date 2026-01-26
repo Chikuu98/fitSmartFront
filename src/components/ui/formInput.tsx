@@ -38,24 +38,20 @@ const FormInput: React.FC<FormInputProps> = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  // Toggle password visibility
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // Determine the actual input type
   const inputType = showPasswordToggle && type === "password" 
     ? (showPassword ? "text" : "password")
     : type;
 
-  // Size classes
   const sizeClasses = {
     sm: "p-1 text-xs",
     md: "p-2 text-sm",
     lg: "p-3 text-base",
   };
 
-  // Rounded classes
   const roundedClasses = {
     sm: "rounded",
     md: "rounded-md",
@@ -63,14 +59,12 @@ const FormInput: React.FC<FormInputProps> = ({
     xl: "rounded-xl",
   };
 
-  // Label size classes
   const labelSizeClasses = {
     sm: "text-xs",
     md: "text-sm",
     lg: "text-base",
   };
 
-  // Icon size based on input size
   const iconSize = {
     sm: 14,
     md: 16,

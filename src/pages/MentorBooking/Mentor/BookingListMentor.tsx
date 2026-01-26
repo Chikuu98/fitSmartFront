@@ -41,7 +41,6 @@ const BookingListMentor: React.FC = () => {
         const data = await getBookingsByMentorId(mentor_id);
         setBookings(data);
         
-        // Fetch ratings for completed bookings
         const completedBookings = data.filter((b: Booking) => b.status === "completed");
         const ratingsMap: Record<number, Rating> = {};
         
@@ -53,7 +52,6 @@ const BookingListMentor: React.FC = () => {
                 ratingsMap[booking.id] = rating;
               }
             } catch (err) {
-              // Rating doesn't exist yet
             }
           })
         );
@@ -80,7 +78,6 @@ const BookingListMentor: React.FC = () => {
       const data = await getBookingsByMentorId(mentor_id);
       setBookings(data);
       
-      // Fetch ratings for completed bookings
       const completedBookings = data.filter((b: Booking) => b.status === "completed");
       const ratingsMap: Record<number, Rating> = {};
       
@@ -92,7 +89,6 @@ const BookingListMentor: React.FC = () => {
               ratingsMap[booking.id] = rating;
             }
           } catch (err) {
-            // Rating doesn't exist yet
           }
         })
       );
@@ -341,7 +337,6 @@ const BookingListMentor: React.FC = () => {
           )}
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog />
       </div>
     </div>

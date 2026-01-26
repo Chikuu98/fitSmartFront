@@ -138,7 +138,6 @@ export function CreateTimeSlot() {
           </form>
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog />
       </div>
     </div>

@@ -168,13 +168,10 @@ export function UpdateBooking() {
             updateData.google_meet_link = formData.google_meet_link;
           }
 
-          // Handle payment status update separately
           if (
             paymentData.payment_status !== originalPaymentData.payment_status &&
             paymentData.payment_status
           ) {
-            // For now, include payment status in the booking update
-            // You may need to create a separate API endpoint for this
             updateData.bookingPayment = {
               status: paymentData.payment_status,
             };
@@ -183,7 +180,6 @@ export function UpdateBooking() {
           await updateBooking(Number(booking_id), updateData);
           navigate(-1);
         } catch (error: any) {
-          // Error handling is done by axios interceptor
         } finally {
           setLoading(false);
         }
@@ -310,7 +306,6 @@ export function UpdateBooking() {
           </form>
         </div>
 
-        {/* Confirmation Dialog */}
         <ConfirmDialog />
       </div>
     </div>

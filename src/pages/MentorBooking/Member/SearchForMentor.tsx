@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import CustomSelect from "../../../components/ui/customSelect";
 import { Button } from "../../../components/ui/button";
-import StarRating from "../../../components/ui/starRating";
 import { getMentorList } from "../../../api/endpoints/mentors";
 import { languageOptions } from "../../../utils/languageOptions";
 import { countryOptions } from "../../../utils/countryOptions";
@@ -209,14 +208,12 @@ const SearchForMentor: React.FC = () => {
           )}
         </div>
 
-        {/* Error Message */}
         {error && (
           <div className="bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
             <p className="text-red-700 dark:text-red-400">{error}</p>
           </div>
         )}
 
-        {/* Loading State */}
         {loading && (
           <div className="flex justify-center items-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>

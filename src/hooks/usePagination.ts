@@ -46,7 +46,7 @@ export const usePagination = (options: UsePaginationOptions = {}): UsePagination
 
   const handleItemsPerPageChange = useCallback((newLimit: number) => {
     setItemsPerPage(newLimit);
-    setCurrentPage(1); // Reset to first page when changing items per page
+    setCurrentPage(1);
     onPageChange?.(1, newLimit);
   }, [onPageChange]);
 
