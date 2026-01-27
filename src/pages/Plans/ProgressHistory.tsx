@@ -67,82 +67,84 @@ const ProgressHistory: React.FC = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <Button
             variant="ghost"
             onClick={() => navigate(`/member/plans/accepted/${planId}`)}
-            className="mb-4 flex items-center"
+            className="mb-3 sm:mb-4 flex items-center text-sm sm:text-base"
           >
-            <ArrowLeft size={18} className="mr-2" />
+            <ArrowLeft size={16} className="mr-1.5 sm:mr-2 sm:hidden" />
+            <ArrowLeft size={18} className="mr-2 hidden sm:block" />
             Back to Plan
           </Button>
           
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
             Progress History
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
             Track your fitness journey and achievements
           </p>
         </div>
 
         {/* Summary Stats */}
         {summary && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex items-center justify-between mb-2">
-                <Activity className="text-blue-500" size={24} />
-                <span className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-6">
+              <div className="flex items-center justify-between mb-1 sm:mb-2">
+                <Activity className="text-blue-500 w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                   {summary.totalDays}
                 </span>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Total Days Tracked</p>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total Days Tracked</p>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex items-center justify-between mb-2">
-                <CheckCircle2 className="text-green-500" size={24} />
-                <span className="text-2xl font-bold text-gray-900 dark:text-white">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-6">
+              <div className="flex items-center justify-between mb-1 sm:mb-2">
+                <CheckCircle2 className="text-green-500 w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                   {summary.completionRate.toFixed(1)}%
                 </span>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Completion Rate</p>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Completion Rate</p>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex items-center justify-between mb-2">
-                <Flame className="text-orange-500" size={24} />
-                <span className="text-2xl font-bold text-gray-900 dark:text-white">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-6">
+              <div className="flex items-center justify-between mb-1 sm:mb-2">
+                <Flame className="text-orange-500 w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                   {summary.streakDays}
                 </span>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Current Streak</p>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Current Streak</p>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex items-center justify-between mb-2">
-                <Weight className="text-purple-500" size={24} />
-                <div className="flex items-center gap-1">
-                  <span className="text-2xl font-bold text-gray-900 dark:text-white">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-6">
+              <div className="flex items-center justify-between mb-1 sm:mb-2">
+                <Weight className="text-purple-500 w-5 h-5 sm:w-6 sm:h-6" />
+                <div className="flex items-center gap-0.5 sm:gap-1">
+                  <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     {summary.weightChange !== null ? Math.abs(summary.weightChange).toFixed(1) : 'N/A'}
                   </span>
                   {summary.weightChange !== null && (
                     summary.weightChange < 0 ? (
-                      <TrendingDown className="text-green-500" size={20} />
+                      <TrendingDown className="text-green-500 w-4 h-4 sm:w-5 sm:h-5" />
                     ) : summary.weightChange > 0 ? (
-                      <TrendingUp className="text-red-500" size={20} />
+                      <TrendingUp className="text-red-500 w-4 h-4 sm:w-5 sm:h-5" />
                     ) : null
                   )}
                 </div>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Weight Change (kg)</p>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Weight Change (kg)</p>
             </div>
           </div>
         )}
 
         {/* Progress Timeline */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-            <Calendar size={20} />
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center gap-1.5 sm:gap-2">
+            <Calendar size={18} className="sm:hidden" />
+            <Calendar size={20} className="hidden sm:block" />
             Daily Progress Log
           </h2>
 

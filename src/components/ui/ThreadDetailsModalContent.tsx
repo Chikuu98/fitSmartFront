@@ -357,26 +357,26 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-start space-x-3 flex-1">
+    <div className="space-y-3 sm:space-y-4">
+      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 sm:p-4">
+        <div className="flex items-start justify-between mb-2 sm:mb-3">
+          <div className="flex items-start space-x-2 sm:space-x-3 flex-1 min-w-0">
             <div className="flex-shrink-0">
               {thread.user?.profile_pic ? (
                 <img
                   src={thread.user.profile_pic}
                   alt={thread.user.name}
-                  className="w-10 h-10 rounded-full object-cover"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                  <User className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400" />
                 </div>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center space-x-2 mb-1">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white break-words">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white break-words">
                   {isEditing ? editTitle || thread.title : thread.title}
                 </h2>
                 {thread.forumType && (
@@ -385,13 +385,13 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
                   </span>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                 <span className="flex items-center">
-                  <User className="w-4 h-4 mr-1" />
+                  <User className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                   {thread.user?.name || 'Anonymous'}
                 </span>
                 <span className="flex items-center">
-                  <Clock className="w-4 h-4 mr-1" />
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                   {formatRelativeTime(thread.created_at)}
                 </span>
               </div>

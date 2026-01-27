@@ -280,16 +280,16 @@ const ProfileUpdate: React.FC = () => {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <div className="max-w-4xl mx-auto p-3 sm:p-6 space-y-4 sm:space-y-8">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-center space-x-3">
-              <User className="h-6 w-6 text-orange-500" />
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <User className="h-5 w-5 sm:h-6 sm:w-6 text-orange-500" />
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                 Profile Settings
               </h1>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">
               Manage your account information and preferences
             </p>
           </div>

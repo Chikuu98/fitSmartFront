@@ -100,36 +100,35 @@ const LandingPage: React.FC = () => {
       {/* Navigation */}
       <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-14 sm:h-16">
             <div className="flex items-center">
               <img
                 src={isDarkMode ? logoDark : logoLight}
                 alt="FitSmart Logo"
-                className="h-10 w-auto"
+                className="h-8 sm:h-10 w-auto"
               />
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {/* Dark Mode Toggle */}
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                className="p-1.5 sm:p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 title="Toggle Theme"
               >
                 {isDarkMode ? (
-                  <Sun className="w-5 h-5" />
+                  <Sun className="w-4 h-4 sm:w-5 sm:h-5" />
                 ) : (
-                  <Moon className="w-5 h-5" />
+                  <Moon className="w-4 h-4 sm:w-5 sm:h-5" />
                 )}
               </button>
               <Link
                 to="/login"
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition-colors"
-              >
+                className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition-colors">
                 Sign In
               </Link>
               <Link
                 to="/register"
-                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg transition-colors font-medium"
+                className="bg-orange-500 hover:bg-orange-600 text-white px-3 sm:px-6 py-1.5 sm:py-2 rounded-lg transition-colors font-medium text-sm sm:text-base"
               >
                 Get Started
               </Link>
@@ -139,9 +138,9 @@ const LandingPage: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-12 sm:pb-16">
         <div className="text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">
             Your Smart
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
               {" "}
@@ -150,23 +149,21 @@ const LandingPage: React.FC = () => {
             <br />
             Starts Here
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+          <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto px-2">
             Transform your health with AI-powered personalized workouts, expert
             mentorship, and a supportive community. Track your progress and
             achieve your fitness goals smarter, not harder.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
             <Link
               to="/register"
-              className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-flex items-center justify-center"
-            >
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold transition-colors inline-flex items-center justify-center">
               Start Your Journey
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
             <Link
               to="/login"
-              className="border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-flex items-center justify-center"
-            >
+              className="border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold transition-colors inline-flex items-center justify-center">
               Sign In
             </Link>
           </div>
@@ -174,15 +171,15 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-white dark:bg-gray-800 py-16">
+      <section className="bg-white dark:bg-gray-800 py-10 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-orange-500 mb-2">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-orange-500 mb-1 sm:mb-2">
                   {stat.number}
                 </div>
-                <div className="text-gray-600 dark:text-gray-300 font-medium">
+                <div className="text-sm sm:text-base text-gray-600 dark:text-gray-300 font-medium">
                   {stat.label}
                 </div>
               </div>
@@ -192,33 +189,33 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20">
+      <section className="py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
               Everything You Need to Succeed
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-2">
               Comprehensive tools and features designed to make your fitness
               journey effective, engaging, and sustainable.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100 dark:border-gray-700"
+                className="bg-white dark:bg-gray-800 p-5 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100 dark:border-gray-700"
               >
                 <div
-                  className={`inline-flex p-3 rounded-lg ${feature.color} bg-opacity-10 mb-4`}
+                  className={`inline-flex p-2 sm:p-3 rounded-lg ${feature.color} bg-opacity-10 mb-3 sm:mb-4`}
                 >
-                  <feature.icon className={`h-6 w-6 ${feature.color}`} />
+                  <feature.icon className={`h-5 w-5 sm:h-6 sm:w-6 ${feature.color}`} />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
                   {feature.description}
                 </p>
               </div>
@@ -228,52 +225,52 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="bg-gray-50 dark:bg-gray-900 py-20">
+      <section className="bg-gray-50 dark:bg-gray-900 py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
               How FitSmart Works
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
+            <p className="text-base sm:text-xl text-gray-600 dark:text-gray-300">
               Simple steps to transform your fitness journey
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             <div className="text-center">
-              <div className="bg-orange-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-3 sm:mb-4">
                 1
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3">
                 Create Your Profile
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
                 Tell us about your fitness goals, preferences, and current level
                 to get personalized recommendations.
               </p>
             </div>
 
             <div className="text-center">
-              <div className="bg-orange-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-3 sm:mb-4">
                 2
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3">
                 Get AI-Powered Plans
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
                 Receive customized workout and meal plans generated by our
                 advanced AI technology.
               </p>
             </div>
 
-            <div className="text-center">
-              <div className="bg-orange-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+            <div className="text-center sm:col-span-2 md:col-span-1">
+              <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-3 sm:mb-4">
                 3
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3">
                 Track & Achieve
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
                 Monitor your progress, connect with mentors, and celebrate your
                 achievements with our community.
               </p>
@@ -326,26 +323,26 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-orange-500 to-red-500 py-20">
+      <section className="bg-gradient-to-r from-orange-500 to-red-500 py-12 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">
+          <h2 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">
             Ready to Transform Your Life?
           </h2>
-          <p className="text-xl text-orange-100 mb-8">
+          <p className="text-base sm:text-xl text-orange-100 mb-6 sm:mb-8">
             Join thousands of users who have already started their smart fitness
             journey. Your healthiest self is just one click away.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
             <Link
               to="/register"
-              className="bg-white text-orange-500 hover:bg-gray-100 px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-flex items-center justify-center"
+              className="bg-white text-orange-500 hover:bg-gray-100 px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold transition-colors inline-flex items-center justify-center"
             >
               Start Free Today
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
             <Link
               to="/login"
-              className="border-2 border-white text-white hover:bg-white hover:text-orange-500 px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-flex items-center justify-center"
+              className="border-2 border-white text-white hover:bg-white hover:text-orange-500 px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold transition-colors inline-flex items-center justify-center"
             >
               Sign In
             </Link>
@@ -354,23 +351,23 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+            <div className="col-span-2 md:col-span-1">
               <img
                 src={logoDark}
                 alt="FitSmart Logo"
-                className="h-10 w-auto mb-4"
+                className="h-8 sm:h-10 w-auto mb-3 sm:mb-4"
               />
-              <p className="text-gray-400">
+              <p className="text-sm sm:text-base text-gray-400">
                 Your smart companion for a healthier, stronger you.
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Features</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Features</h4>
+              <ul className="space-y-1 sm:space-y-2 text-gray-400 text-xs sm:text-base">
                 <li>AI Workout Plans</li>
                 <li>Meal Planning</li>
                 <li>Progress Tracking</li>
@@ -379,8 +376,8 @@ const LandingPage: React.FC = () => {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Community</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Community</h4>
+              <ul className="space-y-1 sm:space-y-2 text-gray-400 text-xs sm:text-base">
                 <li>Support Forum</li>
                 <li>Success Stories</li>
                 <li>Challenges</li>
@@ -389,8 +386,8 @@ const LandingPage: React.FC = () => {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Support</h4>
+              <ul className="space-y-1 sm:space-y-2 text-gray-400 text-xs sm:text-base">
                 <li>Help Center</li>
                 <li>Contact Us</li>
                 <li>Privacy Policy</li>
@@ -399,8 +396,8 @@ const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>
+          <div className="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center text-gray-400">
+            <p className="text-xs sm:text-base">
               &copy; 2025 FitSmart. All rights reserved. Built for your success.
             </p>
           </div>

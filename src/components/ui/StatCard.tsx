@@ -35,15 +35,15 @@ export const StatCard: React.FC<StatCardProps> = ({
 
   return (
     <div
-      className={`rounded-lg border shadow-sm p-6 transition-all hover:shadow-md ${variantStyles[variant]} ${className}`}
+      className={`rounded-lg border shadow-sm p-4 sm:p-6 transition-all hover:shadow-md ${variantStyles[variant]} ${className}`}
     >
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex-1 min-w-0">
+          <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 mb-1 truncate">
             {title}
           </p>
-          <div className="flex items-baseline gap-2">
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
               {value}
             </h3>
             {trend && (
@@ -63,8 +63,8 @@ export const StatCard: React.FC<StatCardProps> = ({
           )}
         </div>
         {Icon && (
-          <div className={`${iconColor}`}>
-            <Icon size={32} />
+          <div className={`${iconColor} flex-shrink-0`}>
+            <Icon className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
         )}
       </div>

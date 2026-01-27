@@ -51,12 +51,12 @@ export const InsightCard: React.FC<InsightCardProps> = ({
 
   return (
     <div
-      className={`rounded-lg border p-5 ${bgColor} ${borderColor} ${className}`}
+      className={`rounded-lg border p-3 sm:p-5 ${bgColor} ${borderColor} ${className}`}
     >
-      <div className="flex items-start gap-3">
-        <Icon className={`${iconColor} flex-shrink-0 mt-0.5`} size={24} />
-        <div className="flex-1">
-          <h4 className="text-base font-semibold text-gray-900 dark:text-white mb-3">
+      <div className="flex items-start gap-2 sm:gap-3">
+        <Icon className={`${iconColor} flex-shrink-0 mt-0.5 w-5 h-5 sm:w-6 sm:h-6`} />
+        <div className="flex-1 min-w-0">
+          <h4 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3">
             {displayTitle}
           </h4>
           <ul className="space-y-2">

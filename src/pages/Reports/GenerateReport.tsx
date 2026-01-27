@@ -68,23 +68,23 @@ const GenerateReport: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-4xl">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            <FileText className="text-orange-500" size={32} />
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <div className="mb-4 sm:mb-8">
+          <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+            <FileText className="text-orange-500 w-6 h-6 sm:w-8 sm:h-8" />
+            <h1 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white">
               Generate Progress Report
             </h1>
           </div>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
             Create a comprehensive report of your fitness journey, including workouts, meals,
             wellness metrics, and progress tracking.
           </p>
         </div>
 
         {/* Report Options */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-8">
           <form onSubmit={handleGenerate} className="space-y-6">
             {/* Period Selection */}
             <div>
@@ -189,21 +189,21 @@ const GenerateReport: React.FC = () => {
         </div>
 
         {/* Info Cards */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+        <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 sm:p-6">
+            <h3 className="text-base sm:text-lg font-semibold text-blue-900 dark:text-blue-100 mb-1 sm:mb-2">
               Weekly Reports
             </h3>
-            <p className="text-sm text-blue-800 dark:text-blue-200">
+            <p className="text-xs sm:text-sm text-blue-800 dark:text-blue-200">
               Get a snapshot of your last 7 days including daily progress, workout adherence,
               meal tracking, and wellness metrics.
             </p>
           </div>
-          <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100 mb-2">
+          <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 sm:p-6">
+            <h3 className="text-base sm:text-lg font-semibold text-purple-900 dark:text-purple-100 mb-1 sm:mb-2">
               Monthly Reports
             </h3>
-            <p className="text-sm text-purple-800 dark:text-purple-200">
+            <p className="text-xs sm:text-sm text-purple-800 dark:text-purple-200">
               Review your entire month with weekly comparisons, weight trends, consistency scores,
               and comprehensive insights.
             </p>

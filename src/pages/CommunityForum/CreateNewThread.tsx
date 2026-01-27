@@ -185,22 +185,22 @@ const CreateNewThread: React.FC = () => {
 
   return (
     <div className="min-h-screen transition-colors bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 lg:py-8 max-w-4xl">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
+        <div className="flex items-center justify-between mb-4 sm:mb-6 lg:mb-8">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <Button
               variant="ghost"
               onClick={() => navigate("/community-forum")}
-              className="p-2"
+              className="p-1.5 sm:p-2"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
                 Create New Thread
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-0.5 sm:mt-1">
                 Share your thoughts with the community
               </p>
             </div>
@@ -209,18 +209,18 @@ const CreateNewThread: React.FC = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6">
             {errors.general && (
-              <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+              <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
                 <div className="flex items-center">
-                  <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 mr-2" />
-                  <p className="text-red-700 dark:text-red-300">{errors.general}</p>
+                  <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 dark:text-red-400 mr-1.5 sm:mr-2 flex-shrink-0" />
+                  <p className="text-sm sm:text-base text-red-700 dark:text-red-300">{errors.general}</p>
                 </div>
               </div>
             )}
 
             {/* Title */}
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <FormInput
                 label="Thread Title *"
                 name="title"
@@ -239,21 +239,21 @@ const CreateNewThread: React.FC = () => {
             </div>
 
             {/* Content */}
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <TextAreaInput
                 label="Content *"
                 name="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Share your thoughts, ask questions, or start a discussion..."
-                rows={8}
+                rows={6}
                 size="md"
                 error={errors.content}
               />
             </div>
 
             {/* Forum Type */}
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <CustomSelect
                 label="Forum Category"
                 name="forumType"
@@ -272,16 +272,16 @@ const CreateNewThread: React.FC = () => {
             </div>
 
             {/* Tags Selection */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                <Tag className="w-4 h-4 inline mr-1" />
+            <div className="mb-4 sm:mb-6">
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <Tag className="w-3.5 h-3.5 sm:w-4 sm:h-4 inline mr-1" />
                 Tags (optional) - {selectedTags.length}/5
               </label>
               
               {/* Selected Tags */}
               {selectedTags.length > 0 && (
-                <div className="mb-3">
-                  <div className="flex flex-wrap gap-2">
+                <div className="mb-2 sm:mb-3">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {getSelectedTagNames().map((tagName, index) => {
                       const tagId = selectedTags[index];
                       return (
@@ -320,14 +320,14 @@ const CreateNewThread: React.FC = () => {
               </div>
 
               {/* Available Tags */}
-              <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-4 max-h-48 overflow-y-auto">
+              <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-3 sm:p-4 max-h-40 sm:max-h-48 overflow-y-auto">
                 {tagSearchLoading ? (
-                  <div className="flex justify-center py-4">
+                  <div className="flex justify-center py-3 sm:py-4">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500"></div>
-                    <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">Searching tags...</span>
+                    <span className="ml-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">Searching tags...</span>
                   </div>
                 ) : (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {availableTags.map(tag => {
                       const isSelected = selectedTags.includes(tag.id);
                       const canSelect = selectedTags.length < 5;
@@ -380,12 +380,13 @@ const CreateNewThread: React.FC = () => {
           </div>
 
           {/* Form Actions */}
-          <div className="flex justify-end space-x-4">
+          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-0 sm:space-x-4">
             <Button
               type="button" 
               variant="outline"
               onClick={() => navigate("/community-forum")}
               disabled={loading}
+              className="w-full sm:w-auto order-2 sm:order-1"
             >
               Cancel
             </Button>
@@ -393,6 +394,7 @@ const CreateNewThread: React.FC = () => {
               type="submit"
               variant="orange"
               disabled={loading || !title.trim() || !content.trim()}
+              className="w-full sm:w-auto order-1 sm:order-2"
             >
               {loading ? (
                 <>

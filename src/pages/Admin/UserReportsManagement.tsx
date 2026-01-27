@@ -124,82 +124,82 @@ const UserReportsManagement: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
           User Reports Management
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
           Review and manage user reports for community content
         </p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+        <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Total</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                 {stats.total}
               </p>
             </div>
-            <AlertTriangle className="w-8 h-8 text-gray-400" />
+            <AlertTriangle className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
           </div>
         </div>
 
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg shadow-sm">
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 sm:p-4 rounded-lg shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-yellow-700 dark:text-yellow-400">Pending</p>
-              <p className="text-2xl font-bold text-yellow-900 dark:text-yellow-200">
+              <p className="text-xs sm:text-sm text-yellow-700 dark:text-yellow-400">Pending</p>
+              <p className="text-xl sm:text-2xl font-bold text-yellow-900 dark:text-yellow-200">
                 {stats.pending}
               </p>
             </div>
-            <Clock className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
+            <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-600 dark:text-yellow-400" />
           </div>
         </div>
 
-        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg shadow-sm">
+        <div className="bg-blue-50 dark:bg-blue-900/20 p-3 sm:p-4 rounded-lg shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-blue-700 dark:text-blue-400">Under Review</p>
-              <p className="text-2xl font-bold text-blue-900 dark:text-blue-200">
+              <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-400">Under Review</p>
+              <p className="text-xl sm:text-2xl font-bold text-blue-900 dark:text-blue-200">
                 {stats.underReview}
               </p>
             </div>
-            <Eye className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            <Eye className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 dark:text-blue-400" />
           </div>
         </div>
 
-        <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg shadow-sm">
+        <div className="bg-green-50 dark:bg-green-900/20 p-3 sm:p-4 rounded-lg shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-green-700 dark:text-green-400">Resolved</p>
-              <p className="text-2xl font-bold text-green-900 dark:text-green-200">
+              <p className="text-xs sm:text-sm text-green-700 dark:text-green-400">Resolved</p>
+              <p className="text-xl sm:text-2xl font-bold text-green-900 dark:text-green-200">
                 {stats.resolved}
               </p>
             </div>
-            <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
+            <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600 dark:text-green-400" />
           </div>
         </div>
 
-        <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg shadow-sm">
+        <div className="bg-gray-50 dark:bg-gray-700/50 p-3 sm:p-4 rounded-lg shadow-sm col-span-2 sm:col-span-1">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Dismissed</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Dismissed</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                 {stats.dismissed}
               </p>
             </div>
-            <XCircle className="w-8 h-8 text-gray-400" />
+            <XCircle className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
           </div>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
-        <div className="flex items-center gap-4">
-          <Filter className="w-5 h-5 text-gray-400" />
-          <div className="flex-1">
+      <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+          <Filter className="w-5 h-5 text-gray-400 hidden sm:block" />
+          <div className="w-full sm:flex-1">
             <CustomSelect
               name="statusFilter"
               options={statusOptions}
