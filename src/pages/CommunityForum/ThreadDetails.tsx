@@ -267,15 +267,15 @@ const ThreadDetails: React.FC = () => {
 
   return (
     <div className="min-h-screen transition-colors bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 lg:py-8 max-w-4xl">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-4 sm:mb-6 lg:mb-8">
           <Button
             variant="ghost"
             onClick={() => navigate("/community-forum")}
-            className="p-2"
+            className="p-1.5 sm:p-2"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </Button>
           
           {isOwner && (
@@ -309,37 +309,37 @@ const ThreadDetails: React.FC = () => {
         </div>
 
         {/* Thread Content */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
           {/* Thread Header */}
-          <div className="flex items-start space-x-4 mb-4">
+          <div className="flex items-start space-x-3 sm:space-x-4 mb-3 sm:mb-4">
             <div className="flex-shrink-0">
               {thread.user?.profile_pic ? (
                 <img
                   src={thread.user.profile_pic}
                   alt={thread.user.name}
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-12 h-12 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
-                  <User className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                  <User className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 dark:text-gray-400" />
                 </div>
               )}
             </div>
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2 break-words">
                 {thread.title}
               </h1>
-              <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1 sm:mb-2">
                 <span className="flex items-center">
-                  <User className="w-4 h-4 mr-1" />
+                  <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" />
                   {thread.user?.name || 'Anonymous'}
                 </span>
                 <span className="flex items-center">
-                  <Clock className="w-4 h-4 mr-1" />
+                  <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1" />
                   {formatRelativeTime(thread.created_at)}
                 </span>
                 {thread.forumType && (
-                  <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full">
+                  <span className="px-2 py-0.5 sm:py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full">
                     {thread.forumType.title}
                   </span>
                 )}
@@ -348,15 +348,15 @@ const ThreadDetails: React.FC = () => {
           </div>
 
           {/* Thread Content */}
-          <div className="mb-4">
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+          <div className="mb-3 sm:mb-4">
+            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
               {thread.content}
             </p>
           </div>
 
           {/* Tags */}
           {thread.tags && thread.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
               {thread.tags.map(tag => (
                 <span
                   key={tag.id}
@@ -370,22 +370,22 @@ const ThreadDetails: React.FC = () => {
           )}
 
           {/* Thread Actions */}
-          <div className="flex items-center space-x-4 pt-4 border-t dark:border-gray-700">
+          <div className="flex items-center space-x-3 sm:space-x-4 pt-3 sm:pt-4 border-t dark:border-gray-700">
             <button
               onClick={handleLikeToggle}
               disabled={!user || likeLoading}
-              className={`flex items-center space-x-1 px-3 py-1 rounded-full text-sm transition-colors ${
+              className={`flex items-center space-x-1 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm transition-colors ${
                 thread.isLikedByCurrentUser
                   ? 'bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400'
                   : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
               }`}
             >
-              <Heart className={`w-4 h-4 ${thread.isLikedByCurrentUser ? 'fill-current' : ''}`} />
+              <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${thread.isLikedByCurrentUser ? 'fill-current' : ''}`} />
               <span>{thread.likeCount || 0}</span>
             </button>
             
-            <div className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 dark:text-gray-400">
-              <MessageCircle className="w-4 h-4" />
+            <div className="flex items-center space-x-1 px-2 sm:px-3 py-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+              <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>{replies.length} replies</span>
             </div>
           </div>
@@ -433,7 +433,7 @@ const ThreadDetails: React.FC = () => {
 
         {/* Reply Form */}
         {user && (
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <ReplyForm
               threadId={thread.id}
               parentReply={replyingTo || undefined}
@@ -445,20 +445,20 @@ const ThreadDetails: React.FC = () => {
         )}
 
         {/* Replies Section */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="space-y-3 sm:space-y-4">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
             Replies ({replies.length})
           </h3>
           
           {nestedReplies.length === 0 ? (
-            <div className="text-center py-8">
-              <MessageCircle className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-600 dark:text-gray-400">
+            <div className="text-center py-6 sm:py-8">
+              <MessageCircle className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-2 sm:mb-3" />
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 No replies yet. Be the first to join the discussion!
               </p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {nestedReplies.map(reply => (
                 <ReplyItem
                   key={reply.id}

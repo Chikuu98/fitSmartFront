@@ -105,21 +105,21 @@ const SearchForMentor: React.FC = () => {
 
   return (
     <div className="min-h-screen transition-colors">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <div className="mb-4 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
             Find Your Perfect Mentor
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
             Discover experienced mentors who can guide you on your fitness
             journey
           </p>
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 mb-4 sm:mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
             {/* Search Input */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -233,35 +233,35 @@ const SearchForMentor: React.FC = () => {
             </div>
 
             {/* Mentors Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {filteredMentors.map((mentor) => (
                 <div
                   key={mentor.id}
                   className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden flex flex-col h-full"
                 >
                   {/* Card Header */}
-                  <div className="p-6 pb-4 flex-1">
-                    <div className="flex items-start justify-between mb-4">
+                  <div className="p-4 sm:p-6 pb-4 flex-1">
+                    <div className="flex items-start justify-between mb-3 sm:mb-4">
                       <div className="flex items-center">
-                        <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center">
-                          <User className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center">
+                          <User className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600 dark:text-orange-400" />
                         </div>
-                        <div className="ml-3">
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        <div className="ml-2 sm:ml-3">
+                          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
                             {mentor.name}
                           </h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                             {mentor.mentorDetail?.expertise || "Fitness Expert"}
                           </p>
                         </div>
                       </div>
                       {mentor.averageRating !== undefined && mentor.averageRating > 0 && (
                         <div className="flex items-center gap-1">
-                          <Star className="h-4 w-4 fill-orange-500 text-orange-500" />
-                          <span className="text-sm font-medium text-gray-900 dark:text-white">
+                          <Star className="h-3 w-3 sm:h-4 sm:w-4 fill-orange-500 text-orange-500" />
+                          <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
                             {mentor.averageRating.toFixed(1)}
                           </span>
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                          <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">
                             ({mentor.totalRatings})
                           </span>
                         </div>
@@ -269,13 +269,13 @@ const SearchForMentor: React.FC = () => {
                     </div>
 
                     {/* Location and Language */}
-                    <div className="flex items-center gap-4 mb-4 text-sm text-gray-600 dark:text-gray-400">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-3 sm:mb-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                       <div className="flex items-center">
-                        <MapPin className="h-4 w-4 mr-1" />
+                        <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                         {mentor.country}
                       </div>
                       <div className="flex items-center">
-                        <Globe className="h-4 w-4 mr-1" />
+                        <Globe className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                         {mentor.language}
                       </div>
                     </div>
@@ -283,7 +283,7 @@ const SearchForMentor: React.FC = () => {
                     {/* Bio */}
                     {mentor.mentorDetail?.bio && (
                       <p
-                        className="text-sm text-gray-600 dark:text-gray-400 mb-4 overflow-hidden"
+                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 overflow-hidden"
                         style={{
                           display: "-webkit-box",
                           WebkitLineClamp: 3,
@@ -313,24 +313,25 @@ const SearchForMentor: React.FC = () => {
                   </div>
 
                   {/* Card Footer */}
-                  <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700 mt-auto">
+                  <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700 mt-auto">
                     <div className="flex gap-2">
                       <Button
                         variant="orange"
                         onClick={() => handleBookMentor(mentor.id)}
-                        className="flex-1 flex items-center justify-center gap-2"
+                        className="flex-1 flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm"
                       >
-                        <Calendar className="h-4 w-4" />
-                        Look for a Session
+                        <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span className="hidden sm:inline">Look for a Session</span>
+                        <span className="sm:hidden">Book</span>
                       </Button>
                       <Button
                         variant="outline"
                         onClick={() => {
                           /* Handle contact */
                         }}
-                        className="flex items-center justify-center"
+                        className="flex items-center justify-center p-2 sm:p-3"
                       >
-                        <MessageCircle className="h-4 w-4" />
+                        <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                       </Button>
                     </div>
                   </div>

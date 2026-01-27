@@ -136,46 +136,47 @@ const ViewReport: React.FC = () => {
       </style>
 
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl">
           {/* Action Buttons - Hidden on print */}
-          <div className="mb-6 flex gap-4 no-print">
-            <Button variant="ghost" onClick={() => navigate('/member/reports/generate')} className='flex items-center justify-center'>
-              <ArrowLeft size={18} className="mr-2" />
-              Back
+          <div className="mb-4 sm:mb-6 flex gap-2 sm:gap-4 no-print">
+            <Button variant="ghost" onClick={() => navigate('/member/reports/generate')} className='flex items-center justify-center text-sm sm:text-base'>
+              <ArrowLeft size={16} className="mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Back</span>
             </Button>
-            <Button variant="orange" onClick={handlePrint} className='flex items-center justify-center'>
-              <Printer size={18} className="mr-2" />
-              Print Report
+            <Button variant="orange" onClick={handlePrint} className='flex items-center justify-center text-sm sm:text-base'>
+              <Printer size={16} className="mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Print Report</span>
+              <span className="sm:hidden">Print</span>
             </Button>
           </div>
 
           {/* Printable Content */}
           <div id="print-area" ref={printRef}>
             {/* Report Header */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 mb-6">
-              <div className="flex items-center justify-between mb-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-8 mb-4 sm:mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  <h1 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
                     {report.reportPeriod === 'weekly' ? 'Weekly' : 'Monthly'} Progress Report
                   </h1>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                     {formatDate(report.startDate)} - {formatDate(report.endDate)}
                   </p>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Generated</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                <div className="text-left sm:text-right">
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Generated</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
                     {new Date(report.generatedAt).toLocaleString()}
                   </p>
                 </div>
               </div>
 
               {/* Member Info */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">
                   Member Information
                 </h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                   <div>
                     <p className="text-xs text-gray-500 dark:text-gray-400">Name</p>
                     <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -260,7 +261,7 @@ const ViewReport: React.FC = () => {
             )}
 
             {/* Key Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-6">
               <StatCard
                 title="Consistency Score"
                 value={`${report.summary.consistencyScore.toFixed(1)}%`}

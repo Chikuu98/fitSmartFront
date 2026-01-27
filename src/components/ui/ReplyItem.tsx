@@ -117,8 +117,8 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
 
 
   return (
-    <div className={`${level > 0 ? 'ml-8 border-l-2 border-gray-200 dark:border-gray-700 pl-4' : ''}`}>
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
+    <div className={`${level > 0 ? 'ml-3 sm:ml-8 border-l-2 border-gray-200 dark:border-gray-700 pl-2 sm:pl-4' : ''}`}>
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 shadow-sm">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center space-x-3">
             <div className="flex-shrink-0">

@@ -118,44 +118,48 @@ const ViewGeneratedPlan: React.FC = () => {
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
             <div className="container mx-auto px-4 py-8 max-w-6xl">
                 {/* Header */}
-                <div className="mb-6">
+                <div className="mb-4 sm:mb-6">
                     <Button
                         variant="ghost"
                         onClick={() => navigate(-1)}
-                        className="mb-4 flex items-center"
+                        className="mb-3 sm:mb-4 flex items-center text-sm sm:text-base"
                     >
-                        <ArrowLeft size={18} className="mr-2" />
+                        <ArrowLeft size={16} className="mr-1.5 sm:mr-2 sm:hidden" />
+                        <ArrowLeft size={18} className="mr-2 hidden sm:block" />
                         Back
                     </Button>
                     
-                    <div className="flex items-start justify-between flex-wrap gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-3">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2 flex items-center gap-2 sm:gap-3">
                                 Your Generated Plan
                             </h1>
-                            <p className="text-gray-600 dark:text-gray-400">
+                            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                                 {plan.duration_days}-day personalized workout and meal plan
                             </p>
                         </div>
 
                         {!plan.is_accepted && plan.status === GenerationStatus.COMPLETED && (
-                            <div className="flex gap-3">
+                            <div className="flex gap-2 sm:gap-3">
                                 <Button
                                     variant="outline"
                                     onClick={() => setShowRegenerateDialog(true)}
                                     disabled={regenerating}
-                                    className="flex items-center gap-2"
+                                    className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base"
                                 >
-                                    <RefreshCw size={18} className={regenerating ? 'animate-spin' : ''} />
-                                    {regenerating ? 'Regenerating...' : 'Re-generate'}
+                                    <RefreshCw size={16} className={regenerating ? 'animate-spin' : ''} />
+                                    <span className="hidden sm:inline">{regenerating ? 'Regenerating...' : 'Re-generate'}</span>
+                                    <span className="sm:hidden">{regenerating ? '...' : 'Retry'}</span>
                                 </Button>
                                 <Button
                                     variant="orange"
                                     onClick={() => setShowAcceptModal(true)}
-                                    className="flex items-center gap-2"
+                                    className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base"
                                 >
-                                    <CheckCircle size={18} />
-                                    Accept Plan
+                                    <CheckCircle size={16} className="sm:hidden" />
+                                    <CheckCircle size={18} className="hidden sm:block" />
+                                    <span className="hidden sm:inline">Accept Plan</span>
+                                    <span className="sm:hidden">Accept</span>
                                 </Button>
                             </div>
                         )}
@@ -191,15 +195,15 @@ const ViewGeneratedPlan: React.FC = () => {
 
                 {/* Plan Content */}
                 {plan.status === GenerationStatus.COMPLETED && (
-                    <div className="grid lg:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                         {/* Workout Plan */}
-                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                                <Dumbbell className="text-orange-500" size={24} />
+                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+                            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center gap-1.5 sm:gap-2">
+                                <Dumbbell className="text-orange-500 w-5 h-5 sm:w-6 sm:h-6" />
                                 Workout Plan
                             </h2>
                             
-                            <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                            <div className="space-y-3 sm:space-y-4 max-h-[500px] sm:max-h-[600px] overflow-y-auto pr-2">
                                 {workoutPlan.map((day: any, index: number) => (
                                     <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                                         <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
@@ -237,13 +241,13 @@ const ViewGeneratedPlan: React.FC = () => {
                         </div>
 
                         {/* Meal Plan */}
-                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                                <UtensilsCrossed className="text-orange-500" size={24} />
+                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6">
+                            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center gap-1.5 sm:gap-2">
+                                <UtensilsCrossed className="text-orange-500 w-5 h-5 sm:w-6 sm:h-6" />
                                 Meal Plan
                             </h2>
                             
-                            <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                            <div className="space-y-3 sm:space-y-4 max-h-[500px] sm:max-h-[600px] overflow-y-auto pr-2">
                                 {mealPlan.map((day: any, index: number) => (
                                     <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                                         <h3 className="font-semibold text-gray-900 dark:text-white mb-2">

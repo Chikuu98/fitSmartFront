@@ -111,11 +111,11 @@ const MemberDashboard: React.FC = () => {
         ) : (
           <>
         {/* Welcome Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
             Welcome back, {user?.name?.split(" ")[0] || "Member"}!
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
             Ready to continue your fitness journey? Here's your overview.
           </p>
         </div>
@@ -195,71 +195,71 @@ const MemberDashboard: React.FC = () => {
 
         {/* Stats Cards - Forum */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-            <MessageSquare className="w-5 h-5" />
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center gap-2">
+            <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
             Forum Activity
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                     Threads Created
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     {forumStats.threadsCreated}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                  <MessageSquare className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 dark:text-purple-400" />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                     Replies Made
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     {forumStats.repliesMade}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 dark:text-indigo-400" />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                     Likes Received
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     {forumStats.likesReceived}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center">
-                  <Heart className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-pink-600 dark:text-pink-400" />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                     Helpful Votes
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     {forumStats.helpfulVotes}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900 rounded-lg flex items-center justify-center">
-                  <Award className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-teal-100 dark:bg-teal-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Award className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600 dark:text-teal-400" />
                 </div>
               </div>
             </div>
@@ -268,71 +268,71 @@ const MemberDashboard: React.FC = () => {
 
         {/* Stats Cards - Sessions */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-            <Calendar className="w-5 h-5" />
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center gap-2">
+            <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
             Session Statistics
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                     Total Sessions
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     {stats.totalSessions}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-400" />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                     Upcoming
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     {stats.upcomingSessions}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                  <Calendar className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                     Pending
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     {stats.pendingBookings}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600 dark:text-yellow-400" />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
                     Total Bookings
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     {stats.totalBookings}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
-                  <BookOpen className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </div>

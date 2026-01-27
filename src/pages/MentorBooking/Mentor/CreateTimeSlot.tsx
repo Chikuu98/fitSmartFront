@@ -89,12 +89,12 @@ export function CreateTimeSlot() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900 transition-colors duration-300 p-4 md:p-8">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white/90 dark:bg-[#18181c] border border-gray-200 dark:border-orange-800 shadow-xl rounded-2xl p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-blue-100 dark:bg-orange-950 rounded-lg">
-              <Plus className="w-6 h-6 text-blue-600 dark:text-orange-400" />
+        <div className="bg-white/90 dark:bg-[#18181c] border border-gray-200 dark:border-orange-800 shadow-xl rounded-2xl p-4 sm:p-6 md:p-8">
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-orange-950 rounded-lg">
+              <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-orange-400" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-orange-100">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-orange-100">
               Create Time Slot
             </h1>
           </div>
@@ -127,11 +127,11 @@ export function CreateTimeSlot() {
               />
             </div>
 
-            <div className="flex gap-4 pt-4">
-              <Button type="submit" variant="true" disabled={loading}>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
+              <Button type="submit" variant="true" disabled={loading} className="w-full sm:w-auto">
                 {loading ? "Creating..." : "Create Time Slot"}
               </Button>
-              <Button type="button" variant="outline" onClick={handleClear}>
+              <Button type="button" variant="outline" onClick={handleClear} className="w-full sm:w-auto">
                 Clear
               </Button>
             </div>

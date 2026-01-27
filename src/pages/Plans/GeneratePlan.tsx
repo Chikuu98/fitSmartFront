@@ -155,36 +155,36 @@ const GeneratePlan: React.FC = () => {
         <div className="min-h-screen transition-colors bg-gray-50 dark:bg-gray-900">
             <div className="container mx-auto px-4 py-8 max-w-4xl">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-3">
+                <div className="mb-6 sm:mb-8">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2 sm:gap-3">
                         Generate Your Personalized Plan
                     </h1>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                         Create an AI-powered workout and meal plan tailored to your goals and preferences
                     </p>
                 </div>
 
                 {/* User Profile Summary Card */}
                 {userProfile?.memberDetail && (
-                    <div className="bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl p-6 mb-6 border border-orange-200 dark:border-orange-700">
-                        <div className="flex items-start gap-4">
-                            <div className="bg-orange-500 rounded-full p-3">
-                                <User className="text-white" size={24} />
+                    <div className="bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl p-4 sm:p-6 mb-6 border border-orange-200 dark:border-orange-700">
+                        <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+                            <div className="bg-orange-500 rounded-full p-2 sm:p-3">
+                                <User className="text-white w-5 h-5 sm:w-6 sm:h-6" />
                             </div>
-                            <div className="flex-1">
-                                <div className="flex items-center justify-between mb-3">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Your Profile</h3>
+                            <div className="flex-1 w-full">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2">
+                                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Your Profile</h3>
                                     <Button
                                         type="button"
                                         variant="outline"
                                         onClick={() => navigate('/account')}
-                                        className="flex items-center gap-2 text-sm px-3 py-1.5"
+                                        className="flex items-center gap-2 text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-1.5 w-full sm:w-auto justify-center"
                                     >
-                                        <Edit2 size={16} />
+                                        <Edit2 size={14} />
                                         Update
                                     </Button>
                                 </div>
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                                     <div>
                                         <p className="text-xs text-gray-600 dark:text-gray-400">Age</p>
                                         <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -222,8 +222,8 @@ const GeneratePlan: React.FC = () => {
                 )}
 
                 {/* Main Form */}
-                <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8">
-                    <div className="space-y-6">
+                <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
+                    <div className="space-y-4 sm:space-y-6">
                         {/* Plan Duration */}
                         <div>
                             <CustomSelect

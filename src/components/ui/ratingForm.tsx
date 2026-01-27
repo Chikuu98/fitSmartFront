@@ -57,11 +57,11 @@ const RatingForm: React.FC<RatingFormProps> = ({
   const isEditMode = !!initialRating;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto mx-2 sm:mx-0">
+        <div className="p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
               {isEditMode ? 'Edit Your Rating' : 'Rate Your Session'}
             </h3>
             <button
@@ -72,13 +72,13 @@ const RatingForm: React.FC<RatingFormProps> = ({
             </button>
           </div>
 
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6">
             {isEditMode ? 'Update your rating for' : 'How was your session with'} <span className="font-semibold text-gray-900 dark:text-white">{mentorName}</span>?
           </p>
 
           <form onSubmit={handleSubmit}>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <div className="mb-4 sm:mb-6">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sm:mb-3">
                 Your Rating *
               </label>
               <div className="flex justify-center">
@@ -93,7 +93,7 @@ const RatingForm: React.FC<RatingFormProps> = ({
               )}
             </div>
 
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Your Review (Optional)
               </label>

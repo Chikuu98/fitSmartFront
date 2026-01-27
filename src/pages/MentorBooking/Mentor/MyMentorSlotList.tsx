@@ -105,16 +105,16 @@ export function MyMentorSlotList() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900 transition-colors duration-300 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 dark:bg-orange-950 rounded-lg">
-              <Calendar className="w-6 h-6 text-blue-600 dark:text-orange-400" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-6 sm:mb-8">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-orange-950 rounded-lg">
+              <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-orange-400" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-orange-100">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-orange-100">
               My Time Slots
             </h1>
           </div>
-          <div className="text-sm text-gray-600 dark:text-orange-300">
+          <div className="text-xs sm:text-sm text-gray-600 dark:text-orange-300">
             {slots.length} slot{slots.length !== 1 ? "s" : ""} available
           </div>
         </div>
@@ -134,27 +134,27 @@ export function MyMentorSlotList() {
             slots.map((slot) => (
               <div
                 key={slot.id}
-                className="bg-white/90 dark:bg-[#18181c] border border-gray-200 dark:border-orange-800 shadow-xl rounded-2xl p-6 transition hover:shadow-2xl hover:border-blue-300 dark:hover:border-orange-400 group"
+                className="bg-white/90 dark:bg-[#18181c] border border-gray-200 dark:border-orange-800 shadow-xl rounded-xl sm:rounded-2xl p-4 sm:p-6 transition hover:shadow-2xl hover:border-blue-300 dark:hover:border-orange-400 group"
               >
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3 sm:gap-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Calendar className="w-5 h-5 text-blue-600 dark:text-orange-400" />
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-orange-100">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                      <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-orange-400" />
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-orange-100">
                         {formatDate(slot.date)}
                       </h3>
                     </div>
 
-                    <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-orange-300">
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
+                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-orange-300">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span>
                           {formatTime(slot.start_time)} -{" "}
                           {formatTime(slot.end_time)}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
                         {slot.is_booked ? (
                           <>
                             <AlertCircle className="w-4 h-4 text-red-500" />
@@ -174,24 +174,26 @@ export function MyMentorSlotList() {
                     </div>
                   </div>
 
-                  <div className="flex gap-3">
+                  <div className="flex gap-2 sm:gap-3">
                     <Button
                       variant="true"
                       onClick={() =>
                         navigate(`/mentor/time-slots/edit/${slot.id}`)
                       }
-                      className="py-2"
+                      className="py-1.5 sm:py-2 px-2 sm:px-3"
                     >
-                      <Edit size={20} />
+                      <Edit size={16} className="sm:hidden" />
+                      <Edit size={20} className="hidden sm:block" />
                     </Button>
 
                     <Button
                       variant="outline"
                       disabled={deleteLoading === slot.id}
                       onClick={() => handleDelete(slot.id)}
-                      className="py-2"
+                      className="py-1.5 sm:py-2 px-2 sm:px-3"
                     >
-                      <Trash2 size={20} />
+                      <Trash2 size={16} className="sm:hidden" />
+                      <Trash2 size={20} className="hidden sm:block" />
                     </Button>
                   </div>
                 </div>

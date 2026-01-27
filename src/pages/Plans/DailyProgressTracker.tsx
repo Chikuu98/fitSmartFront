@@ -288,22 +288,23 @@ const DailyProgressTracker: React.FC = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <div className="container mx-auto px-4 py-8 max-w-5xl">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <Button
             variant="ghost"
             onClick={() => navigate(`/member/plans/accepted/${planId}`)}
-            className="mb-4 flex items-center"
+            className="mb-3 sm:mb-4 flex items-center text-sm sm:text-base"
           >
-            <ArrowLeft size={18} className="mr-2" />
+            <ArrowLeft size={16} className="mr-1.5 sm:mr-2 sm:hidden" />
+            <ArrowLeft size={18} className="mr-2 hidden sm:block" />
             Back to Plan
           </Button>
           
-          <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
                 Today's Progress Tracker
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 Day {currentDayNumber} • {new Date().toLocaleDateString('en-US', { 
                   weekday: 'long', 
                   year: 'numeric', 
@@ -317,16 +318,18 @@ const DailyProgressTracker: React.FC = () => {
               variant="orange"
               onClick={handleSaveProgress}
               disabled={saving}
-              className="flex items-center gap-2"
+              className="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto justify-center"
             >
               {saving ? (
                 <>
-                  <Loader2 size={16} className="animate-spin" />
+                  <Loader2 size={14} className="animate-spin sm:hidden" />
+                  <Loader2 size={16} className="animate-spin hidden sm:block" />
                   Saving...
                 </>
               ) : (
                 <>
-                  <Save size={16} />
+                  <Save size={14} className="sm:hidden" />
+                  <Save size={16} className="hidden sm:block" />
                   Save Progress
                 </>
               )}
@@ -335,17 +338,17 @@ const DailyProgressTracker: React.FC = () => {
         </div>
 
         {/* Daily Metrics Section */}
-        <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-              <Activity className="text-blue-600 dark:text-blue-400" size={24} />
+        <div className="mb-6 sm:mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6">
+          <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+            <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+              <Activity className="text-blue-600 dark:text-blue-400 w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
               Daily Wellness Metrics
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {/* Weight */}
             <div>
               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

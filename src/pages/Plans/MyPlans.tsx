@@ -58,15 +58,15 @@ const MyPlans: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-            <div className="container mx-auto px-4 py-8 max-w-6xl">
+            <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-6xl">
                 {/* Header */}
-                <div className="mb-6">
-                    <div className="flex items-start justify-between flex-wrap gap-4 mb-6">
+                <div className="mb-4 sm:mb-6">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
                                 My Fitness Plans
                             </h1>
-                            <p className="text-gray-600 dark:text-gray-400">
+                            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                                 Track and manage your workout and meal plans
                             </p>
                         </div>
@@ -74,10 +74,11 @@ const MyPlans: React.FC = () => {
                         <Button
                             variant="orange"
                             onClick={() => navigate('/member/generate-plan')}
-                            className="flex items-center gap-2"
+                            className="flex items-center justify-center gap-2 w-full sm:w-auto"
                         >
                             <Plus size={18} />
-                            Generate New Plan
+                            <span className="hidden sm:inline">Generate New Plan</span>
+                            <span className="sm:hidden">New Plan</span>
                         </Button>
                     </div>
 
@@ -126,41 +127,41 @@ const MyPlans: React.FC = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="grid gap-4">
+                    <div className="grid gap-3 sm:gap-4">
                         {plans.map((plan) => (
                             <div
                                 key={plan.id}
-                                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow"
                             >
-                                <div className="flex items-start justify-between flex-wrap gap-4">
+                                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                                     <div className="flex-1">
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                                            <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                                                 {plan.plan_name}
                                             </h3>
-                                            <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(plan.status)}`}>
+                                            <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium border ${getStatusColor(plan.status)}`}>
                                                 {plan.status}
                                             </span>
                                         </div>
 
-                                        <div className="space-y-2">
-                                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                                <Target size={16} className="text-orange-500" />
+                                        <div className="space-y-1.5 sm:space-y-2">
+                                            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                                                <Target size={14} className="text-orange-500 flex-shrink-0 sm:w-4 sm:h-4" />
                                                 <span className="font-medium">Goal:</span>
-                                                <span>{plan.target_goal}</span>
+                                                <span className="truncate">{plan.target_goal}</span>
                                             </div>
 
-                                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                                <Calendar size={16} className="text-orange-500" />
+                                            <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                                                <Calendar size={14} className="text-orange-500 flex-shrink-0 sm:w-4 sm:h-4" />
                                                 <span className="font-medium">Duration:</span>
-                                                <span>
+                                                <span className="break-words">
                                                     {new Date(plan.start_date).toLocaleDateString()} - {new Date(plan.end_date).toLocaleDateString()}
                                                     {plan.duration_days && ` (${plan.duration_days} days)`}
                                                 </span>
                                             </div>
 
                                             {plan.accepted_at && (
-                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5 sm:mt-2">
                                                     Accepted {formatRelativeTime(plan.accepted_at)}
                                                 </p>
                                             )}
@@ -170,7 +171,7 @@ const MyPlans: React.FC = () => {
                                     <Button
                                         variant="outline"
                                         onClick={() => navigate(`/member/plans/accepted/${plan.id}`)}
-                                        className="flex items-center gap-2"
+                                        className="flex items-center justify-center gap-2 w-full sm:w-auto text-sm"
                                     >
                                         <Eye size={16} />
                                         View Details

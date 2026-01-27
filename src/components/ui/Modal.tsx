@@ -64,20 +64,20 @@ const Modal: React.FC<ModalProps> = ({
       />
       
       {/* Modal */}
-      <div className="flex min-h-full items-center justify-center p-4">
+      <div className="flex min-h-full items-center justify-center p-2 sm:p-4">
         <div 
           className={`
             relative w-full ${sizeClasses[size]} ${heightClasses[size]}
             bg-white dark:bg-gray-800 rounded-lg shadow-xl
-            transform transition-all
+            transform transition-all mx-2 sm:mx-0
             ${className}
           `}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
           {title && (
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white pr-8">
                 {title}
               </h2>
               <button
@@ -100,7 +100,7 @@ const Modal: React.FC<ModalProps> = ({
           )}
           
           {/* Content */}
-          <div className={`overflow-y-auto ${title ? 'p-4' : 'p-6'}`}>
+          <div className={`overflow-y-auto ${title ? 'p-3 sm:p-4' : 'p-4 sm:p-6'}`}>
             {children}
           </div>
         </div>

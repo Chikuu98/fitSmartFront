@@ -108,43 +108,45 @@ const ViewAcceptedPlan: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-            <div className="container mx-auto px-4 py-8 max-w-7xl">
+            <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl">
                 {/* Header */}
-                <div className="mb-6">
+                <div className="mb-4 sm:mb-6">
                     <Button
                         variant="ghost"
                         onClick={() => navigate('/member/my-plans')}
-                        className="mb-4 flex items-center"
+                        className="mb-3 sm:mb-4 flex items-center text-sm sm:text-base"
                     >
-                        <ArrowLeft size={18} className="mr-2" />
-                        Back to My Plans
+                        <ArrowLeft size={16} className="mr-1 sm:mr-2" />
+                        <span className="hidden sm:inline">Back to My Plans</span>
+                        <span className="sm:hidden">Back</span>
                     </Button>
                     
-                    <div className="flex items-start justify-between flex-wrap gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                         <div>
-                            <div className="flex items-center gap-3 mb-2">
-                                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+                                <h1 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white">
                                     {plan.plan_name}
                                 </h1>
-                                <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(plan.status)}`}>
+                                <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium border ${getStatusColor(plan.status)}`}>
                                     {plan.status}
                                 </span>
                             </div>
-                            <p className="text-gray-600 dark:text-gray-400">
+                            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                                 View your complete workout and meal plan details
                             </p>
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                             {plan.status === AcceptedPlanStatus.ACCEPTED && (
                                 <Button
                                     variant="orange"
                                     onClick={handleActivate}
-                                    className="flex items-center gap-2"
+                                    className="flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center text-sm"
                                 >
-                                    <Play size={16} />
-                                    Activate Plan
+                                    <Play size={14} />
+                                    <span className="hidden sm:inline">Activate Plan</span>
+                                    <span className="sm:hidden">Activate</span>
                                 </Button>
                             )}
                             {plan.status === AcceptedPlanStatus.ACTIVE && (
@@ -152,17 +154,18 @@ const ViewAcceptedPlan: React.FC = () => {
                                     <Button
                                         variant="orange"
                                         onClick={() => navigate(`/member/plans/${planId}/track-progress`)}
-                                        className="flex items-center gap-2"
+                                        className="flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center text-sm"
                                     >
-                                        <CheckSquare size={16} />
-                                        Track Today's Progress
+                                        <CheckSquare size={14} />
+                                        <span className="hidden sm:inline">Track Today's Progress</span>
+                                        <span className="sm:hidden">Track</span>
                                     </Button>
                                     <Button
                                         variant="outline"
                                         onClick={handlePause}
-                                        className="flex items-center gap-2"
+                                        className="flex items-center gap-1 sm:gap-2 justify-center text-sm"
                                     >
-                                        <Pause size={16} />
+                                        <Pause size={14} />
                                         Pause
                                     </Button>
                                 </>
@@ -171,20 +174,22 @@ const ViewAcceptedPlan: React.FC = () => {
                                 <Button
                                     variant="orange"
                                     onClick={handleResume}
-                                    className="flex items-center gap-2"
+                                    className="flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center text-sm"
                                 >
-                                    <Play size={16} />
-                                    Resume Plan
+                                    <Play size={14} />
+                                    <span className="hidden sm:inline">Resume Plan</span>
+                                    <span className="sm:hidden">Resume</span>
                                 </Button>
                             )}
                             {(plan.status === AcceptedPlanStatus.ACTIVE || plan.status === AcceptedPlanStatus.COMPLETED) && (
                                 <Button
                                     variant="ghost"
                                     onClick={() => navigate(`/member/plans/${planId}/progress-history`)}
-                                    className="flex items-center gap-2"
+                                    className="flex items-center gap-1 sm:gap-2 justify-center text-sm"
                                 >
-                                    <BarChart3 size={16} />
-                                    View History
+                                    <BarChart3 size={14} />
+                                    <span className="hidden sm:inline">View History</span>
+                                    <span className="sm:hidden">History</span>
                                 </Button>
                             )}
                         </div>
@@ -192,11 +197,11 @@ const ViewAcceptedPlan: React.FC = () => {
                 </div>
 
                 {/* Plan Info Cards */}
-                <div className="grid md:grid-cols-3 gap-4 mb-6">
-                    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
-                        <div className="flex items-center gap-3 mb-2">
-                            <Target className="text-orange-500" size={20} />
-                            <h3 className="font-semibold text-gray-900 dark:text-white">Goal</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 shadow-md">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
+                            <Target className="text-orange-500 w-4 h-4 sm:w-5 sm:h-5" />
+                            <h3 className="font-semibold text-sm sm:text-base text-gray-900 dark:text-white">Goal</h3>
                         </div>
                         <p className="text-sm text-gray-600 dark:text-gray-300">{plan.target_goal}</p>
                     </div>

@@ -176,13 +176,13 @@ const BookingListMentor: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900 transition-colors duration-300 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900 transition-colors duration-300 p-3 sm:p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {bookings.length === 0 ? (
-            <div className="text-center py-16">
-              <AlertCircle className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-orange-100 mb-2">
+            <div className="text-center py-10 sm:py-16">
+              <AlertCircle className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 dark:text-gray-500 mx-auto mb-3 sm:mb-4" />
+              <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-orange-100 mb-2">
                 No bookings found
               </h3>
             </div>
@@ -190,11 +190,11 @@ const BookingListMentor: React.FC = () => {
             bookings.map((booking) => (
               <div
                 key={booking.id}
-                className="bg-white/90 dark:bg-[#18181c] border border-gray-200 dark:border-orange-800 shadow-xl rounded-2xl p-5 flex flex-col gap-4 transition hover:shadow-2xl hover:border-blue-300 dark:hover:border-orange-400 group relative overflow-hidden"
+                className="bg-white/90 dark:bg-[#18181c] border border-gray-200 dark:border-orange-800 shadow-xl rounded-xl sm:rounded-2xl p-3 sm:p-5 flex flex-col gap-3 sm:gap-4 transition hover:shadow-2xl hover:border-blue-300 dark:hover:border-orange-400 group relative overflow-hidden"
               >
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 mb-1">
+                <div className="flex flex-col gap-2 mb-1">
                   <div className="flex flex-col gap-1">
-                    <p className="font-semibold text-lg text-blue-900 dark:text-orange-200 flex items-center gap-2">
+                    <p className="font-semibold text-base sm:text-lg text-blue-900 dark:text-orange-200 flex items-center gap-2">
                       {booking.member?.name}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-1">
@@ -261,10 +261,10 @@ const BookingListMentor: React.FC = () => {
                   </div>
 
                   {booking.status === "pending" && (
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap gap-2 sm:gap-3">
                       <Button
                         variant="blue"
-                        className="shadow-sm group-hover:scale-105 transition"
+                        className="shadow-sm group-hover:scale-105 transition text-xs sm:text-sm px-2 sm:px-4"
                         disabled={loadingId === booking.id}
                         onClick={() => {
                           setSelectedBooking(booking);
@@ -279,7 +279,7 @@ const BookingListMentor: React.FC = () => {
                       </Button>
                       <Button
                         variant="green"
-                        className="shadow-sm group-hover:scale-105 transition"
+                        className="shadow-sm group-hover:scale-105 transition text-xs sm:text-sm px-2 sm:px-4"
                         disabled={loadingId === booking.id}
                         onClick={() => handleAccept(booking)}
                       >
@@ -287,7 +287,7 @@ const BookingListMentor: React.FC = () => {
                       </Button>
                       <Button
                         variant="red"
-                        className="shadow-sm group-hover:scale-105 transition"
+                        className="shadow-sm group-hover:scale-105 transition text-xs sm:text-sm px-2 sm:px-4"
                         disabled={loadingId === booking.id}
                         onClick={() => handleCancel(booking)}
                       >
