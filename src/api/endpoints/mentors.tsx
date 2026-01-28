@@ -1,7 +1,5 @@
 import type {
-  Mentor,
   MentorListFilters,
-  MentorListResponse,
 } from "../../interfaces/mentor";
 import { axiosInstance } from "../axiosInstance";
 

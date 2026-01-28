@@ -121,19 +121,47 @@ const UserReportsManagement: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="container mx-auto px-4 py-6 md:py-8">
       {/* Header */}
-      <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-          User Reports Management
-        </h1>
-        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
-          Review and manage user reports for community content
-        </p>
+      <div className="mb-6 md:mb-8">
+        <div className="flex items-center gap-3 md:gap-4 mb-2">
+          <div className="w-12 h-12 md:w-14 md:h-14 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center flex-shrink-0">
+            <AlertTriangle className="w-6 h-6 md:w-7 md:h-7 text-red-600 dark:text-red-400" />
+          </div>
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
+              User Reports Management
+            </h1>
+            <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-0.5">
+              Review and manage user reports for community content
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 md:p-5 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 md:gap-4">
+            <AlertTriangle className="w-8 h-8 md:w-10 md:h-10 text-red-600 dark:text-red-400 flex-shrink-0" />
+            <div>
+              <p className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">
+                Total Reports
+              </p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+                {stats.total}
+              </p>
+            </div>
+          </div>
+          <div className="text-left sm:text-right">
+            <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
+              Pending: {stats.pending} | Under Review: {stats.underReview}
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-6">
         <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm">
           <div className="flex items-center justify-between">
             <div>
@@ -196,7 +224,7 @@ const UserReportsManagement: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm">
+      <div className="bg-white dark:bg-gray-800 p-4 md:p-5 rounded-lg shadow-sm mb-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
           <Filter className="w-5 h-5 text-gray-400 hidden sm:block" />
           <div className="w-full sm:flex-1">
@@ -213,7 +241,7 @@ const UserReportsManagement: React.FC = () => {
       </div>
 
       {/* Reports Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
@@ -316,10 +344,11 @@ const UserReportsManagement: React.FC = () => {
                         <Button
                           onClick={() => handleViewReport(report.id)}
                           variant="outline"
-                          className="flex items-center gap-2"
+                          className="flex items-center gap-1.5 text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2"
                         >
-                          <Eye className="w-4 h-4" />
-                          Review
+                          <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                          <span className="hidden sm:inline">Review</span>
+                          <span className="sm:hidden">View</span>
                         </Button>
                       </td>
                     </tr>
@@ -329,7 +358,7 @@ const UserReportsManagement: React.FC = () => {
             </div>
 
             {pagination.total > 0 && (
-              <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="px-4 sm:px-6 py-4 border-t border-gray-200 dark:border-gray-700">
                 <Pagination
                   currentPage={currentPage}
                   totalPages={pagination.totalPages}

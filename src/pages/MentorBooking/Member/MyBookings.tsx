@@ -479,7 +479,7 @@ const MyBookings: React.FC = () => {
                               className="flex items-center justify-center gap-2 w-full sm:w-auto"
                             >
                               <Video className="w-4 h-4" />
-                              Join Meeting
+                              Meeting Link
                             </Button>
                           )}
 
