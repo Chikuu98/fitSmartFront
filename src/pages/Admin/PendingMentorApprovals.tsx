@@ -55,21 +55,19 @@ const PendingMentorApprovals: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await getPendingMentors();
+      const response = await getPendingMentors(currentPage, itemsPerPage);
       if (response.success) {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const paginatedData = response.data.slice(startIndex, endIndex);
-        
-        setMentors(paginatedData);
-        setPagination({
-          page: currentPage,
-          limit: itemsPerPage,
-          total: response.data.length,
-          totalPages: Math.ceil(response.data.length / itemsPerPage),
-          hasNext: currentPage < Math.ceil(response.data.length / itemsPerPage),
-          hasPrev: currentPage > 1,
-        });
+        setMentors(response.data);
+        if (response.pagination) {
+          setPagination({
+            page: response.pagination.page,
+            limit: response.pagination.limit,
+            total: response.pagination.total,
+            totalPages: response.pagination.totalPages,
+            hasNext: response.pagination.hasNext,
+            hasPrev: response.pagination.hasPrev,
+          });
+        }
       }
     } catch (err: any) {
       console.error("Error fetching pending mentors:", err);
@@ -359,7 +357,7 @@ const PendingMentorApprovals: React.FC = () => {
         />
       </div>
 
-      {!loading && !error && pagination.totalPages > 1 && (
+      {!loading && !error && pagination.total > 0 && (
         <div className="mt-6">
           <Pagination
             currentPage={pagination.page}

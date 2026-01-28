@@ -67,7 +67,7 @@ const CreateNewThread: React.FC = () => {
         getForumTypes(),
       ]);
       setTags(tagsData.data);
-      setForumTypes(typesData);
+      setForumTypes(typesData.data || []);
     } catch (error) {
       console.error("Error fetching initial data:", error);
     }

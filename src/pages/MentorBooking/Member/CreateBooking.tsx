@@ -47,7 +47,8 @@ const CreateBooking: React.FC = () => {
     try {
       setLoading(true);
 
-      const mentors = await getMentorList();
+      const response = await getMentorList();
+      const mentors = response.data || [];
       const mentorData = mentors.find((m) => m.id === Number(mentor_id));
 
       if (!mentorData) {

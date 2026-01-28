@@ -13,6 +13,7 @@ import {
   MoreVertical,
 } from "lucide-react";
 import { Button, Modal, CreateThreadModalContent, ThreadDetailsModalContent } from "../../components/ui";
+import { Pagination } from "../../components/ui/pagination";
 import { getMyForumThreads, deleteForumThread } from "../../api/endpoints/threads";
 import type { ForumThread } from "../../interfaces";
 import type { RootState } from "../../store/store";
@@ -34,9 +35,10 @@ const MyThreads: React.FC = () => {
 
   const {
     currentPage,
+    itemsPerPage,
     pagination,
-    handleNextPage,
-    handlePrevPage,
+    handlePageChange,
+    handleItemsPerPageChange,
     setPagination,
   } = usePagination();
 
@@ -46,14 +48,24 @@ const MyThreads: React.FC = () => {
       return;
     }
     fetchMyThreads();
-  }, [user, navigate, currentPage]);
+  }, [user, navigate, currentPage, itemsPerPage]);
 
   const fetchMyThreads = async () => {
     setLoading(true);
     try {
-      const response = await getMyForumThreads(currentPage, 10);
+      const response = await getMyForumThreads(currentPage, itemsPerPage);
       if (response && response.data && Array.isArray(response.data.data)) {
         setThreads(response.data.data);
+        if (response.data.pagination) {
+          setPagination({
+            page: response.data.pagination.page,
+            limit: response.data.pagination.limit,
+            total: response.data.pagination.total,
+            totalPages: response.data.pagination.totalPages,
+            hasNext: response.data.pagination.hasNext,
+            hasPrev: response.data.pagination.hasPrev,
+          });
+        }
       } else {
         console.error("Invalid response format - expected nested array in data.data field:", response);
         setThreads([]);
@@ -374,29 +386,14 @@ const MyThreads: React.FC = () => {
         )}
 
         {/* Pagination */}
-        {!loading && threads.length > 0 && (
-          <div className="flex justify-center items-center gap-2 sm:gap-4 mt-6 sm:mt-8">
-            <Button
-              variant="outline"
-              onClick={handlePrevPage}
-              disabled={!pagination.hasPrev}
-              className="text-sm px-3 sm:px-4"
-            >
-              <span className="hidden sm:inline">Previous</span>
-              <span className="sm:hidden">Prev</span>
-            </Button>
-            <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
-              Page {currentPage} of {pagination.totalPages}
-            </span>
-            <Button
-              variant="outline"
-              onClick={handleNextPage}
-              disabled={!pagination.hasNext}
-              className="text-sm px-3 sm:px-4"
-            >
-              Next
-            </Button>
-          </div>
+        {!loading && threads.length > 0 && pagination.total > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalItems={pagination.total}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+          />
         )}
       </div>
 

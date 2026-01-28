@@ -1,10 +1,10 @@
 import { axiosInstance } from "../axiosInstance";
 import type { ForumType, ForumTypeListResponse } from "../../interfaces/forumType";
 
-export const getForumTypes = async (): Promise<ForumType[]> => {
+export const getForumTypes = async (page: number = 1, limit: number = 10) => {
   try {
-    const response = await axiosInstance.get<ForumTypeListResponse>("/forum-types");
-    return response.data.data;
+    const response = await axiosInstance.get(`/forum-types?page=${page}&limit=${limit}`);
+    return response.data;
   } catch (error) {
     console.error("Error fetching forum types:", error);
     throw error;

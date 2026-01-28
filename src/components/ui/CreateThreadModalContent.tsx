@@ -65,7 +65,7 @@ const CreateThreadModalContent: React.FC<CreateThreadModalContentProps> = ({
         getForumTypes(),
       ]);
       setTags(tagsData.data);
-      setForumTypes(typesData);
+      setForumTypes(typesData.data || []);
     } catch (error) {
       console.error("Error fetching initial data:", error);
     }

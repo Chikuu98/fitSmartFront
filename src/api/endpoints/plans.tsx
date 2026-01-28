@@ -18,9 +18,13 @@ export const getGeneratedPlans = async (limit?: number, offset?: number) => {
   return response.data;
 };
 
-export const getAcceptedPlans = async (status?: string): Promise<AcceptedPlan[]> => {
+export const getAcceptedPlans = async (
+  status?: string,
+  page: number = 1,
+  limit: number = 10
+) => {
   const response = await axiosInstance.get('/plans/accepted', {
-    params: { status }
+    params: { status, page, limit }
   });
   return response.data;
 };

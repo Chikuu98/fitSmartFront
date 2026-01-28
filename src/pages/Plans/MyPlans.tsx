@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { getAcceptedPlans } from '../../api/endpoints/plans';
 import { Button } from '../../components/ui/button';
 import CustomSelect from '../../components/ui/customSelect';
+import Pagination from '../../components/ui/pagination';
+import { usePagination } from '../../hooks/usePagination';
 import { Calendar, Target, Plus, Eye } from 'lucide-react';
 import type { AcceptedPlan } from '../../interfaces/plan';
 import { AcceptedPlanStatus } from '../../interfaces/plan';
@@ -14,20 +16,41 @@ const MyPlans: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState<string | null>(null);
 
+    const {
+        currentPage,
+        itemsPerPage,
+        pagination,
+        setPagination,
+        handlePageChange,
+        handleItemsPerPageChange,
+        handlePrevPage,
+        handleNextPage,
+        resetToFirstPage,
+    } = usePagination({
+        initialPage: 1,
+        initialItemsPerPage: 10,
+    });
+
     useEffect(() => {
         fetchPlans();
-    }, [filterStatus]);
+    }, [filterStatus, currentPage, itemsPerPage]);
 
     const fetchPlans = async () => {
         try {
             setLoading(true);
-            const data = await getAcceptedPlans(filterStatus || undefined);
-            setPlans(data);
+            const response = await getAcceptedPlans(filterStatus || undefined, currentPage, itemsPerPage);
+            setPlans(response.data);
+            setPagination(response.pagination);
         } catch (error) {
             console.error('Failed to fetch plans:', error);
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleFilterChange = (option: { value: string } | null) => {
+        setFilterStatus(option ? option.value : null);
+        resetToFirstPage();
     };
 
     const statusOptions = [
@@ -87,7 +110,7 @@ const MyPlans: React.FC = () => {
                         <CustomSelect
                             name="status"
                             value={filterStatus || ''}
-                            onChange={(option) => setFilterStatus(option ? option.value : null)}
+                            onChange={handleFilterChange}
                             options={statusOptions}
                             label="Filter by Status"
                             placeholder="All Plans"
@@ -179,6 +202,24 @@ const MyPlans: React.FC = () => {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                )}
+
+                {/* Pagination */}
+                {!loading && plans.length > 0 && (
+                    <div className="mt-6">
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={pagination.totalPages}
+                            totalItems={pagination.total}
+                            itemsPerPage={itemsPerPage}
+                            hasNext={pagination.hasNext}
+                            hasPrev={pagination.hasPrev}
+                            onPageChange={handlePageChange}
+                            onItemsPerPageChange={handleItemsPerPageChange}
+                            onPrevPage={handlePrevPage}
+                            onNextPage={handleNextPage}
+                        />
                     </div>
                 )}
             </div>

@@ -7,7 +7,9 @@ import { axiosInstance } from "../axiosInstance";
 
 export const getMentorList = async (
   filters?: MentorListFilters,
-): Promise<Mentor[]> => {
+  page: number = 1,
+  limit: number = 10,
+) => {
   try {
     const params = new URLSearchParams();
 
@@ -17,19 +19,15 @@ export const getMentorList = async (
     if (filters?.language) {
       params.append("language", filters.language);
     }
+    params.append("page", page.toString());
+    params.append("limit", limit.toString());
 
     const queryString = params.toString();
-    const url = queryString
-      ? `/users/mentors/filter?${queryString}`
-      : "/users/mentors/filter";
+    const url = `/users/mentors/filter?${queryString}`;
 
-    const response = await axiosInstance.get<MentorListResponse>(url);
+    const response = await axiosInstance.get(url);
 
-    if (response.data.success) {
-      return response.data.data;
-    } else {
-      throw new Error("Failed to fetch mentor list");
-    }
+    return response.data;
   } catch (error) {
     console.error("Error fetching mentor list:", error);
     throw error;
@@ -38,19 +36,25 @@ export const getMentorList = async (
 
 export const getMentorsByCountry = async (
   country: string,
-): Promise<Mentor[]> => {
-  return getMentorList({ country });
+  page?: number,
+  limit?: number,
+) => {
+  return getMentorList({ country }, page, limit);
 };
 
 export const getMentorsByLanguage = async (
   language: string,
-): Promise<Mentor[]> => {
-  return getMentorList({ language });
+  page?: number,
+  limit?: number,
+) => {
+  return getMentorList({ language }, page, limit);
 };
 
 export const getMentorsByCountryAndLanguage = async (
   country: string,
   language: string,
-): Promise<Mentor[]> => {
-  return getMentorList({ country, language });
+  page?: number,
+  limit?: number,
+) => {
+  return getMentorList({ country, language }, page, limit);
 };
