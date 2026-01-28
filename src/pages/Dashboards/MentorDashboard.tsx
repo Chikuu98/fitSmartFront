@@ -40,12 +40,12 @@ const MentorDashboard: React.FC = () => {
     if (!user?.id) return;
 
     try {
-      const [bookingsData, slotsData] = await Promise.all([
+      const [bookingsResponse, slotsResponse] = await Promise.all([
         getBookingsByMentorId(user.id),
         getMentorSlots(user.id),
       ]);
-      setBookings(bookingsData);
-      setSlots(slotsData);
+      setBookings(bookingsResponse.data || []);
+      setSlots(slotsResponse.data || []);
     } catch (err) {
       console.error("Error fetching data:", err);
       setBookings([]);

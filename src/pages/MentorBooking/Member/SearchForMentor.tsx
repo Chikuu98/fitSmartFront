@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import CustomSelect from "../../../components/ui/customSelect";
 import { Button } from "../../../components/ui/button";
+import Pagination from "../../../components/ui/pagination";
+import { usePagination } from "../../../hooks/usePagination";
 import { getMentorList } from "../../../api/endpoints/mentors";
 import { languageOptions } from "../../../utils/languageOptions";
 import { countryOptions } from "../../../utils/countryOptions";
@@ -35,12 +37,30 @@ const SearchForMentor: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState<Option | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<Option | null>(null);
 
-  const fetchMentors = async (filters?: MentorListFilters) => {
+  const {
+    currentPage,
+    itemsPerPage,
+    pagination,
+    setPagination,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handlePrevPage,
+    handleNextPage,
+    resetToFirstPage,
+  } = usePagination({
+    initialPage: 1,
+    initialItemsPerPage: 9,
+  });
+
+  const fetchMentors = async (filters?: MentorListFilters, page: number = currentPage, limit: number = itemsPerPage) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await getMentorList(filters);
-      setMentors(data);
+      const response = await getMentorList(filters, page, limit);
+      if (response.success) {
+        setMentors(response.data);
+        setPagination(response.pagination);
+      }
     } catch (err) {
       setError("Failed to fetch mentors. Please try again.");
       console.error("Error fetching mentors:", err);
@@ -50,8 +70,11 @@ const SearchForMentor: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchMentors();
-  }, []);
+    const filters: MentorListFilters = {};
+    if (selectedCountry) filters.country = selectedCountry.value;
+    if (selectedLanguage) filters.language = selectedLanguage.value;
+    fetchMentors(filters, currentPage, itemsPerPage);
+  }, [currentPage, itemsPerPage]);
 
   const handleSearch = () => {
     const filters: MentorListFilters = {};
@@ -64,14 +87,16 @@ const SearchForMentor: React.FC = () => {
       filters.language = selectedLanguage.value;
     }
 
-    fetchMentors(filters);
+    resetToFirstPage();
+    fetchMentors(filters, 1, itemsPerPage);
   };
 
   const clearFilters = () => {
     setSelectedCountry(null);
     setSelectedLanguage(null);
     setSearchTerm("");
-    fetchMentors();
+    resetToFirstPage();
+    fetchMentors({}, 1, itemsPerPage);
   };
 
   const filteredMentors = mentors.filter((mentor) => {
@@ -352,6 +377,25 @@ const SearchForMentor: React.FC = () => {
                 <Button variant="outline" onClick={clearFilters}>
                   Clear Filters
                 </Button>
+              </div>
+            )}
+
+            {/* Pagination */}
+            {filteredMentors.length > 0 && (
+              <div className="mt-6">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={pagination.totalPages}
+                  totalItems={pagination.total}
+                  itemsPerPage={itemsPerPage}
+                  hasNext={pagination.hasNext}
+                  hasPrev={pagination.hasPrev}
+                  onPageChange={handlePageChange}
+                  onItemsPerPageChange={handleItemsPerPageChange}
+                  onPrevPage={handlePrevPage}
+                  onNextPage={handleNextPage}
+                  itemsPerPageOptions={[6, 9, 12, 24]}
+                />
               </div>
             )}
           </>

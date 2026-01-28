@@ -6,6 +6,8 @@ import FormModal from "../../../components/ui/formModal";
 import FormInput from "../../../components/ui/formInput";
 import TextAreaInput from "../../../components/ui/textAreaInput";
 import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
+import { Pagination } from "../../../components/ui/pagination";
+import { usePagination } from "../../../hooks/usePagination";
 import type { ForumType } from "../../../interfaces/forumType";
 import {
   getForumTypes,
@@ -21,6 +23,7 @@ interface FormData {
 
 const ForumTypes: React.FC = () => {
   const [forumTypes, setForumTypes] = useState<ForumType[]>([]);
+  const [totalForumTypes, setTotalForumTypes] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,17 +33,36 @@ const ForumTypes: React.FC = () => {
   const [formErrors, setFormErrors] = useState<Partial<FormData>>({});
 
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
+  const {
+    currentPage,
+    itemsPerPage,
+    pagination,
+    setCurrentPage,
+    setItemsPerPage,
+    setPagination,
+  } = usePagination();
 
   useEffect(() => {
     fetchForumTypes();
-  }, []);
+  }, [currentPage, itemsPerPage]);
 
   const fetchForumTypes = async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await getForumTypes();
-      setForumTypes(data);
+      const response = await getForumTypes(currentPage, itemsPerPage);
+      setForumTypes(response.data);
+      setTotalForumTypes(response.pagination?.total || 0);
+      if (response.pagination) {
+        setPagination({
+          total: response.pagination.total,
+          page: response.pagination.page,
+          limit: response.pagination.limit,
+          totalPages: response.pagination.totalPages,
+          hasNext: response.pagination.hasNext,
+          hasPrev: response.pagination.hasPrev,
+        });
+      }
     } catch (err) {
       console.error("Error fetching forum types:", err);
       setError("Failed to load forum types");
@@ -240,7 +262,7 @@ const ForumTypes: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                    {forumTypes.length}
+                    {totalForumTypes}
                   </p>
                   <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Total Types
@@ -284,6 +306,16 @@ const ForumTypes: React.FC = () => {
           emptyStateDescription="Create your first forum type to start organizing discussions by category."
           keyField="id"
         />
+
+        {pagination.total > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalItems={pagination.total}
+            itemsPerPage={itemsPerPage}
+            onPageChange={setCurrentPage}
+            onItemsPerPageChange={setItemsPerPage}
+          />
+        )}
 
         <FormModal
           isOpen={isModalOpen}

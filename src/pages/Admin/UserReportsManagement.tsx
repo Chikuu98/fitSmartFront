@@ -328,7 +328,7 @@ const UserReportsManagement: React.FC = () => {
               </table>
             </div>
 
-            {pagination.totalPages > 1 && (
+            {pagination.total > 0 && (
               <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
                 <Pagination
                   currentPage={currentPage}

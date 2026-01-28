@@ -18,6 +18,8 @@ import {
 import { Button } from "../../../components/ui/button";
 import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
 import { RatingForm, RatingCard } from "../../../components/ui";
+import Pagination from "../../../components/ui/pagination";
+import { usePagination } from "../../../hooks/usePagination";
 import {
   getBookingsByMemberId,
   cancelBooking,
@@ -43,11 +45,25 @@ const MyBookings: React.FC = () => {
   const [editingRating, setEditingRating] = useState<Rating | null>(null);
   const [bookingRatings, setBookingRatings] = useState<Record<number, Rating>>({});
 
+  const {
+    currentPage,
+    itemsPerPage,
+    pagination,
+    setPagination,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handlePrevPage,
+    handleNextPage,
+  } = usePagination({
+    initialPage: 1,
+    initialItemsPerPage: 10,
+  });
+
   useEffect(() => {
     if (user?.id) {
       fetchBookings();
     }
-  }, [user, navigate]);
+  }, [user, navigate, currentPage, itemsPerPage]);
 
   const fetchBookings = async () => {
     if (!user?.id) return;
@@ -55,10 +71,11 @@ const MyBookings: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await getBookingsByMemberId(user.id);
-      setBookings(data);
+      const response = await getBookingsByMemberId(user.id, currentPage, itemsPerPage);
+      setBookings(response.data);
+      setPagination(response.pagination);
       
-      const completedBookings = data.filter((b: Booking) => b.status === "completed");
+      const completedBookings = response.data.filter((b: Booking) => b.status === "completed");
       const ratingsMap: Record<number, Rating> = {};
       
       await Promise.all(
@@ -541,6 +558,24 @@ const MyBookings: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* Pagination */}
+        {bookings.length > 0 && (
+          <div className="mt-6">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={pagination.totalPages}
+              totalItems={pagination.total}
+              itemsPerPage={itemsPerPage}
+              hasNext={pagination.hasNext}
+              hasPrev={pagination.hasPrev}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+              onPrevPage={handlePrevPage}
+              onNextPage={handleNextPage}
+            />
+          </div>
+        )}
 
         <ConfirmDialog />
 

@@ -39,7 +39,8 @@ const MentorSlotList: React.FC = () => {
 
   const fetchMentorData = async () => {
     try {
-      const mentors = await getMentorList();
+      const response = await getMentorList();
+      const mentors = response.data || [];
       const mentorData = mentors.find((m) => m.id === Number(mentor_id));
       if (mentorData) {
         setMentor(mentorData);
@@ -57,7 +58,8 @@ const MentorSlotList: React.FC = () => {
 
     try {
       setLoading(true);
-      const data = await getMentorSlots(Number(mentor_id));
+      const response = await getMentorSlots(Number(mentor_id));
+      const data = response.data || [];
       const availableSlots = data.filter((slot) => !slot.is_booked);
       setSlots(availableSlots);
     } catch (err) {

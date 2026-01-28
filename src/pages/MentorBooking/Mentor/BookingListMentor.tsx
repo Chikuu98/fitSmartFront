@@ -19,6 +19,8 @@ import type { Rating } from "../../../interfaces/rating";
 import { getBookingsByMentorId } from "../../../api/endpoints/bookings";
 import { getRatingByBooking } from "../../../api/endpoints/ratings";
 import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
+import Pagination from "../../../components/ui/pagination";
+import { usePagination } from "../../../hooks/usePagination";
 import type { RootState } from "../../../store/store";
 import { useCreateGoogleMeeting } from "../../../hooks/useCreateGoogleMeeting";
 import { acceptBooking, cancelBooking, completeBooking } from "../../../api/endpoints/bookings";
@@ -34,14 +36,29 @@ const BookingListMentor: React.FC = () => {
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
   const navigate = useNavigate();
 
+  const {
+    currentPage,
+    itemsPerPage,
+    pagination,
+    setPagination,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handlePrevPage,
+    handleNextPage,
+  } = usePagination({
+    initialPage: 1,
+    initialItemsPerPage: 10,
+  });
+
   useEffect(() => {
     if (!mentor_id) return;
     const fetchBookings = async () => {
       try {
-        const data = await getBookingsByMentorId(mentor_id);
-        setBookings(data);
+        const response = await getBookingsByMentorId(mentor_id, currentPage, itemsPerPage);
+        setBookings(response.data);
+        setPagination(response.pagination);
         
-        const completedBookings = data.filter((b: Booking) => b.status === "completed");
+        const completedBookings = response.data.filter((b: Booking) => b.status === "completed");
         const ratingsMap: Record<number, Rating> = {};
         
         await Promise.all(
@@ -62,7 +79,7 @@ const BookingListMentor: React.FC = () => {
       }
     };
     fetchBookings();
-  }, [mentor_id]);
+  }, [mentor_id, currentPage, itemsPerPage]);
 
   const handleMeetingSuccess = () => {
     refetchBookings();
@@ -75,10 +92,11 @@ const BookingListMentor: React.FC = () => {
   const refetchBookings = async () => {
     if (!mentor_id) return;
     try {
-      const data = await getBookingsByMentorId(mentor_id);
-      setBookings(data);
+      const response = await getBookingsByMentorId(mentor_id, currentPage, itemsPerPage);
+      setBookings(response.data);
+      setPagination(response.pagination);
       
-      const completedBookings = data.filter((b: Booking) => b.status === "completed");
+      const completedBookings = response.data.filter((b: Booking) => b.status === "completed");
       const ratingsMap: Record<number, Rating> = {};
       
       await Promise.all(
@@ -336,6 +354,24 @@ const BookingListMentor: React.FC = () => {
             ))
           )}
         </div>
+
+        {/* Pagination */}
+        {bookings.length > 0 && (
+          <div className="mt-6">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={pagination.totalPages}
+              totalItems={pagination.total}
+              itemsPerPage={itemsPerPage}
+              hasNext={pagination.hasNext}
+              hasPrev={pagination.hasPrev}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+              onPrevPage={handlePrevPage}
+              onNextPage={handleNextPage}
+            />
+          </div>
+        )}
 
         <ConfirmDialog />
       </div>

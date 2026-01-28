@@ -82,8 +82,8 @@ export const updateSocialLink = async (
   return response.data;
 };
 
-export const getPendingMentors = async () => {
-  const response = await axiosInstance.get("/users/admin/pending-mentors");
+export const getPendingMentors = async (page: number = 1, limit: number = 10) => {
+  const response = await axiosInstance.get(`/users/admin/pending-mentors?page=${page}&limit=${limit}`);
   return response.data;
 };
 

@@ -16,6 +16,8 @@ import {
 } from "../../../api/endpoints/mentorSlots";
 import { Button } from "../../../components/ui/button";
 import { useConfirmationDialog } from "../../../components/ui/confirmationDialog";
+import { Pagination } from "../../../components/ui/pagination";
+import { usePagination } from "../../../hooks/usePagination";
 import type { RootState } from "../../../store/store";
 import { toast } from "react-toastify";
 
@@ -26,18 +28,38 @@ export function MyMentorSlotList() {
   const mentor_id = useSelector((state: RootState) => state.auth.user?.id);
   const navigate = useNavigate();
   const { openDialog, ConfirmDialog } = useConfirmationDialog();
+  const {
+    currentPage,
+    itemsPerPage,
+    pagination,
+    setCurrentPage,
+    setItemsPerPage,
+    setPagination,
+    handlePrevPage,
+    handleNextPage,
+  } = usePagination();
 
   useEffect(() => {
     if (!mentor_id) return;
     fetchSlots();
-  }, [mentor_id]);
+  }, [mentor_id, currentPage, itemsPerPage]);
 
   const fetchSlots = async () => {
     if (!mentor_id) return;
     try {
       setLoading(true);
-      const data = await getMentorSlots(mentor_id);
-      setSlots(data);
+      const response = await getMentorSlots(mentor_id, currentPage, itemsPerPage);
+      setSlots(response.data);
+      if (response.pagination) {
+        setPagination({
+          total: response.pagination.total,
+          page: response.pagination.page,
+          limit: response.pagination.limit,
+          totalPages: response.pagination.totalPages,
+          hasNext: response.pagination.hasNext,
+          hasPrev: response.pagination.hasPrev,
+        });
+      }
     } catch (error: any) {
       toast.error("Failed to load time slots");
       console.error("Failed to load slots", error);
@@ -115,7 +137,7 @@ export function MyMentorSlotList() {
             </h1>
           </div>
           <div className="text-xs sm:text-sm text-gray-600 dark:text-orange-300">
-            {slots.length} slot{slots.length !== 1 ? "s" : ""} available
+            {pagination.total} slot{pagination.total !== 1 ? "s" : ""} available
           </div>
         </div>
 
@@ -201,6 +223,21 @@ export function MyMentorSlotList() {
             ))
           )}
         </div>
+
+        {pagination.total > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={pagination.totalPages}
+            totalItems={pagination.total}
+            itemsPerPage={itemsPerPage}
+            hasNext={pagination.hasNext}
+            hasPrev={pagination.hasPrev}
+            onPageChange={setCurrentPage}
+            onItemsPerPageChange={setItemsPerPage}
+            onPrevPage={handlePrevPage}
+            onNextPage={handleNextPage}
+          />
+        )}
 
         <ConfirmDialog />
       </div>
