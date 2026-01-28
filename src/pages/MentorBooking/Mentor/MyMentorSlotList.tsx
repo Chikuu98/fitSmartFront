@@ -8,6 +8,8 @@ import {
   Trash2,
   AlertCircle,
   CheckCircle,
+  RefreshCw,
+  Plus,
 } from "lucide-react";
 import type { MentorSlot } from "../../../interfaces/mentorSlot";
 import {
@@ -111,11 +113,11 @@ export function MyMentorSlotList() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900 transition-colors duration-300 p-4 md:p-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="min-h-screen transition-colors">
+        <div className="container mx-auto px-4 py-8">
           <div className="text-center py-16">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-orange-400 mx-auto"></div>
-            <p className="mt-4 text-gray-600 dark:text-orange-200">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+            <p className="mt-4 text-gray-600 dark:text-gray-400">
               Loading time slots...
             </p>
           </div>
@@ -125,118 +127,205 @@ export function MyMentorSlotList() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900 transition-colors duration-300 p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-6 sm:mb-8">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-orange-950 rounded-lg">
-              <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-orange-400" />
-            </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-orange-100">
+    <div className="min-h-screen transition-colors">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1">
               My Time Slots
             </h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+              Manage your availability for mentoring sessions
+            </p>
           </div>
-          <div className="text-xs sm:text-sm text-gray-600 dark:text-orange-300">
-            {pagination.total} slot{pagination.total !== 1 ? "s" : ""} available
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <Button variant="outline" onClick={fetchSlots} className="px-3">
+              <RefreshCw className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="orange"
+              onClick={() => navigate("/mentor/create-slot")}
+              className="flex-1 sm:flex-none whitespace-nowrap"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Time Slot
+            </Button>
           </div>
         </div>
 
-        <div className="space-y-4">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600 dark:text-orange-400 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
+                  {slots.length}
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
+                  Total Slots
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600 dark:text-green-400 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
+                  {slots.filter((s) => !s.is_booked).length}
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
+                  Available
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4 col-span-2 lg:col-span-1">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <AlertCircle className="w-6 h-6 sm:w-8 sm:h-8 text-red-600 dark:text-red-400 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
+                  {slots.filter((s) => s.is_booked).length}
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
+                  Booked
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Time Slots List */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+          <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+              All Time Slots ({slots.length})
+            </h2>
+          </div>
+
           {slots.length === 0 ? (
-            <div className="text-center py-16">
-              <AlertCircle className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-orange-100 mb-2">
-                No time slots found
+            <div className="text-center py-12">
+              <Calendar className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                No Time Slots Yet
               </h3>
-              <p className="text-gray-600 dark:text-orange-300">
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 Create your first time slot to start accepting bookings.
               </p>
+              <Button
+                variant="orange"
+                onClick={() => navigate("/mentor/create-slot")}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Time Slot
+              </Button>
             </div>
           ) : (
-            slots.map((slot) => (
-              <div
-                key={slot.id}
-                className="bg-white/90 dark:bg-[#18181c] border border-gray-200 dark:border-orange-800 shadow-xl rounded-xl sm:rounded-2xl p-4 sm:p-6 transition hover:shadow-2xl hover:border-blue-300 dark:hover:border-orange-400 group"
-              >
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3 sm:gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                      <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-orange-400" />
-                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-orange-100">
-                        {formatDate(slot.date)}
-                      </h3>
-                    </div>
+            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+              {slots.map((slot) => (
+                <div
+                  key={slot.id}
+                  className="p-4 sm:p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                >
+                  <div className="flex flex-col gap-3">
+                    {/* Header Section - Date & Status */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Calendar className="w-5 h-5 text-orange-600 dark:text-orange-400 flex-shrink-0" />
+                          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
+                            {formatDate(slot.date)}
+                          </h3>
+                        </div>
 
-                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-orange-300">
-                      <div className="flex items-center gap-1.5 sm:gap-2">
-                        <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                        <span>
-                          {formatTime(slot.start_time)} -{" "}
-                          {formatTime(slot.end_time)}
-                        </span>
+                        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                          <Clock className="w-4 h-4 flex-shrink-0" />
+                          <span>
+                            {formatTime(slot.start_time)} -{" "}
+                            {formatTime(slot.end_time)}
+                          </span>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-1.5 sm:gap-2">
+                      {/* Status Badge */}
+                      <div className="flex items-center gap-2 flex-shrink-0">
                         {slot.is_booked ? (
                           <>
-                            <AlertCircle className="w-4 h-4 text-red-500" />
-                            <span className="text-red-600 dark:text-red-400 font-medium">
+                            <AlertCircle className="w-5 h-5 text-red-500" />
+                            <span className="px-2 sm:px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900">
                               Booked
                             </span>
                           </>
                         ) : (
                           <>
-                            <CheckCircle className="w-4 h-4 text-green-500" />
-                            <span className="text-green-600 dark:text-green-400 font-medium">
+                            <CheckCircle className="w-5 h-5 text-green-500" />
+                            <span className="px-2 sm:px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900">
                               Available
                             </span>
                           </>
                         )}
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex gap-2 sm:gap-3">
-                    <Button
-                      variant="true"
-                      onClick={() =>
-                        navigate(`/mentor/time-slots/edit/${slot.id}`)
-                      }
-                      className="py-1.5 sm:py-2 px-2 sm:px-3"
-                    >
-                      <Edit size={16} className="sm:hidden" />
-                      <Edit size={20} className="hidden sm:block" />
-                    </Button>
+                    {/* Actions Section */}
+                    <div className="flex gap-2 sm:gap-3 pt-2 border-t border-gray-100 dark:border-gray-700">
+                      <Button
+                        variant="blue"
+                        onClick={() =>
+                          navigate(`/mentor/time-slots/edit/${slot.id}`)
+                        }
+                        className="flex items-center justify-center gap-2 w-full sm:w-auto"
+                      >
+                        <Edit className="w-4 h-4" />
+                        Edit
+                      </Button>
 
-                    <Button
-                      variant="outline"
-                      disabled={deleteLoading === slot.id}
-                      onClick={() => handleDelete(slot.id)}
-                      className="py-1.5 sm:py-2 px-2 sm:px-3"
-                    >
-                      <Trash2 size={16} className="sm:hidden" />
-                      <Trash2 size={20} className="hidden sm:block" />
-                    </Button>
+                      <Button
+                        variant="outline"
+                        disabled={deleteLoading === slot.id}
+                        onClick={() => handleDelete(slot.id)}
+                        className="flex items-center justify-center gap-2 w-full sm:w-auto"
+                      >
+                        {deleteLoading === slot.id ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            Deleting...
+                          </>
+                        ) : (
+                          <>
+                            <Trash2 className="w-4 h-4" />
+                            Delete
+                          </>
+                        )}
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
 
+        {/* Pagination */}
         {pagination.total > 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={pagination.totalPages}
-            totalItems={pagination.total}
-            itemsPerPage={itemsPerPage}
-            hasNext={pagination.hasNext}
-            hasPrev={pagination.hasPrev}
-            onPageChange={setCurrentPage}
-            onItemsPerPageChange={setItemsPerPage}
-            onPrevPage={handlePrevPage}
-            onNextPage={handleNextPage}
-          />
+          <div className="mt-6">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={pagination.totalPages}
+              totalItems={pagination.total}
+              itemsPerPage={itemsPerPage}
+              hasNext={pagination.hasNext}
+              hasPrev={pagination.hasPrev}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={setItemsPerPage}
+              onPrevPage={handlePrevPage}
+              onNextPage={handleNextPage}
+            />
+          </div>
         )}
 
         <ConfirmDialog />

@@ -49,7 +49,7 @@ const CreateBooking: React.FC = () => {
 
       const response = await getMentorList();
       const mentors = response.data || [];
-      const mentorData = mentors.find((m) => m.id === Number(mentor_id));
+      const mentorData = mentors.find((m: Mentor) => m.id === Number(mentor_id));
 
       if (!mentorData) {
         setError("Mentor not found");
@@ -225,10 +225,17 @@ const CreateBooking: React.FC = () => {
                       {mentor.mentorDetail?.expertise || "Fitness Expert"}
                     </p>
                   </div>
-                  <div className="flex items-center text-yellow-500">
-                    <Star className="h-4 w-4 fill-current" />
-                    <span className="text-sm ml-1">4.8</span>
-                  </div>
+                  {mentor.averageRating !== undefined && mentor.averageRating > 0 && (
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 fill-orange-500 text-orange-500" />
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
+                        {mentor.averageRating.toFixed(1)}
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        ({mentor.totalRatings})
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">

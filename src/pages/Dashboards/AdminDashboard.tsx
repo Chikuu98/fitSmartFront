@@ -8,15 +8,19 @@ import {
   ChevronRight,
   ShieldCheck,
   Tag,
+  FileText,
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import type { RootState } from "../../store/store";
-import { getPendingMentors } from "../../api/endpoints/users";
+import { getPendingMentors, getAllUsers, getAllMentors } from "../../api/endpoints/users";
+import { UserAccountStatus } from "../../enums/userDetailEnums";
 
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
   const [pendingCount, setPendingCount] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [activeMentors, setActiveMentors] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,18 +28,29 @@ const AdminDashboard: React.FC = () => {
       navigate("/unauthorized");
       return;
     }
-    fetchPendingCount();
+    fetchDashboardStats();
   }, [user, navigate]);
 
-  const fetchPendingCount = async () => {
+  const fetchDashboardStats = async () => {
     try {
       setLoading(true);
-      const response = await getPendingMentors();
-      if (response.success) {
-        setPendingCount(response.data.length);
+      
+      const pendingResponse = await getPendingMentors(1, 1000);
+      if (pendingResponse.success) {
+        setPendingCount(pendingResponse.data.length);
+      }
+      
+      const usersResponse = await getAllUsers();
+      if (usersResponse.success) {
+        setTotalUsers(usersResponse.data.length);
+      }
+      
+      const mentorsResponse = await getAllMentors(UserAccountStatus.ACTIVE);
+      if (mentorsResponse.success) {
+        setActiveMentors(mentorsResponse.data.length);
       }
     } catch (error: any) {
-      console.error("Error fetching pending count:", error);
+      console.error("Error fetching dashboard stats:", error);
     } finally {
       setLoading(false);
     }
@@ -85,7 +100,7 @@ const AdminDashboard: React.FC = () => {
                   Total Users
                 </p>
                 <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                  -
+                  {loading ? "..." : totalUsers}
                 </p>
                 <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                   All registered users
@@ -104,7 +119,7 @@ const AdminDashboard: React.FC = () => {
                   Active Mentors
                 </p>
                 <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                  -
+                  {loading ? "..." : activeMentors}
                 </p>
                 <p className="text-xs text-green-600 dark:text-green-400 mt-1">
                   Approved mentors
@@ -146,6 +161,19 @@ const AdminDashboard: React.FC = () => {
                       {pendingCount}
                     </span>
                   )}
+                </div>
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              </Button>
+
+              <Button
+                variant="outline"
+                className="w-full flex items-center justify-between border-2 border-orange-500 text-orange-500 bg-transparent rounded-full py-2.5 sm:py-3 px-4 sm:px-6 text-sm sm:text-base font-semibold hover:bg-orange-50 dark:hover:bg-orange-950 transition-all"
+                onClick={() => navigate("/admin/user-reports")}
+              >
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="hidden sm:inline">User Reports</span>
+                  <span className="sm:hidden">Reports</span>
                 </div>
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
