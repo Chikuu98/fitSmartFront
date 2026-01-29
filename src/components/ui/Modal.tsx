@@ -67,16 +67,18 @@ const Modal: React.FC<ModalProps> = ({
       <div className="flex min-h-full items-center justify-center p-2 sm:p-4">
         <div 
           className={`
-            relative w-full ${sizeClasses[size]} ${heightClasses[size]}
+            relative w-full ${sizeClasses[size]}
             bg-white dark:bg-gray-800 rounded-lg shadow-xl
             transform transition-all mx-2 sm:mx-0
+            flex flex-col
             ${className}
           `}
+          style={{ maxHeight: heightClasses[size].replace('max-h-', '') }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
           {title && (
-            <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
               <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white pr-8">
                 {title}
               </h2>
@@ -100,7 +102,7 @@ const Modal: React.FC<ModalProps> = ({
           )}
           
           {/* Content */}
-          <div className={`overflow-y-auto ${title ? 'p-3 sm:p-4' : 'p-4 sm:p-6'}`}>
+          <div className={`overflow-y-auto overflow-x-hidden flex-1 ${title ? 'p-3 sm:p-4' : 'p-4 sm:p-6'}`}>
             {children}
           </div>
         </div>

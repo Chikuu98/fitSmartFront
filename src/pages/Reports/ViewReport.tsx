@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
-  Printer,
+  Download,
   Activity,
   Utensils,
   Heart,
@@ -10,6 +10,8 @@ import {
   Weight,
   Award,
 } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { Button } from '../../components/ui/button';
 import { StatCard } from '../../components/ui/StatCard';
 import { ProgressBar } from '../../components/ui/ProgressBar';
@@ -21,6 +23,7 @@ const ViewReport: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const printRef = useRef<HTMLDivElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
   const report: MemberProgressReport | null = location.state?.report || null;
 
   useEffect(() => {
@@ -33,8 +36,48 @@ const ViewReport: React.FC = () => {
     return null;
   }
 
-  const handlePrint = () => {
-    window.print();
+  const handleDownloadPDF = async () => {
+    if (!printRef.current || isDownloading) return;
+
+    try {
+      setIsDownloading(true);
+
+      const element = printRef.current;
+
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: document.documentElement.classList.contains('dark') ? '#111827' : '#ffffff',
+      });
+
+      const imgWidth = 210;
+      const pageHeight = 297;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      let position = 0;
+
+      const imgData = canvas.toDataURL('image/png');
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const fileName = `progress-report-${new Date(report.startDate).toLocaleDateString()}-to-${new Date(report.endDate).toLocaleDateString()}.pdf`;
+      pdf.save(fileName);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Failed to generate PDF. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -53,16 +96,39 @@ const ViewReport: React.FC = () => {
       .join(' ');
   };
 
+  const isCustomDateRange = () => {
+    const today = new Date();
+    const reportStart = new Date(report.startDate);
+    const reportEnd = new Date(report.endDate);
+
+    if (report.reportPeriod === 'weekly') {
+      const defaultEnd = new Date(today);
+      const defaultStart = new Date(today);
+      defaultStart.setDate(defaultStart.getDate() - 6);
+      return !(reportStart.toDateString() === defaultStart.toDateString() && reportEnd.toDateString() === defaultEnd.toDateString());
+    } else if (report.reportPeriod === 'monthly') {
+      const defaultEnd = new Date(today);
+      const defaultStart = new Date(today);
+      defaultStart.setDate(defaultStart.getDate() - 29);
+      return !(reportStart.toDateString() === defaultStart.toDateString() && reportEnd.toDateString() === defaultEnd.toDateString());
+    }
+    return false;
+  };
+
+  const weightDataPoints = report.dailyBreakdown.filter((d) => d.weight !== null);
+  
   const weightChartData = {
-    labels: report.dailyBreakdown.map((d) =>
+    labels: weightDataPoints.map((d) =>
       new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     ),
     datasets: [
       {
         label: 'Weight (kg)',
-        data: report.dailyBreakdown.map((d) => d.weight),
+        data: weightDataPoints.map((d) => d.weight),
         borderColor: 'rgb(255, 103, 35)',
         backgroundColor: 'rgba(255, 103, 35, 0.1)',
+        spanGaps: false,
+        tension: 0.1,
       },
     ],
   };
@@ -107,34 +173,6 @@ const ViewReport: React.FC = () => {
 
   return (
     <>
-      <style>
-        {`
-          @media print {
-            body * {
-              visibility: hidden;
-            }
-            #print-area, #print-area * {
-              visibility: visible;
-            }
-            #print-area {
-              position: absolute;
-              left: 0;
-              top: 0;
-              width: 100%;
-            }
-            .no-print {
-              display: none !important;
-            }
-            .page-break {
-              page-break-before: always;
-            }
-            @page {
-              margin: 1cm;
-            }
-          }
-        `}
-      </style>
-
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
         <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl">
           {/* Action Buttons - Hidden on print */}
@@ -143,10 +181,15 @@ const ViewReport: React.FC = () => {
               <ArrowLeft size={16} className="mr-1 sm:mr-2" />
               <span className="hidden sm:inline">Back</span>
             </Button>
-            <Button variant="orange" onClick={handlePrint} className='flex items-center justify-center text-sm sm:text-base'>
-              <Printer size={16} className="mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">Print Report</span>
-              <span className="sm:hidden">Print</span>
+            <Button 
+              variant="orange" 
+              onClick={handleDownloadPDF} 
+              disabled={isDownloading}
+              className='flex items-center justify-center text-sm sm:text-base'
+            >
+              <Download size={16} className="mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">{isDownloading ? 'Generating PDF...' : 'Download PDF'}</span>
+              <span className="sm:hidden">{isDownloading ? 'Generating...' : 'Download'}</span>
             </Button>
           </div>
 
@@ -157,7 +200,7 @@ const ViewReport: React.FC = () => {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
                 <div>
                   <h1 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
-                    {report.reportPeriod === 'weekly' ? 'Weekly' : 'Monthly'} Progress Report
+                    {isCustomDateRange() ? 'Progress Report' : (report.reportPeriod === 'weekly' ? 'Weekly' : 'Monthly') + ' Progress Report'}
                   </h1>
                   <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                     {formatDate(report.startDate)} - {formatDate(report.endDate)}
@@ -281,7 +324,7 @@ const ViewReport: React.FC = () => {
                 value={
                   report.weightProgress.weightChange !== null
                     ? `${report.weightProgress.weightChange > 0 ? '+' : ''}${report.weightProgress.weightChange.toFixed(1)} kg`
-                    : 'N/A'
+                    : '0 kg'
                 }
                 subtitle={
                   report.weightProgress.currentWeight
@@ -294,7 +337,7 @@ const ViewReport: React.FC = () => {
                   report.weightProgress.weightChange !== null
                     ? {
                         value: Math.abs(report.weightProgress.weightChange),
-                        isPositive: report.weightProgress.weightChange < 0,
+                        isPositive: report.weightProgress.weightChange > 0,
                       }
                     : undefined
                 }
@@ -674,7 +717,7 @@ const ViewReport: React.FC = () => {
                             })}
                           </td>
                           <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                            {week.averageWeight ? `${week.averageWeight} kg` : 'N/A'}
+                            {week.averageWeight ? `${week.averageWeight} kg` : <span className="text-gray-400 dark:text-gray-500">-</span>}
                           </td>
                           <td className="px-4 py-4 whitespace-nowrap text-sm">
                             <span
@@ -683,6 +726,8 @@ const ViewReport: React.FC = () => {
                                   ? 'bg-green-100 text-green-800'
                                   : week.workoutAdherence >= 60
                                   ? 'bg-yellow-100 text-yellow-800'
+                                  : week.workoutAdherence === 0
+                                  ? 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
                                   : 'bg-red-100 text-red-800'
                               }`}
                             >
@@ -696,6 +741,8 @@ const ViewReport: React.FC = () => {
                                   ? 'bg-green-100 text-green-800'
                                   : week.mealAdherence >= 60
                                   ? 'bg-yellow-100 text-yellow-800'
+                                  : week.mealAdherence === 0
+                                  ? 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
                                   : 'bg-red-100 text-red-800'
                               }`}
                             >
@@ -705,7 +752,7 @@ const ViewReport: React.FC = () => {
                           <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                             {week.averageSatisfaction
                               ? `${week.averageSatisfaction}/10`
-                              : 'N/A'}
+                              : <span className="text-gray-400 dark:text-gray-500">-</span>}
                           </td>
                         </tr>
                       ))}

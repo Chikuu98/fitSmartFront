@@ -17,6 +17,8 @@ interface FormInputProps {
   rounded?: "sm" | "md" | "lg" | "xl";
   step?: string;
   showPasswordToggle?: boolean;
+  min?: string;
+  max?: string;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -35,6 +37,8 @@ const FormInput: React.FC<FormInputProps> = ({
   rounded = "sm",
   step,
   showPasswordToggle = false,
+  min,
+  max,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -93,6 +97,8 @@ const FormInput: React.FC<FormInputProps> = ({
           required={required}
           disabled={disabled}
           step={step}
+          min={min}
+          max={max}
           className={`w-full border border-gray-300 dark:border-gray-600 ${sizeClasses[size]} ${roundedClasses[rounded]} bg-white dark:bg-gray-700 ${
             type === "url"
               ? "text-blue-700 dark:text-blue-300"

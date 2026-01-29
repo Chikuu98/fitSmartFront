@@ -268,7 +268,7 @@ const ReplyItem: React.FC<ReplyItemProps> = ({
           </div>
         ) : (
           <div className="mb-3">
-            <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+            <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed break-words overflow-wrap-anywhere">
               {reply.content}
             </p>
           </div>
