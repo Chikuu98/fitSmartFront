@@ -34,7 +34,7 @@ export interface WellnessMetrics {
 
 export interface DailyBreakdown {
   date: string;
-  dayNumber: number;
+  dayNumber: number | null;
   weight: number | null;
   energyLevel: string | null;
   mood: string | null;

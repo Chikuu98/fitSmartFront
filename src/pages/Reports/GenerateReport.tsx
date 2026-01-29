@@ -10,6 +10,7 @@ import type { GenerateReportRequest } from '../../interfaces/report';
 const GenerateReport: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [dateError, setDateError] = useState<string>('');
   const [formData, setFormData] = useState<GenerateReportRequest>({
     period: 'weekly',
     startDate: '',
@@ -22,8 +23,41 @@ const GenerateReport: React.FC = () => {
     { value: 'monthly', label: 'Monthly Report (Last 30 Days)' },
   ];
 
+  const today = new Date().toISOString().split('T')[0];
+
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
+    setDateError('');
+    
+    if (formData.startDate || formData.endDate) {
+      const todayDate = new Date();
+      todayDate.setHours(0, 0, 0, 0);
+
+      if (formData.startDate) {
+        const startDate = new Date(formData.startDate);
+        if (startDate > todayDate) {
+          setDateError('Start date cannot be in the future');
+          return;
+        }
+      }
+
+      if (formData.endDate) {
+        const endDate = new Date(formData.endDate);
+        if (endDate > todayDate) {
+          setDateError('End date cannot be in the future');
+          return;
+        }
+      }
+
+      if (formData.startDate && formData.endDate) {
+        const startDate = new Date(formData.startDate);
+        const endDate = new Date(formData.endDate);
+        if (startDate > endDate) {
+          setDateError('Start date must be before or equal to end date');
+          return;
+        }
+      }
+    }
     
     try {
       setLoading(true);
@@ -118,6 +152,7 @@ const GenerateReport: React.FC = () => {
                   value={formData.startDate || ''}
                   onChange={handleInputChange}
                   placeholder="YYYY-MM-DD"
+                  max={today}
                 />
                 <FormInput
                   label="End Date"
@@ -126,10 +161,16 @@ const GenerateReport: React.FC = () => {
                   value={formData.endDate || ''}
                   onChange={handleInputChange}
                   placeholder="YYYY-MM-DD"
+                  max={today}
                 />
               </div>
+              {dateError && (
+                <p className="text-sm text-red-600 dark:text-red-400 mt-2 flex items-center gap-1">
+                  <span>⚠️</span> {dateError}
+                </p>
+              )}
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                Leave empty to use default date ranges based on the selected period.
+                Leave empty to use default date ranges based on the selected period. Future dates are not allowed.
               </p>
             </div>
 

@@ -357,7 +357,7 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
   }
 
   return (
-    <div className="space-y-3 sm:space-y-4">
+    <div className="space-y-3 sm:space-y-4 max-h-[80vh] overflow-y-auto">
       <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 sm:p-4">
         <div className="flex items-start justify-between mb-2 sm:mb-3">
           <div className="flex items-start space-x-2 sm:space-x-3 flex-1 min-w-0">
@@ -509,7 +509,7 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
           </div>
         ) : (
           <div className="mb-3">
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere max-h-60 overflow-y-auto">
               {thread.content}
             </p>
           </div>
@@ -618,7 +618,7 @@ const ThreadDetailsModalContent: React.FC<ThreadDetailsModalContentProps> = ({
             </p>
           </div>
         ) : (
-          <div className="space-y-3 max-h-80 overflow-y-auto bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3">
+          <div className="space-y-3 max-h-80 overflow-y-auto overflow-x-hidden bg-gray-50 dark:bg-gray-700/30 rounded-lg p-3">
             {nestedReplies.map(reply => (
               <ReplyItem
                 key={reply.id}
