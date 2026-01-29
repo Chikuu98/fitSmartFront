@@ -116,7 +116,7 @@ const ProgressHistory: React.FC = () => {
                   {summary.streakDays}
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Current Streak</p>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Best Streak</p>
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-6">
@@ -124,14 +124,14 @@ const ProgressHistory: React.FC = () => {
                 <Weight className="text-purple-500 w-5 h-5 sm:w-6 sm:h-6" />
                 <div className="flex items-center gap-0.5 sm:gap-1">
                   <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                    {summary.weightChange !== null ? Math.abs(summary.weightChange).toFixed(1) : 'N/A'}
+                    {summary.weightChange !== null ? Math.abs(summary.weightChange).toFixed(1) : '0.0'}
                   </span>
-                  {summary.weightChange !== null && (
+                  {summary.weightChange !== null && summary.weightChange !== 0 && (
                     summary.weightChange < 0 ? (
                       <TrendingDown className="text-green-500 w-4 h-4 sm:w-5 sm:h-5" />
-                    ) : summary.weightChange > 0 ? (
+                    ) : (
                       <TrendingUp className="text-red-500 w-4 h-4 sm:w-5 sm:h-5" />
-                    ) : null
+                    )
                   )}
                 </div>
               </div>

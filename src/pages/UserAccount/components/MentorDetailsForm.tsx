@@ -81,6 +81,7 @@ const MentorDetailsForm: React.FC<MentorDetailsFormProps> = ({
             placeholder="Tell us about your experience and qualifications..."
             rows={4}
             size="md"
+            maxLength={255}
           />
 
           <div className="flex justify-end">

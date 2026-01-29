@@ -12,6 +12,7 @@ interface TextAreaInputProps {
   disabled?: boolean;
   rows?: number;
   size?: "xs" | "sm" | "md" | "lg";
+  maxLength?: number;
 }
 
 const TextAreaInput: React.FC<TextAreaInputProps> = ({
@@ -26,6 +27,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
   disabled = false,
   rows = 3,
   size = "xs",
+  maxLength,
 }) => {
 
   const sizeClasses = {
@@ -54,6 +56,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
         required={required}
         disabled={disabled}
         rows={rows}
+        maxLength={maxLength}
         className={`w-full rounded-xl border border-gray-300 dark:border-gray-600 ${sizeClasses[size]} bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-1 focus:ring-orange-500 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed resize-vertical`}
       />
       {error && (
