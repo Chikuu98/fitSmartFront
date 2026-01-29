@@ -9,7 +9,6 @@ import {
   Users,
   CheckCircle,
   Video,
-  ChevronRight,
   BookOpen,
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
@@ -97,155 +96,128 @@ const MentorDashboard: React.FC = () => {
   const stats = {
     totalBookings: bookings.length,
     pendingBookings: bookings.filter((b) => b.status === "pending").length,
-    acceptedBookings: bookings.filter((b) => b.status === "accepted").length,
-    completedSessions: bookings.filter((b) => b.status === "completed").length,
+    upcomingBookings: upcomingBookings.length,
     availableSlots,
-    totalSlots: slots.length,
   };
 
   return (
-    <div className="min-h-screen transition-colors">
-      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-8">
+    <div className="min-h-screen transition-colors bg-gray-50 dark:bg-gray-900">
+      <div className="container mx-auto px-4 py-6 lg:py-8 max-w-7xl">
         {/* Welcome Header */}
-        <div className="mb-4 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
-            Welcome back, {user?.name?.split(" ")[0] || "Mentor"}! 💪
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Welcome back, {user?.name?.split(" ")[0] || "Mentor"}! 👋
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-            Ready to guide your members? Here's your mentoring overview.
+          <p className="text-gray-600 dark:text-gray-400">
+            Manage your mentoring activities and sessions
           </p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Total Bookings
-                </p>
-                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+        {/* Main Stats Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Session Summary Card */}
+          <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-orange-500" />
+                Session Summary
+              </h2>
+            </div>
+            <div className="grid grid-cols-4 gap-4">
+              <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/10 rounded-lg">
+                <BookOpen className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {stats.totalBookings}
                 </p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Total</p>
               </div>
-              <div className="w-8 h-8 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                <BookOpen className="w-4 h-4 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Pending Reviews
-                </p>
-                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+              <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/10 rounded-lg">
+                <Clock className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {stats.pendingBookings}
                 </p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Pending</p>
               </div>
-              <div className="w-8 h-8 sm:w-12 sm:h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
-                <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-600 dark:text-yellow-400" />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Upcoming Sessions
+              <div className="text-center p-4 bg-green-50 dark:bg-green-900/10 rounded-lg">
+                <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {stats.upcomingBookings}
                 </p>
-                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                  {stats.acceptedBookings}
-                </p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Upcoming</p>
               </div>
-              <div className="w-8 h-8 sm:w-12 sm:h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                <CheckCircle className="w-4 h-4 sm:w-6 sm:h-6 text-green-600 dark:text-green-400" />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Available Slots
-                </p>
-                <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+              <div className="text-center p-4 bg-orange-50 dark:bg-orange-900/10 rounded-lg">
+                <Calendar className="w-8 h-8 text-orange-500 mx-auto mb-2" />
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {stats.availableSlots}
                 </p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Available</p>
               </div>
-              <div className="w-8 h-8 sm:w-12 sm:h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
-                <Calendar className="w-4 h-4 sm:w-6 sm:h-6 text-orange-600 dark:text-orange-400" />
-              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions Card */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 flex flex-col justify-center">
+            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
+            <div className="grid grid-cols-1 gap-3">
+              <Button
+                variant="outline"
+                onClick={() => navigate("/mentor/create-slot")}
+                className="h-auto py-3 px-4 flex items-center justify-between border hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-orange-50 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
+                    <Plus className="w-4 h-4 text-orange-500" />
+                  </div>
+                  <span className="text-sm font-medium">Create Time Slot</span>
+                </div>
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => navigate("/mentor/my-bookings")}
+                className="h-auto py-3 px-4 flex items-center justify-between border hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                    <Users className="w-4 h-4 text-blue-500" />
+                  </div>
+                  <span className="text-sm font-medium">Review Bookings</span>
+                </div>
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => navigate("/mentor/my-slots")}
+                className="h-auto py-3 px-4 flex items-center justify-between border hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-950 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                    <Calendar className="w-4 h-4 text-green-500" />
+                  </div>
+                  <span className="text-sm font-medium">Manage My Slots</span>
+                </div>
+              </Button>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
-          {/* Quick Actions */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
-            <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                Quick Actions
-              </h2>
-            </div>
-            <div className="p-4 sm:p-6 flex flex-col gap-3 sm:gap-4">
-              <Button
-                variant="orange"
-                onClick={() => navigate("/mentor/create-slot")}
-                className="w-full flex items-center justify-between rounded-full py-3 sm:py-4 px-4 sm:px-6 text-sm sm:text-base font-semibold shadow-none hover:shadow-md transition-all"
-              >
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span className="hidden sm:inline">Create Time Slot</span>
-                  <span className="sm:hidden">Create Slot</span>
-                </div>
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </Button>
-
-              <Button
-                variant="outline"
-                onClick={() => navigate("/mentor/my-bookings")}
-                className="w-full flex items-center justify-between border-2 border-orange-500 text-orange-500 bg-transparent rounded-full py-3 sm:py-4 px-4 sm:px-6 text-sm sm:text-base font-semibold hover:bg-orange-50 dark:hover:bg-orange-950 transition-all"
-              >
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <Users className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span className="hidden sm:inline">Review Bookings</span>
-                  <span className="sm:hidden">Bookings</span>
-                </div>
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </Button>
-
-              <Button
-                variant="outline"
-                onClick={() => navigate("/mentor/my-slots")}
-                className="w-full flex items-center justify-between border-2 border-orange-500 text-orange-500 bg-transparent rounded-full py-3 sm:py-4 px-4 sm:px-6 text-sm sm:text-base font-semibold hover:bg-orange-50 dark:hover:bg-orange-950 transition-all"
-              >
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span className="hidden sm:inline">Manage Slots</span>
-                  <span className="sm:hidden">Slots</span>
-                </div>
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </Button>
-            </div>
-          </div>
-
+        {/* Pending Bookings and Upcoming Sessions */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Pending Bookings */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-yellow-500" />
                   Pending Bookings
                 </h2>
-                <Button
-                  variant="ghost"
-                  onClick={() => navigate("/mentor/booking-list")}
-                >
-                  View All
-                </Button>
+                {pendingBookings.length > 0 && (
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate("/mentor/booking-list")}
+                    className="text-sm text-orange-500 hover:text-orange-600"
+                  >
+                    View All
+                  </Button>
+                )}
               </div>
             </div>
             <div className="p-6">
@@ -257,21 +229,21 @@ const MentorDashboard: React.FC = () => {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {pendingBookings.map((booking) => (
                     <div
                       key={booking.id}
-                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center">
                           <User className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900 dark:text-white">
+                          <p className="font-medium text-gray-900 dark:text-white text-sm">
                             {booking.member?.name || "Unknown Member"}
                           </p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-xs text-gray-600 dark:text-gray-400">
                             {booking.mentorSlot?.date &&
                             booking.mentorSlot?.start_time
                               ? `${formatDate(booking.mentorSlot.date)} at ${formatTime(booking.mentorSlot.start_time)}`
@@ -282,6 +254,7 @@ const MentorDashboard: React.FC = () => {
                       <Button
                         variant="orange"
                         onClick={() => navigate("/mentor/booking-list")}
+                        className="text-sm py-1.5 px-3"
                       >
                         Review
                       </Button>
@@ -291,59 +264,65 @@ const MentorDashboard: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
 
-        {/* Upcoming Sessions */}
-        {upcomingBookings.length > 0 && (
-          <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+          {/* Upcoming Sessions */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-500" />
                 Upcoming Sessions
               </h2>
             </div>
             <div className="p-6">
-              <div className="space-y-4">
-                {upcomingBookings.map((booking) => (
-                  <div
-                    key={booking.id}
-                    className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+              {upcomingBookings.length === 0 ? (
+                <div className="text-center py-8">
+                  <CheckCircle className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+                  <p className="text-gray-600 dark:text-gray-400">
+                    No upcoming sessions scheduled
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {upcomingBookings.map((booking) => (
+                    <div
+                      key={booking.id}
+                      className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                          <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900 dark:text-white text-sm">
+                            {booking.member?.name || "Unknown Member"}
+                          </p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">
+                            {booking.mentorSlot?.date &&
+                            booking.mentorSlot?.start_time
+                              ? `${formatDate(booking.mentorSlot.date)} at ${formatTime(booking.mentorSlot.start_time)}`
+                              : "Date & Time TBD"}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium text-gray-900 dark:text-white">
-                          Session with{" "}
-                          {booking.member?.name || "Unknown Member"}
-                        </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {booking.mentorSlot?.date &&
-                          booking.mentorSlot?.start_time
-                            ? `${formatDate(booking.mentorSlot.date)} at ${formatTime(booking.mentorSlot.start_time)}`
-                            : "Date & Time TBD"}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
                       {booking.google_meet_link && (
                         <Button
                           variant="blue"
                           onClick={() =>
                             window.open(booking.google_meet_link, "_blank")
                           }
+                          className="text-sm py-1.5 px-3 flex items-center gap-1.5"
                         >
-                          <Video className="w-4 h-4 mr-2" />
-                          Meeting Link
+                          <Video className="w-3.5 h-3.5" />
+                          Join
                         </Button>
                       )}
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

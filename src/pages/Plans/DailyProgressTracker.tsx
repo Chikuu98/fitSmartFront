@@ -159,8 +159,7 @@ const DailyProgressTracker: React.FC = () => {
         planDetails.currentDayNumber || 1
       );
 
-
-      await fetchTodaysPlan();
+      navigate(`/member/plans/${planId}/progress-history`);
     } catch (error) {
       console.error('Failed to save progress:', error);
     } finally {
