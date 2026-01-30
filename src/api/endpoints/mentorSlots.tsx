@@ -26,7 +26,7 @@ export const updateMentorSlot = async (slotId: number, dto: UpdateSlotDto) => {
 export const getMentorSlots = async (
   mentor_id: number,
   page: number = 1,
-  limit: number = 10
+  limit: number = 20
 ) => {
   const response = await axiosInstance.get(
     withApiUrl(`mentor-slots/mentor/${mentor_id}?page=${page}&limit=${limit}`),

@@ -175,7 +175,7 @@ const GenerateReport: React.FC = () => {
             </div>
 
             {/* Plan Filter */}
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+            {/* <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <TrendingUp size={20} />
                 Filter by Plan (Optional)
@@ -196,7 +196,7 @@ const GenerateReport: React.FC = () => {
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 Leave empty to include data from your most recent active plan.
               </p>
-            </div>
+            </div> */}
 
             {/* Actions */}
             <div className="flex gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
