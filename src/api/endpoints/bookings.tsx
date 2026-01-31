@@ -1,0 +1,141 @@
+import axios from "axios";
+import { axiosInstance } from "../axiosInstance";
+import { appConfig } from "../../config/appConfig";
+import type { PaginatedResponse } from "../../interfaces/pagination";
+import type { Booking } from "../../interfaces/booking";
+
+function withApiUrl(path: string) {
+  return `${appConfig.apiUrl.replace(/\/?$/, "/")}${path.replace(/^\//, "")}`;
+}
+
+export const getBookingsByMentorId = async (
+  mentor_id: number,
+  page: number = 1,
+  limit: number = 10
+) => {
+  const response = await axiosInstance.get(
+    withApiUrl(`bookings/mentor/${mentor_id}?page=${page}&limit=${limit}`),
+  );
+  return response.data;
+};
+
+export const getBookingsByMemberId = async (
+  member_id: number,
+  page: number = 1,
+  limit: number = 10
+) => {
+  const response = await axiosInstance.get(
+    withApiUrl(`bookings/member/${member_id}?page=${page}&limit=${limit}`),
+  );
+  return response.data;
+};
+
+export const getBookingById = async (booking_id: number) => {
+  const response = await axiosInstance.get(
+    withApiUrl(`bookings/${booking_id}`),
+  );
+  return response.data.data;
+};
+
+export const createBooking = async (bookingData: {
+  mentor_slot_id: number;
+}) => {
+  const response = await axiosInstance.post(
+    withApiUrl("bookings"),
+    bookingData,
+  );
+  return response.data;
+};
+
+export const updateBooking = async (
+  booking_id: number,
+  updateData: {
+    status?: string;
+    google_meet_link?: string;
+    bookingPayment?: {
+      status?: string;
+    };
+  },
+) => {
+  const response = await axiosInstance.patch(
+    withApiUrl(`bookings/${booking_id}`),
+    updateData,
+  );
+  return response.data;
+};
+
+export const acceptBooking = async (
+  booking_id: number,
+  googleMeetLink: string,
+) => {
+  const response = await axiosInstance.patch(
+    withApiUrl(`bookings/${booking_id}/accept`),
+    {
+      google_meet_link: googleMeetLink,
+    },
+  );
+  return response.data;
+};
+
+export const updateBookingMeetLink = async (
+  booking_id: number,
+  googleMeetLink: string,
+) => {
+  const response = await axiosInstance.patch(
+    withApiUrl(`bookings/${booking_id}`),
+    {
+      google_meet_link: googleMeetLink,
+    },
+  );
+  return response.data;
+};
+
+export const processPayment = async (
+  booking_id: number,
+  paymentData: {
+    cardNumber: string;
+    expiryDate: string;
+    cvv: string;
+    cardholderName: string;
+  },
+) => {
+  const response = await axiosInstance.post(
+    withApiUrl(`bookings/${booking_id}/process-payment`),
+    paymentData,
+  );
+  return response.data;
+};
+
+export const completeBooking = async (booking_id: number) => {
+  const response = await axiosInstance.patch(
+    withApiUrl(`bookings/${booking_id}/complete`),
+  );
+  return response.data;
+};
+
+export const updateBookingMeetLinkSilent = async (
+  booking_id: number,
+  googleMeetLink: string,
+) => {
+  const response = await axios.patch(
+    withApiUrl(`bookings/${booking_id}`),
+    {
+      google_meet_link: googleMeetLink,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+      withCredentials: true,
+    },
+  );
+  return response.data;
+};
+
+export const cancelBooking = async (booking_id: number) => {
+  const response = await axiosInstance.patch(
+    withApiUrl(`bookings/${booking_id}/cancel`),
+  );
+  return response.data;
+};
