@@ -15,8 +15,8 @@ import {
 import { Button } from "../../../components/ui/button";
 import { getMentorSlots } from "../../../api/endpoints/mentorSlots";
 import { getMentorList } from "../../../api/endpoints/mentors";
-import type { MentorSlot } from "../../../interfaces/mentorSlot";
-import type { Mentor } from "../../../interfaces/mentor";
+import type { MentorSlot, MentorSlotListResponse } from "../../../interfaces/mentorSlot";
+import type { Mentor, MentorListResponse } from "../../../interfaces/mentor";
 import type { RootState } from "../../../store/store";
 import { toast } from "react-toastify";
 
@@ -39,9 +39,9 @@ const MentorSlotList: React.FC = () => {
 
   const fetchMentorData = async () => {
     try {
-      const response = await getMentorList();
+      const response: MentorListResponse = await getMentorList();
       const mentors = response.data || [];
-      const mentorData = mentors.find((m) => m.id === Number(mentor_id));
+      const mentorData = mentors.find((mentor) => mentor.id === Number(mentor_id));
       if (mentorData) {
         setMentor(mentorData);
       } else {
@@ -58,9 +58,9 @@ const MentorSlotList: React.FC = () => {
 
     try {
       setLoading(true);
-      const response = await getMentorSlots(Number(mentor_id));
+      const response: MentorSlotListResponse = await getMentorSlots(Number(mentor_id));
       const data = response.data || [];
-      const availableSlots = data.filter((slot) => !slot.is_booked);
+      const availableSlots = data.filter((slot: MentorSlot) => !slot.is_booked);
       setSlots(availableSlots);
     } catch (err) {
       console.error("Error fetching slots:", err);

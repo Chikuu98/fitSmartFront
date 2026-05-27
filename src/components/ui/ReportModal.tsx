@@ -58,7 +58,6 @@ export const ReportModal: React.FC<ReportModalProps> = ({
       
       setReportType(null);
       setReason('');
-      setEvidence('');
       onClose();
     } catch (error: any) {
       console.error('Error submitting report:', error);
