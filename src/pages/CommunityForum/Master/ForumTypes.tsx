@@ -39,6 +39,8 @@ const ForumTypes: React.FC = () => {
     pagination,
     setCurrentPage,
     setItemsPerPage,
+    handlePrevPage,
+    handleNextPage,
     setPagination,
   } = usePagination();
 
