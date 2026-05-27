@@ -26,16 +26,18 @@ export interface UnreadCountResponse {
   count: number;
 }
 
-export enum NotificationType {
-  PLAN_GENERATED = 'plan_generated',
-  PLAN_REMINDER = 'plan_reminder',
-  WORKOUT_REMINDER = 'workout_reminder',
-  MEAL_REMINDER = 'meal_reminder',
-  BOOKING_CONFIRMED = 'booking_confirmed',
-  BOOKING_CANCELLED = 'booking_cancelled',
-  MENTOR_MESSAGE = 'mentor_message',
-  FORUM_REPLY = 'forum_reply',
-  FORUM_LIKE = 'forum_like',
-  SYSTEM_UPDATE = 'system_update',
-  ACHIEVEMENT_UNLOCKED = 'achievement_unlocked',
-}
+export const NotificationType = {
+  PLAN_GENERATED: 'plan_generated',
+  PLAN_REMINDER: 'plan_reminder',
+  WORKOUT_REMINDER: 'workout_reminder',
+  MEAL_REMINDER: 'meal_reminder',
+  BOOKING_CONFIRMED: 'booking_confirmed',
+  BOOKING_CANCELLED: 'booking_cancelled',
+  MENTOR_MESSAGE: 'mentor_message',
+  FORUM_REPLY: 'forum_reply',
+  FORUM_LIKE: 'forum_like',
+  SYSTEM_UPDATE: 'system_update',
+  ACHIEVEMENT_UNLOCKED: 'achievement_unlocked',
+} as const;
+
+export type NotificationType = typeof NotificationType[keyof typeof NotificationType];

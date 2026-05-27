@@ -310,10 +310,15 @@ const ForumTypes: React.FC = () => {
         {pagination.total > 0 && (
           <Pagination
             currentPage={currentPage}
+            totalPages={pagination.totalPages}
             totalItems={pagination.total}
             itemsPerPage={itemsPerPage}
+            hasNext={pagination.hasNext}
+            hasPrev={pagination.hasPrev}
             onPageChange={setCurrentPage}
             onItemsPerPageChange={setItemsPerPage}
+            onPrevPage={handlePrevPage}
+            onNextPage={handleNextPage}
           />
         )}
 

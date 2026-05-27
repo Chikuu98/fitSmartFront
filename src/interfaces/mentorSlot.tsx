@@ -13,6 +13,11 @@ export interface MentorSlot {
   updated_at: string;
 }
 
+export interface MentorSlotListResponse {
+  success: boolean;
+  data: MentorSlot[];
+}
+
 export interface CreateSlotDto {
   date: string;
   start_time: string;

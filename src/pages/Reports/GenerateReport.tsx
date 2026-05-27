@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, FileText, TrendingUp } from 'lucide-react';
+import { Calendar, FileText } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import FormInput from '../../components/ui/formInput';
 import CustomSelect from '../../components/ui/customSelect';
