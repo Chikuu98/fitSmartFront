@@ -1,0 +1,47 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      VITE_API_URL: ${{ vars.VITE_API_URL }}
+      VITE_OAUTH_CLIENT_ID: ${{ vars.VITE_OAUTH_CLIENT_ID }}
+      VITE_GOOGLE_CALENDAR_API_URL: ${{ vars.VITE_GOOGLE_CALENDAR_API_URL }}
+      VITE_GOOGLE_CALENDAR_SCOPE: ${{ vars.VITE_GOOGLE_CALENDAR_SCOPE }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build frontend
+        run: yarn build
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+
+      - name: Trust droplet host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.DO_SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Sync static build to droplet
+        run: |
+          ssh ${{ secrets.DO_SSH_USER }}@${{ secrets.DO_SSH_HOST }} "mkdir -p /var/www/fitsmart-front/dist"
+          rsync -az --delete dist/ ${{ secrets.DO_SSH_USER }}@${{ secrets.DO_SSH_HOST }}:/var/www/fitsmart-front/dist/
