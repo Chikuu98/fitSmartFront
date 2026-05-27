@@ -39,6 +39,8 @@ const MyThreads: React.FC = () => {
     pagination,
     handlePageChange,
     handleItemsPerPageChange,
+    handlePrevPage,
+    handleNextPage,
     setPagination,
   } = usePagination();
 
@@ -54,18 +56,19 @@ const MyThreads: React.FC = () => {
     setLoading(true);
     try {
       const response = await getMyForumThreads(currentPage, itemsPerPage);
-      if (response && response.data && Array.isArray(response.data.data)) {
-        setThreads(response.data.data);
-        if (response.data.pagination) {
-          setPagination({
-            page: response.data.pagination.page,
-            limit: response.data.pagination.limit,
-            total: response.data.pagination.total,
-            totalPages: response.data.pagination.totalPages,
-            hasNext: response.data.pagination.hasNext,
-            hasPrev: response.data.pagination.hasPrev,
-          });
-        }
+      const threadPage = response?.data;
+
+      if (threadPage && Array.isArray(threadPage.data)) {
+        setThreads(threadPage.data);
+        const totalPages = Math.max(1, Math.ceil(threadPage.total / threadPage.limit));
+        setPagination({
+          page: threadPage.page,
+          limit: threadPage.limit,
+          total: threadPage.total,
+          totalPages,
+          hasNext: threadPage.page < totalPages,
+          hasPrev: threadPage.page > 1,
+        });
       } else {
         console.error("Invalid response format - expected nested array in data.data field:", response);
         setThreads([]);
@@ -389,10 +392,15 @@ const MyThreads: React.FC = () => {
         {!loading && threads.length > 0 && pagination.total > 0 && (
           <Pagination
             currentPage={currentPage}
+            totalPages={pagination.totalPages}
             totalItems={pagination.total}
             itemsPerPage={itemsPerPage}
+            hasNext={pagination.hasNext}
+            hasPrev={pagination.hasPrev}
             onPageChange={handlePageChange}
             onItemsPerPageChange={handleItemsPerPageChange}
+            onPrevPage={handlePrevPage}
+            onNextPage={handleNextPage}
           />
         )}
       </div>
@@ -410,7 +418,10 @@ const MyThreads: React.FC = () => {
             setThreads(prev => [newThread, ...prev]);
             setPagination({
               ...pagination,
-              total: pagination.total + 1
+              total: pagination.total + 1,
+              totalPages: Math.max(1, Math.ceil((pagination.total + 1) / pagination.limit)),
+              hasNext: pagination.page < Math.max(1, Math.ceil((pagination.total + 1) / pagination.limit)),
+              hasPrev: pagination.page > 1,
             });
           }}
         />
@@ -438,7 +449,10 @@ const MyThreads: React.FC = () => {
               setThreads(prev => prev.filter(t => t.id !== deletedThreadId));
               setPagination({
                 ...pagination,
-                total: Math.max(pagination.total - 1, 0)
+                total: Math.max(pagination.total - 1, 0),
+                totalPages: Math.max(1, Math.ceil(Math.max(pagination.total - 1, 0) / pagination.limit)),
+                hasNext: pagination.page < Math.max(1, Math.ceil(Math.max(pagination.total - 1, 0) / pagination.limit)),
+                hasPrev: pagination.page > 1,
               });
             }}
             onThreadUpdated={(updatedThread) => {

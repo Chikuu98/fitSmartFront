@@ -1,8 +1,6 @@
 import axios from "axios";
 import { axiosInstance } from "../axiosInstance";
 import { appConfig } from "../../config/appConfig";
-import type { PaginatedResponse } from "../../interfaces/pagination";
-import type { Booking } from "../../interfaces/booking";
 
 function withApiUrl(path: string) {
   return `${appConfig.apiUrl.replace(/\/?$/, "/")}${path.replace(/^\//, "")}`;

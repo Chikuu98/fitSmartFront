@@ -1,5 +1,5 @@
 import { axiosInstance } from "../axiosInstance";
-import type { ForumType, ForumTypeListResponse } from "../../interfaces/forumType";
+import type { ForumType } from "../../interfaces/forumType";
 
 export const getForumTypes = async (page: number = 1, limit: number = 10) => {
   try {

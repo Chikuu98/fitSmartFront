@@ -1,5 +1,5 @@
 import { axiosInstance } from '../axiosInstance';
-import type { GeneratePlanDto, GeneratedPlan, AcceptPlanDto, AcceptedPlan, PlanType } from '../../interfaces/plan';
+import type { GeneratePlanDto, GeneratedPlan, AcceptPlanDto, PlanType } from '../../interfaces/plan';
 
 export const generatePlan = async (data: GeneratePlanDto): Promise<GeneratedPlan> => {
   const response = await axiosInstance.post('/plans/generate', data);
